@@ -191,8 +191,10 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     /* No hard box: the bottom melts into the page, the top softens. */
     mask-image: linear-gradient(
       to bottom,
-      rgb(0 0 0 / 0.7) 0%,
-      #000 12%,
+      transparent 0%,
+      rgb(0 0 0 / 0.3) 7%,
+      rgb(0 0 0 / 0.75) 15%,
+      #000 24%,
       #000 52%,
       rgb(0 0 0 / 0.75) 66%,
       rgb(0 0 0 / 0.35) 80%,
@@ -290,7 +292,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
       --pw: min(55vw, 82svh);
       display: grid;
       align-items: center;
-      min-height: max(34rem, calc(100svh - 7rem));
+      min-height: max(34rem, calc(100svh - 6rem));
       padding-block: 5rem 2rem;
     }
 

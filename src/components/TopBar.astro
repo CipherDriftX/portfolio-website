@@ -38,7 +38,8 @@ const href = (id: string) => (onHome ? `#${id}` : `/#${id}`);
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.75rem var(--gutter);
+    /* Line up with the page frame (82rem wide, centered). */
+    padding: 0.75rem max(var(--gutter), calc((100% - 82rem) / 2 + var(--gutter)));
   }
 
   .home {
