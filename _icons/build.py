@@ -17,6 +17,7 @@ ICONS = ROOT / "_icons"
 
 ORIGIN = ("Origin: rendered, not generated. _icons/touch.svg (flight-path marker on night) "
           "rasterized by rsvg-convert at 180x180, then magick -colors 32 PNG8. No image model involved.")
+ICO_ORIGIN = "Origin: rendered from _icons/mark.svg by _icons/build.py. No image model."
 
 
 def run(*cmd):
@@ -39,6 +40,7 @@ with tempfile.TemporaryDirectory() as tmp:
         run("rsvg-convert", "-w", str(size), "-h", str(size), str(ICONS / "mark.svg"), "-o", raw)
         run("magick", raw, "-strip", "-define", "png:compression-level=9",
             "-define", "png:compression-filter=5", f"PNG32:{small}")
+        add_text(small, "impeccable:prompt", ICO_ORIGIN)
         frames.append((size, pathlib.Path(small).read_bytes()))
 
     offset = 6 + 16 * len(frames)
