@@ -66,7 +66,7 @@ main {
   min-height: 100vh;
   min-height: 100svh;
   width: min(100% - 2 * var(--gutter), 72rem);
-  margin-inline: auto;
+  margin-inline: max(var(--gutter), min(10vw, (100% - 72rem) / 2)) auto;
   padding-block: clamp(2rem, 6vh, 4rem) clamp(3rem, 12vh, 7rem);
 }
 h1, hgroup p {
