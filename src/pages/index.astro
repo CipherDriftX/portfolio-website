@@ -180,10 +180,10 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     width: 100%;
     aspect-ratio: 4 / 5;
     /* The photo gives way so the name, claim, links and the first section's
-       heading fit on the first screen. On short screens (under about 720px)
-       it keeps 44% of the height so the name never crosses his face; the
+       heading fit on the first screen. On short screens (under about 740px)
+       it keeps 46% of the height so the name stays clear of his face; the
        peek gives way there, the links never do. */
-    max-height: max(14rem, min(64svh, max(calc(100svh - 25rem), 44svh)));
+    max-height: max(14rem, min(64svh, max(calc(100svh - 25rem), 46svh)));
     overflow: hidden;
   }
 
@@ -401,6 +401,14 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
 
   .section.peek {
     padding-block-start: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+
+  /* Short phones: no room for a clean peek, so the heading starts fully
+     below the fold instead of showing as a sliver. */
+  @media (max-height: 45rem) {
+    .section.peek {
+      padding-block-start: var(--step-section);
+    }
   }
 
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) {
