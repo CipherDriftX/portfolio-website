@@ -5,14 +5,10 @@ Run from the repo root:
 
 Needs rsvg-convert (librsvg), magick (ImageMagick 7) and chromium (for the sheet).
 
-Candidates (owner picks one; SHIP below says which one goes live):
-  a  night window: dark-brown square, one tungsten point upper right
-  b  window pane: same point above a band of street blue
-  c  corner light: tungsten falling from the top-right corner
-
-16 px frames come from the hand-tuned pixel maps below, not from the SVG, so
-each pixel is chosen. 32 and 48 px come from <name>.svg, 180 px and up from
-<name>-touch.svg (full bleed, a faint violet bloom).
+The mark (SHIP below): j, a hypersonic jet seen from above, nose up, lit
+from the right so one half is a step darker, tail running into amber. Drawn
+in j.svg (dark tile, used for 16/32/48 px and favicon.svg) and j-touch.svg
+(full bleed with a faint violet bloom and engine heat, 180 px and up).
 
 Writes to public/: favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png,
 icon-192.png, icon-512.png. Writes the comparison sheet to _icons/sheet.png.
@@ -28,67 +24,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 ICONS = ROOT / "_icons"
 PUBLIC = ROOT / "public"
 
-SHIP = "a"
+SHIP = "j"
 
 COLORS = {"b": "#211413", "a": "#f7bc7c", "c": "#f6e9ce", "s": "#3f537c"}
 
-# 16x16, one character per pixel. "." is transparent (the rounded corners).
-PIXELS = {
-    "a": """
-.bbbbbbbbbbbbbb.
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbaaabbb
-bbbbbbbbbacccabb
-bbbbbbbbbacccabb
-bbbbbbbbbacccabb
-bbbbbbbbbbaaabbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-.bbbbbbbbbbbbbb.
-""",
-    "b": """
-.bbbbbbbbbbbbbb.
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbaaabbb
-bbbbbbbbbacccabb
-bbbbbbbbbacccabb
-bbbbbbbbbacccabb
-bbbbbbbbbbaaabbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-ssssssssssssssss
-ssssssssssssssss
-ssssssssssssssss
-ssssssssssssssss
-ssssssssssssssss
-.ssssssssssssss.
-""",
-    "c": """
-.bbbbbbbaaaaccc.
-bbbbbbbaaaaacccc
-bbbbbbbaaaaacccc
-bbbbbbbbaaaaaccc
-bbbbbbbbaaaaaaac
-bbbbbbbbbaaaaaaa
-bbbbbbbbbbaaaaaa
-bbbbbbbbbbbaaaaa
-bbbbbbbbbbbbbaaa
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb
-.bbbbbbbbbbbbbb.
-""",
-}
+# Optional hand-tuned 16x16 maps, one character per pixel ("." = transparent).
+# A mark without a map renders its 16 px frame from <name>.svg.
+PIXELS = {}
 
 ORIGIN = "Origin: rendered, not generated. {src} rasterized by _icons/build.py (rsvg-convert, magick). No image model."
 
@@ -130,10 +72,13 @@ def render(name, out):
     """All sizes of one candidate into folder `out`. Returns {size: path}."""
     out.mkdir(parents=True, exist_ok=True)
     files = {}
-    px = out / f"{name}-16.svg"
-    px.write_text(pixel_svg(name))
     files[16] = out / f"{name}-16.png"
-    png(px, 16, files[16], f"_icons/build.py pixel map '{name}'")
+    if name in PIXELS:
+        px = out / f"{name}-16.svg"
+        px.write_text(pixel_svg(name))
+        png(px, 16, files[16], f"_icons/build.py pixel map '{name}'")
+    else:
+        png(ICONS / f"{name}.svg", 16, files[16], f"_icons/{name}.svg")
     for size in (32, 48):
         files[size] = out / f"{name}-{size}.png"
         png(ICONS / f"{name}.svg", size, files[size], f"_icons/{name}.svg")
@@ -183,7 +128,7 @@ img{{image-rendering:pixelated}}
 
 def main():
     with tempfile.TemporaryDirectory() as tmp:
-        all_files = {name: render(name, pathlib.Path(tmp) / name) for name in ("a", "b", "c")}
+        all_files = {name: render(name, pathlib.Path(tmp) / name) for name in (SHIP,)}
         ship = all_files[SHIP]
         shutil.copyfile(ICONS / f"{SHIP}.svg", PUBLIC / "favicon.svg")
         ico([(s, ship[s]) for s in (16, 32, 48)], PUBLIC / "favicon.ico")
