@@ -2,3 +2,6 @@
 .impeccable/.chrome-prof-*/
 _photo/*
 !_photo/build.py
+node_modules/
+dist/
+.astro/
