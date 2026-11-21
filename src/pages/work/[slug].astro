@@ -1,0 +1,119 @@
+---
+import { render } from "astro:content";
+import Article from "../../layouts/Article.astro";
+import { caseStudies } from "../../lib/content";
+import { site } from "../../data/site";
+
+export async function getStaticPaths() {
+  const entries = await caseStudies();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<Article
+  title={`${d.title} · ${site.name}`}
+  description={d.summary}
+  path={`/work/${entry.id}/`}
+  back={{ href: "/#case-studies", label: "All case studies" }}
+  draft={d.draft}
+>
+  <header slot="header" class="head">
+    <h1>{d.title}</h1>
+    <p class="lead">{d.summary}</p>
+
+    <p class="result">
+      <span class="num value">{d.evals.value}</span>
+      <span>{d.evals.metric}, on <span class="num">{d.evals.cases}</span> eval cases</span>
+    </p>
+
+    <dl class="facts">
+      <div><dt>Role</dt><dd>{d.role}</dd></div>
+      <div><dt>Client</dt><dd>{d.clientType}</dd></div>
+      <div><dt>Year</dt><dd class="num">{d.year}</dd></div>
+      <div><dt>Stack</dt><dd>{d.stack.join(", ")}</dd></div>
+    </dl>
+
+    {
+      (d.links.code || d.links.demo) && (
+        <ul role="list" class="links">
+          {d.links.code && (
+            <li>
+              <a href={d.links.code}>Code</a>
+            </li>
+          )}
+          {d.links.demo && (
+            <li>
+              <a href={d.links.demo}>Demo</a>
+            </li>
+          )}
+        </ul>
+      )
+    }
+  </header>
+
+  <Content />
+</Article>
+
+<style>
+  .head {
+    margin-block-start: 1.5rem;
+  }
+
+  h1 {
+    max-width: 18ch;
+    font-size: clamp(2.5rem, 1.75rem + 3.5vw, 4.5rem);
+  }
+
+  .lead {
+    max-width: 34ch;
+    margin-block-start: 1.25rem;
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    line-height: 1.4;
+  }
+
+  .result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    margin-block-start: 2rem;
+  }
+
+  .value {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: 1.25rem 2rem;
+    max-width: 52rem;
+    margin-block-start: 2rem;
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  dd {
+    margin-block-start: 0.125rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 0.25rem 1.75rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+</style>

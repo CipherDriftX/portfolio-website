@@ -1,0 +1,55 @@
+---
+import { render } from "astro:content";
+import Article from "../../layouts/Article.astro";
+import { notes } from "../../lib/content";
+import { site } from "../../data/site";
+
+export async function getStaticPaths() {
+  const entries = await notes();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const iso = d.date.toISOString().slice(0, 10);
+---
+
+<Article
+  title={`${d.title} · ${site.name}`}
+  description={d.summary}
+  path={`/notes/${entry.id}/`}
+  back={{ href: "/#notes", label: "All notes" }}
+  draft={d.draft}
+>
+  <header slot="header" class="head">
+    <h1>{d.title}</h1>
+    <p class="meta"><time datetime={iso}>{iso}</time></p>
+    <p class="lead">{d.summary}</p>
+  </header>
+
+  <Content />
+</Article>
+
+<style>
+  .head {
+    margin-block-start: 1.5rem;
+  }
+
+  h1 {
+    max-width: 20ch;
+    font-size: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  }
+
+  .meta {
+    margin-block-start: 1rem;
+    color: var(--muted);
+  }
+
+  .lead {
+    max-width: 36ch;
+    margin-block-start: 1rem;
+    font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.375rem);
+    line-height: 1.45;
+  }
+</style>
