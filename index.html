@@ -112,6 +112,9 @@ nav svg { flex: none; width: 1em; height: 1em; fill: var(--muted); }
 nav a:hover svg { fill: var(--ink); }
 nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 ::selection { background: var(--ink); color: var(--bg); }
+@media (max-resolution: 1.5dppx) {
+  nav a span { text-decoration-thickness: 2px; }
+}
 @media (max-width: 30rem) {
   ul { flex-direction: column; gap: 0; }
   nav a { padding-block: 0.625rem; }
