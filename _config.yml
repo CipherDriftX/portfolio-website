@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) build settings.
+# Files starting with "." or "_" are skipped by default; these are the rest.
+exclude:
+  - README.md
+  - PRODUCT.md
+  - DESIGN.md
