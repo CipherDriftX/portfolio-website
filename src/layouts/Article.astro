@@ -27,19 +27,6 @@ const { sections } = await siteContent();
 </Base>
 
 <style>
-  .glow {
-    position: absolute;
-    inset: -30svh 0 auto auto;
-    z-index: 0;
-    width: min(80vw, 60rem);
-    height: 70svh;
-    pointer-events: none;
-    background:
-      var(--grain),
-      radial-gradient(closest-side, rgb(247 188 124 / 0.1), rgb(247 188 124 / 0.03) 55%, transparent);
-    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
-  }
-
   .article {
     position: relative;
     z-index: 1;
