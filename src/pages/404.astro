@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+import { siteContent } from "../lib/content";
+
+const { sections } = await siteContent();
+---
+
+<Base title={`Page not found · ${site.name}`} description={site.claim} path="/404" sections={sections} noindex>
+  <div class="glow" aria-hidden="true"></div>
+  <section class="lost frame" aria-labelledby="lost-title">
+    <h1 id="lost-title">Nothing lives at this address.</h1>
+    <p><a href="/">Go to the home page</a></p>
+  </section>
+</Base>
+
+<style>
+  .glow {
+    position: absolute;
+    inset: -30svh 0 auto auto;
+    z-index: 0;
+    width: min(80vw, 60rem);
+    height: 70svh;
+    pointer-events: none;
+    background:
+      var(--grain),
+      radial-gradient(closest-side, rgb(247 188 124 / 0.1), rgb(247 188 124 / 0.03) 55%, transparent);
+    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+  }
+
+  .lost {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: center;
+    gap: 1.5rem;
+    min-height: 70svh;
+    padding-block: 7rem 2rem;
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: clamp(2.5rem, 1.75rem + 3.5vw, 4.5rem);
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 1.125rem;
+  }
+</style>
