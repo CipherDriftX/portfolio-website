@@ -183,7 +183,7 @@
       "Left-held block, empty right side",
       "No boxes, rules, shadows or motion",
       "Orange only on underlines and focus",
-      "Favicon is a flight-path marker on whole pixels, inline SVG plus file copies"
+      "Favicon is a plain signal-orange disc, inline SVG plus file copies"
     ],
     "rules": [
       {
