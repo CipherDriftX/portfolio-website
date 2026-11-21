@@ -27,6 +27,17 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.5
+  card-display:
+    fontFamily: "Hanken Grotesk, sans-serif"
+    fontSize: "96px"
+    fontWeight: 600
+    lineHeight: 1.04
+    letterSpacing: "-0.03em"
+  card-lead:
+    fontFamily: "Hanken Grotesk, sans-serif"
+    fontSize: "36px"
+    fontWeight: 400
+    lineHeight: 1.3
 rounded:
   focus: "2px"
 spacing:
@@ -78,6 +89,7 @@ Font: Hanken Grotesk, self-hosted, Latin subset, variable weight 400 to 600 (12.
 - Display (600, clamp 36 to 80px, line-height 1.04, -0.03em): the name in ink and the role in graphite, the same size, stacked as one two-tone heading.
 - Lead (400, clamp 20 to 24px, line-height 1.35, max 36rem, `text-wrap: balance`): the claim. No-break spaces keep "into production" and "and prove" together, so the claim always breaks before "and prove they work".
 - Body (400, 16px, line-height 1.5): the drone line (graphite) and the link labels (ink).
+- Card display and card lead (96px/600 and 36px/400): fixed sizes for the 1200x630 link preview only. A preview shows as a small thumbnail, so its type runs larger than the page's display step.
 
 The Two Weights Rule. 400 and 600 only. Hierarchy comes from size and color, never from a third weight.
 
