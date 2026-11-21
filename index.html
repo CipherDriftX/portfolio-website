@@ -22,6 +22,7 @@
   --bg: #fafaf9;
   --ink: #141414;
   --muted: #64645f;
+  --accent: #e64600;
   --gutter: clamp(1rem, 5vw - 0.5rem, 6rem);
   --display: clamp(2.25rem, 1rem + 5vw, 5rem);
 }
@@ -30,6 +31,7 @@
     --bg: #0f0f0f;
     --ink: #ececea;
     --muted: #9c9c98;
+    --accent: #ff4f00;
   }
 }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -67,6 +69,23 @@ hgroup p { color: var(--muted); }
 .aside { margin: 0.75rem 0 0; color: var(--muted); }
 nav { margin-top: clamp(2rem, 1.25rem + 2vw, 3rem); }
 ul { display: flex; flex-wrap: wrap; gap: 0.25rem 1.75rem; margin: 0; padding: 0; list-style: none; }
+nav a {
+  display: inline-block;
+  padding-block: 0.375rem;
+  color: inherit;
+  font-size: 1.0625rem;
+  overflow-wrap: anywhere;
+  text-decoration: underline var(--accent);
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.3em;
+}
+nav a:hover { text-decoration-thickness: 0.18em; }
+nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--ink); color: var(--bg); }
+@media (max-width: 30rem) {
+  ul { flex-direction: column; gap: 0; }
+  nav a { padding-block: 0.5rem; }
+}
 </style>
 </head>
 <body>
