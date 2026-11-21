@@ -98,9 +98,9 @@ components:
     rounded: "{rounded.none}"
     padding: "0.625rem 1rem"
   site-mark:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.mark}"
-    size: "28px"
+    backgroundColor: "transparent"
+    height: "28px"
+    width: "17.5px"
 ---
 
 # Design System: Aryan Haghighi
@@ -138,7 +138,7 @@ A warm umber dark lit by tungsten, with two cold lights kept strictly as glow.
 
 ### Neutral
 - **Table Top** (`base`): page background, `theme-color`, the top bar's fade, text on amber fills.
-- **Table** (`surface`): the one flat container colour. Case study panels, code blocks, inline code, the mark's square.
+- **Table** (`surface`): the one flat container colour. Case study panels, code blocks, inline code, the favicon tile.
 - **Curtain** (`wood`): hairlines only. Table row rules in long-form prose and the scrollbar thumb.
 - **Bulb Glass** (`cream`): all primary text, headings and links at rest.
 - **Ash Umber** (`muted`): secondary text. The drone line, dates, figcaptions, dt labels, back links, contact icons at rest. 6.4:1 on base, 5.8:1 on surface.
@@ -146,7 +146,7 @@ A warm umber dark lit by tungsten, with two cold lights kept strictly as glow.
 ### Named Rules
 **The Light, Never Ink Rule.** Violet and blue appear only inside radial blooms. Never as text, icon, border, button or fill. If you can point at it and name its edge, it is ink and it is wrong.
 
-**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms and the mark's bulb.
+**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms and the engine heat on the mark's tail.
 
 **The Real Source Rule.** Every bloom is tied to a light in the photo: amber from above (the bulbs), violet beside the face (the neon), blue low on the photo side (the chair). At most three per screen. No bloom without a source.
 
@@ -201,7 +201,7 @@ Flat. There are no box shadows anywhere. Depth comes from light: three large, fa
 
 ## Shapes
 
-Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, and the mark's rounded square (7 on a 32 grid). Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
+Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, and the favicon's rounded tile (7 on a 32 grid). The page mark has no tile. Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
 
 ## Components
 
@@ -227,7 +227,7 @@ The one container: a flat `surface` block, no border, no radius, no shadow, flui
 Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.
 
 ### Site mark
-A dark `surface` rounded square with one tungsten point offset to the upper right: an amber disc with a cream core, like the bulb in the photo. Same drawing as the favicon. No letters. Decorative; the link around it carries the full name.
+A hypersonic jet seen from above, nose up: an original planform with a long chined nose, a sharp delta and a W trailing edge. Lit from the right, so the left half sits a step darker (the faceted, stealth look); cream at the nose running into amber engine heat at the tail. On the page it stands alone at 28px tall, no tile; the favicon puts the same drawing on a `surface` rounded tile. It carries the theme (dark, fast jets) without aerospace job-seeker cues: no HUD symbols, insignia, blueprint lines or technical labels. No letters. Decorative; the link around it carries the full name.
 
 ### Draft tag (dev only)
 A small muted label with a dashed muted border, shown only in `npm run dev` next to draft entries. It never ships and is not a pattern for production UI.
