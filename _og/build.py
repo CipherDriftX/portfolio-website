@@ -8,6 +8,7 @@ The photo comes from public/photo/desk-1600.jpg, which already leaves out
 the glass, the ashtray and the background person.
 """
 import pathlib
+import struct
 import subprocess
 import tempfile
 
@@ -29,9 +30,14 @@ with tempfile.TemporaryDirectory() as tmp:
         "--virtual-time-budget=4000", "--window-size=1200,630", f"--screenshot={raw}", f"file://{CARD}")
     for quality in (86, 82, 78, 74, 70, 66):
         run("magick", raw, "-strip", "-sampling-factor", "4:2:0", "-interlace", "Plane",
-            "-quality", quality, "-set", "comment", f"impeccable:prompt {ORIGIN}", OUT)
-        if OUT.stat().st_size <= LIMIT:
+            "-quality", quality, OUT)
+        if OUT.stat().st_size <= LIMIT - 1024:
             break
     else:
         raise SystemExit(f"og.jpg is {OUT.stat().st_size // 1024} KB, over the 120 KB limit")
+
+# Origin note as a JPEG comment, the way `impeccable embed-prompt` writes it.
+body = b"impeccable:prompt\0" + ORIGIN.encode("ascii")
+data = OUT.read_bytes()
+OUT.write_bytes(data[:2] + b"\xff\xfe" + struct.pack(">H", len(body) + 2) + body + data[2:])
 print(f"public/og.jpg  {OUT.stat().st_size // 1024} KB at quality {quality}")
