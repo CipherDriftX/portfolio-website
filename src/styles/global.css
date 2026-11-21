@@ -38,8 +38,12 @@
   --measure: 38rem;
   --step-section: clamp(4.5rem, 3rem + 6vw, 9rem);
 
-  /* Dithering for the blooms, so dark gradients do not band. */
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* Dithering for the blooms, so dark gradients do not band. Each grain is
+     tinted to its light and noise only moves its alpha, so it never greys
+     the bloom. */
+  --grain-amber: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .969 0 0 0 0 .737 0 0 0 0 .486 .11 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-violet: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .824 0 0 0 0 .451 0 0 0 0 .678 .11 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-blue: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .188 0 0 0 0 .129 0 0 0 0 .843 .13 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 *,
@@ -196,8 +200,8 @@ a:hover {
   height: 70svh;
   pointer-events: none;
   background:
-    var(--grain),
-    radial-gradient(closest-side, rgb(247 188 124 / 0.1), rgb(247 188 124 / 0.03) 55%, transparent);
+    var(--grain-amber),
+    radial-gradient(closest-side, rgb(247 188 124 / 0.12), rgb(247 188 124 / 0.04) 55%, transparent);
   mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
 }
 
