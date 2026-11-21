@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+import { siteContent } from "../lib/content";
+
+const { sections } = await siteContent();
+---
+
+<Base title={`Page not found · ${site.name}`} description={site.claim} path="/404" sections={sections} noindex contact={false}>
+  <div class="glow" aria-hidden="true"></div>
+  <section class="lost frame" aria-labelledby="lost-title">
+    <h1 id="lost-title">There is no page at this address.</h1>
+    <p><a href="/">Go to the home page</a></p>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: center;
+    gap: 1.5rem;
+    min-height: 70svh;
+    padding-block: 7rem 2rem;
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: clamp(2.5rem, 1.75rem + 3.5vw, 4.5rem);
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 1.125rem;
+  }
+</style>

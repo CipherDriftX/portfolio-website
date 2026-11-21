@@ -1,11 +1,24 @@
-"""Render favicon.ico and apple-touch-icon.png from the SVGs in this folder.
+"""Render the favicon set and the candidate sheet.
 
-Run from the repo root: python3 _icons/build.py
-Needs rsvg-convert (librsvg) and magick (ImageMagick 7).
-ImageMagick writes uncompressed ICO frames (about 15 KB), so the ICO is
-packed here from PNG frames instead (about 2 KB).
+Run from the repo root:
+    python3 _icons/build.py
+
+Needs rsvg-convert (librsvg), magick (ImageMagick 7) and chromium (for the sheet).
+
+Candidates (owner picks one; SHIP below says which one goes live):
+  a  night window: dark-brown square, one tungsten point upper right
+  b  window pane: same point above a band of street blue
+  c  corner light: tungsten falling from the top-right corner
+
+16 px frames come from the hand-tuned pixel maps below, not from the SVG, so
+each pixel is chosen. 32 and 48 px come from <name>.svg, 180 px and up from
+<name>-touch.svg (full bleed, a faint violet bloom).
+
+Writes to public/: favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png,
+icon-192.png, icon-512.png. Writes the comparison sheet to _icons/sheet.png.
 """
 import pathlib
+import shutil
 import struct
 import subprocess
 import tempfile
@@ -13,15 +26,75 @@ import zlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ICONS = ROOT / "_icons"
+PUBLIC = ROOT / "public"
 
+SHIP = "a"
 
-ORIGIN = ("Origin: rendered, not generated. _icons/touch.svg (signal-orange disc on night) "
-          "rasterized by rsvg-convert at 180x180, then magick -colors 16 as a 4-bit palette PNG. No image model involved.")
-ICO_ORIGIN = "Origin: rendered from _icons/mark.svg by _icons/build.py. No image model."
+COLORS = {"b": "#211413", "a": "#f7bc7c", "c": "#f6e9ce", "s": "#3f537c"}
+
+# 16x16, one character per pixel. "." is transparent (the rounded corners).
+PIXELS = {
+    "a": """
+.bbbbbbbbbbbbbb.
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbaaabbb
+bbbbbbbbbacccabb
+bbbbbbbbbacccabb
+bbbbbbbbbacccabb
+bbbbbbbbbbaaabbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+.bbbbbbbbbbbbbb.
+""",
+    "b": """
+.bbbbbbbbbbbbbb.
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbaaabbb
+bbbbbbbbbacccabb
+bbbbbbbbbacccabb
+bbbbbbbbbacccabb
+bbbbbbbbbbaaabbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+ssssssssssssssss
+ssssssssssssssss
+ssssssssssssssss
+ssssssssssssssss
+ssssssssssssssss
+.ssssssssssssss.
+""",
+    "c": """
+.bbbbbbbaaaaccc.
+bbbbbbbaaaaacccc
+bbbbbbbaaaaacccc
+bbbbbbbbaaaaaccc
+bbbbbbbbaaaaaaac
+bbbbbbbbbaaaaaaa
+bbbbbbbbbbaaaaaa
+bbbbbbbbbbbaaaaa
+bbbbbbbbbbbbbaaa
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb
+.bbbbbbbbbbbbbb.
+""",
+}
+
+ORIGIN = "Origin: rendered, not generated. {src} rasterized by _icons/build.py (rsvg-convert, magick). No image model."
 
 
 def run(*cmd):
-    subprocess.run(cmd, check=True)
+    subprocess.run([str(c) for c in cmd], check=True)
 
 
 def add_text(path, key, text):
@@ -33,28 +106,94 @@ def add_text(path, key, text):
     pathlib.Path(path).write_bytes(data[:end] + chunk + data[end:])
 
 
-with tempfile.TemporaryDirectory() as tmp:
-    frames = []
-    for size in (16, 32, 48):
-        raw, small = f"{tmp}/raw{size}.png", f"{tmp}/{size}.png"
-        run("rsvg-convert", "-w", str(size), "-h", str(size), str(ICONS / "mark.svg"), "-o", raw)
-        run("magick", raw, "-strip", "-define", "png:compression-level=9",
-            "-define", "png:compression-filter=5", f"PNG32:{small}")
-        add_text(small, "impeccable:prompt", ICO_ORIGIN)
-        frames.append((size, pathlib.Path(small).read_bytes()))
+def pixel_svg(name):
+    rows = [r for r in PIXELS[name].strip().splitlines()]
+    assert len(rows) == 16 and all(len(r) == 16 for r in rows), f"{name}: map must be 16x16"
+    rects = "".join(
+        f'<rect x="{x}" y="{y}" width="1" height="1" fill="{COLORS[ch]}"/>'
+        for y, row in enumerate(rows)
+        for x, ch in enumerate(row)
+        if ch != "."
+    )
+    return f'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" shape-rendering="crispEdges">{rects}</svg>'
 
+
+def png(src_svg, size, dst, src_label):
+    raw = dst.with_suffix(".raw.png")
+    run("rsvg-convert", "-w", size, "-h", size, src_svg, "-o", raw)
+    run("magick", raw, "-strip", "-define", "png:compression-level=9", f"PNG32:{dst}")
+    raw.unlink()
+    add_text(dst, "impeccable:prompt", ORIGIN.format(src=src_label))
+
+
+def render(name, out):
+    """All sizes of one candidate into folder `out`. Returns {size: path}."""
+    out.mkdir(parents=True, exist_ok=True)
+    files = {}
+    px = out / f"{name}-16.svg"
+    px.write_text(pixel_svg(name))
+    files[16] = out / f"{name}-16.png"
+    png(px, 16, files[16], f"_icons/build.py pixel map '{name}'")
+    for size in (32, 48):
+        files[size] = out / f"{name}-{size}.png"
+        png(ICONS / f"{name}.svg", size, files[size], f"_icons/{name}.svg")
+    for size in (180, 192, 512):
+        files[size] = out / f"{name}-{size}.png"
+        png(ICONS / f"{name}-touch.svg", size, files[size], f"_icons/{name}-touch.svg")
+    return files
+
+
+def ico(frames, dst):
+    """Pack PNG frames into an ICO (ImageMagick writes uncompressed frames, ~15 KB)."""
     offset = 6 + 16 * len(frames)
     header = struct.pack("<HHH", 0, 1, len(frames))
     entries, data = b"", b""
-    for size, png in frames:
-        entries += struct.pack("<BBBBHHII", size, size, 0, 0, 1, 32, len(png), offset + len(data))
-        data += png
-    (ROOT / "favicon.ico").write_bytes(header + entries + data)
+    for size, path in frames:
+        blob = pathlib.Path(path).read_bytes()
+        entries += struct.pack("<BBBBHHII", size, size, 0, 0, 1, 32, len(blob), offset + len(data))
+        data += blob
+    dst.write_bytes(header + entries + data)
 
-    touch = f"{tmp}/touch.png"
-    run("rsvg-convert", "-w", "180", "-h", "180", str(ICONS / "touch.svg"), "-o", touch)
-    run("magick", touch, "-strip", "-colors", "16", "-define", "png:bit-depth=4",
-        "-define", "png:color-type=3", "-define", "png:compression-level=9",
-        "-define", "png:compression-filter=0", "-define", "png:compression-strategy=0",
-        str(ROOT / "apple-touch-icon.png"))
-    add_text(ROOT / "apple-touch-icon.png", "impeccable:prompt", ORIGIN)
+
+def sheet(all_files, tmp):
+    rows = ""
+    for name, files in all_files.items():
+        cells = ""
+        for bar in ("light", "dark"):
+            tabs = "".join(
+                f'<div class="tab"><img src="{files[s]}" width="{s}" height="{s}" alt=""><span>{s}</span></div>'
+                for s in (16, 32, 48, 180)
+            )
+            cells += f'<div class="bar {bar}">{tabs}</div>'
+        rows += f'<section><h2>{name.upper()}{" (ships)" if name == SHIP else ""}</h2>{cells}</section>'
+    html = f"""<!doctype html><meta charset="utf-8"><style>
+body{{margin:0;padding:24px;background:#fff;font:14px system-ui,sans-serif;width:1100px}}
+section{{display:grid;grid-template-columns:60px 1fr 1fr;gap:12px;align-items:center;margin-bottom:16px}}
+h2{{font-size:18px;margin:0}}
+.bar{{display:flex;align-items:flex-end;gap:20px;padding:14px 16px;border-radius:10px}}
+.light{{background:#dee1e6;color:#3c4043}}.dark{{background:#35363a;color:#bdc1c6}}
+.tab{{display:flex;flex-direction:column;align-items:center;gap:6px}}
+img{{image-rendering:pixelated}}
+</style><body>{rows}<p>Real size, 1 image pixel = 1 screen pixel. Light bar = Chrome light tab strip, dark bar = Chrome dark.</p></body>"""
+    page = pathlib.Path(tmp) / "sheet.html"
+    page.write_text(html)
+    run("chromium", "--headless=new", "--hide-scrollbars", "--disable-gpu", "--force-device-scale-factor=1",
+        "--window-size=1150,860", f"--screenshot={ICONS / 'sheet.png'}", f"file://{page}")
+
+
+def main():
+    with tempfile.TemporaryDirectory() as tmp:
+        all_files = {name: render(name, pathlib.Path(tmp) / name) for name in ("a", "b", "c")}
+        ship = all_files[SHIP]
+        shutil.copyfile(ICONS / f"{SHIP}.svg", PUBLIC / "favicon.svg")
+        ico([(s, ship[s]) for s in (16, 32, 48)], PUBLIC / "favicon.ico")
+        shutil.copyfile(ship[180], PUBLIC / "apple-touch-icon.png")
+        shutil.copyfile(ship[192], PUBLIC / "icon-192.png")
+        shutil.copyfile(ship[512], PUBLIC / "icon-512.png")
+        sheet(all_files, tmp)
+    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
+        print(f"public/{f}  {(PUBLIC / f).stat().st_size} B")
+
+
+if __name__ == "__main__":
+    main()

@@ -63,7 +63,7 @@ components:
 
 North star: "The Title Card". The page sets a name, a role, one claim and three links the way a film title card sets its credits. Everything sits in one block on the left, a little above the vertical center, and the right side of the screen stays empty. Visitors stay 5 to 10 seconds, so the block reads top to bottom in one pass: who, what, how to reach.
 
-The system is type and space only. There are no boxes, rules, shadows, images or motion. One face in two weights does all the work, and space alone groups the content. Color is near-monochrome, with one orange accent that marks what you can click.
+The system is type and space, plus one portrait. The portrait (128 px, square, 2 px corners, above the name) puts a real face on the page so a cold-message reader sees a person. There are no boxes, rules, shadows, other images or motion. One face in two weights does all the work, and space alone groups the content. Color is near-monochrome, with one orange accent that marks what you can click.
 
 Rejected on purpose, from the brief: gradients, glass, glow, particles, 3D, emoji, icon-only rows, stock or drone imagery, typing or scroll animation, and the centered startup hero.
 

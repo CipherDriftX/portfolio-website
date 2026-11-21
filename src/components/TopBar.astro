@@ -1,0 +1,105 @@
+---
+import Mark from "./Mark.astro";
+import { site } from "../data/site";
+
+interface Props {
+  sections: { id: string; label: string }[];
+  onHome?: boolean;
+}
+const { sections, onHome = false } = Astro.props;
+const href = (id: string) => (onHome ? `#${id}` : `/#${id}`);
+// Phones keep the first two sections and Contact; the rest are one scroll away.
+const phoneHidden = (id: string, i: number) => id !== "contact" && i >= 2;
+---
+
+<header class="bar">
+  <a class="home" href="/" aria-label={`${site.name}, home`}>
+    <Mark />
+  </a>
+  {
+    sections.length > 0 && (
+      <nav aria-label="Sections">
+        <ul role="list">
+          {sections.map((s, i) => (
+            <li class:list={{ wide: phoneHidden(s.id, i) }}>
+              <a href={href(s.id)}>{s.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+</header>
+
+<style>
+  .bar {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    /* Line up with the page frame (82rem wide, centered). */
+    padding: 0.75rem max(var(--gutter), calc((100% - 82rem) / 2 + var(--gutter)));
+    isolation: isolate;
+  }
+
+  /* The links sit over the photo's ceiling bulbs. A soft fade of the page
+     base keeps them readable (4.5:1 or better) without a visible bar. */
+  .bar::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    height: 6.5rem;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(11 8 7 / 0.86) 0,
+      rgb(11 8 7 / 0.8) 3.75rem,
+      rgb(11 8 7 / 0.45) 5rem,
+      rgb(11 8 7 / 0) 100%
+    );
+  }
+
+  .home {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-inline-start: -0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  ul {
+    display: flex;
+    gap: 0.25rem 1rem;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    ul {
+      gap: 0.25rem 1.5rem;
+    }
+
+    .wide {
+      display: list-item;
+    }
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.9375rem;
+    text-decoration-color: transparent;
+  }
+
+  nav a:hover {
+    text-decoration-color: var(--amber);
+  }
+</style>
