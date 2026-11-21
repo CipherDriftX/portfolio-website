@@ -15,6 +15,8 @@ interface Props {
   person?: boolean;
   noindex?: boolean;
   ogType?: "website" | "article";
+  /** The Contact block and footer. Off on the 404, which is one line and a link home. */
+  contact?: boolean;
 }
 
 const {
@@ -26,11 +28,12 @@ const {
   person = false,
   noindex = false,
   ogType = "website",
+  contact = true,
 } = Astro.props;
 
 const canonical = new URL(path, site.url + "/").href;
 const ogImage = `${site.url}/og.jpg`;
-const ogAlt = `${site.name}, ${site.title}. ${site.claim}`;
+const ogAlt = `${site.name} at a table by a window at night, next to the words: ${site.name}, ${site.title}. ${site.claim}`;
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -90,7 +93,7 @@ const personSchema = {
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <Contact />
+    {contact && <Contact />}
   </body>
 </html>
 
