@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-21T12:18:57+00:00",
+  "generatedAt": "2026-11-21T12:27:41+00:00",
   "title": "Design System: Aryan Haghighi",
   "extensions": {
     "colorMeta": {
@@ -137,6 +137,14 @@
       "body": {
         "displayName": "Body",
         "purpose": "Drone line (graphite) and link labels (ink)."
+      },
+      "card-display": {
+        "displayName": "Card Display",
+        "purpose": "Name and role on the 1200x630 link preview only."
+      },
+      "card-lead": {
+        "displayName": "Card Lead",
+        "purpose": "Claim on the 1200x630 link preview only."
       }
     },
     "shadows": [],
@@ -174,7 +182,8 @@
       "One face, two weights",
       "Left-held block, empty right side",
       "No boxes, rules, shadows or motion",
-      "Orange only on underlines and focus"
+      "Orange only on underlines and focus",
+      "Favicon is a flight-path marker on whole pixels, inline SVG plus file copies"
     ],
     "rules": [
       {

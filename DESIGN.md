@@ -112,7 +112,7 @@ No containers. The only radius is 2px on the focus ring.
 ## Components
 
 - Contact link: a 1em icon (Bootstrap Icons 1.11.3: envelope-fill, linkedin, github) in graphite, then the label in ink with a signal-orange underline (0.09em thick, 0.3em offset). On hover the underline thickens to 0.18em and the icon turns ink. On focus there is a 2px signal-orange outline, 3px offset. The email shows the address itself, because a mailto link does nothing on desktops with no mail app.
-- Favicon: a head-up-display flight-path marker (circle, two wings, tail) in #ff4f00 on a transparent background. No letters.
+- Favicon: a head-up-display flight-path marker (circle, two wings, tail) in #ff4f00 on a transparent background. No letters. Every edge sits on whole pixels at 16, 32 and 48px. The page carries it inline as SVG. `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180px, mark on night) are file copies for Google Search, Safari before 26 and iOS home screens, built by `_icons/build.py`.
 - Link preview (og.png, 1200x630): the night theme, with name, role and claim left-aligned. It is rendered from `_og/card.html`.
 
 ## Do's and Don'ts
