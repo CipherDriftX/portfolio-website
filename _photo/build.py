@@ -32,7 +32,7 @@ OUT = ROOT / "public" / "photo"
 # ashtray at y 0.908, the background person at x 0.903 (her blurred
 # edge at 0.893, so the desk box stops at 0.882).
 DESK = (0.0, 0.0, 0.882, 0.893)    # window, street, bulbs, arms and watch
-PHONE = (0.200, 0.240, 0.86667, 0.865)  # head, shoulders, arms (4:5)
+PHONE = (0.200, 0.185, 0.86667, 0.810)  # head with headroom, shoulders, arms (4:5)
 
 DESK_WIDTHS = (640, 960, 1280, 1600)
 PHONE_WIDTHS = (480, 720, 960)
