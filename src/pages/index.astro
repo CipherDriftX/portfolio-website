@@ -88,7 +88,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
               <p class="eval">
                 <span class="num value">{s.data.evals.value}</span>
                 <span>
-                  {s.data.evals.metric}, on <span class="num">{s.data.evals.cases}</span> eval cases
+                  {s.data.evals.metric}, on <span class="num">{s.data.evals.cases}</span> eval {s.data.evals.cases === 1 ? "case" : "cases"}
                 </span>
               </p>
               <p class="quiet">
