@@ -87,7 +87,7 @@ Font: Hanken Grotesk, self-hosted, Latin subset, variable weight 400 to 600 (12.
 
 ### Hierarchy
 - Display (600, clamp 40 to 80px, line-height 1.04, -0.03em): the name in ink and the role in graphite, the same size, stacked as one two-tone heading. On phones the name fills most of the line (42px at 320, 46px at 375), so the title card holds on small screens; it reaches 80px from 857px wide. The size uses rem and vw only, never vh, so it still grows when the visitor zooms.
-- Lead (400, clamp 20 to 24px, line-height 1.35, max 36rem, `text-wrap: balance`): the claim. No-break spaces keep "into production" and "and prove" together, so the claim always breaks before "and prove they work".
+- Lead (400, clamp 20 to 24px, line-height 1.35, max 36rem, `text-wrap: balance`): the claim. No-break spaces keep "into production" and "with evals" together, so when the claim wraps it breaks after "production,".
 - Body (400, 16px, line-height 1.5): the drone line (graphite) and the link labels (ink).
 - Card display and card lead (96px/600 and 36px/400): fixed sizes for the 1200x630 link preview only. A preview shows as a small thumbnail, so its type runs larger than the page's display step.
 
@@ -112,7 +112,7 @@ No containers. The only radius is 2px on the focus ring.
 ## Components
 
 - Contact link: a 1em icon (Bootstrap Icons 1.11.3: envelope-fill, linkedin, github) in graphite, then the label in ink with a signal-orange underline (0.09em thick, 2px on 1x screens so it does not render as a grey hairline, 0.3em offset). On hover the underline thickens to 0.18em and the icon turns ink. On focus there is a 2px signal-orange outline, 3px offset. The email shows the address itself, because a mailto link does nothing on desktops with no mail app.
-- Favicon: a head-up-display flight-path marker (circle, two wings, tail) in #ff4f00 on a transparent background. No letters. Every edge sits on whole pixels at 16, 32 and 48px. The page carries it inline as SVG. `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180px, mark on night) are file copies for Google Search, Safari before 26 and iOS home screens, built by `_icons/build.py`.
+- Favicon: a solid signal-orange disc (#ff4f00) on a transparent background, like the orange marker balls on power lines. No letters and no fine detail, so it reads at 16px, where it fills 14 of the 16 pixels, centered. The page carries it inline as SVG. `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180px, disc on night) are file copies for Google Search, Safari before 26 and iOS home screens, built by `_icons/build.py`.
 - Link preview (og.png, 1200x630): the night theme, with name, role and claim left-aligned. It is rendered from `_og/card.html`.
 
 ## Do's and Don'ts
