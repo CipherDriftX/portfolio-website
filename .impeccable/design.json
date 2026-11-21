@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-21T12:18:57+00:00",
+  "title": "Design System: Aryan Haghighi",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(98.5% 0.001 106.4)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252524",
+          "#424241",
+          "#616160",
+          "#828281",
+          "#a5a5a4",
+          "#c9c9c8",
+          "#eeeeed"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(19.1% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "oklch(50.2% 0.008 106.7)",
+        "tonalRamp": [
+          "#0b0b08",
+          "#252521",
+          "#42423e",
+          "#62625d",
+          "#83837d",
+          "#a5a5a0",
+          "#c9c9c4",
+          "#efefe9"
+        ]
+      },
+      "signal-orange": {
+        "role": "primary",
+        "displayName": "Signal Orange",
+        "canonical": "oklch(61.9% 0.206 37.3)",
+        "tonalRamp": [
+          "#3a0000",
+          "#610000",
+          "#880000",
+          "#af2700",
+          "#d84f23",
+          "#ff754b",
+          "#ff9a6f",
+          "#ffc094"
+        ]
+      },
+      "night": {
+        "role": "neutral",
+        "displayName": "Night",
+        "canonical": "oklch(16.8% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "bone": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "oklch(94.3% 0.003 106.5)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252524",
+          "#424240",
+          "#616160",
+          "#828281",
+          "#a5a5a3",
+          "#c9c9c7",
+          "#eeeeec"
+        ]
+      },
+      "ash": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "oklch(69.2% 0.006 106.5)",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252522",
+          "#42423f",
+          "#61615e",
+          "#83837f",
+          "#a5a5a1",
+          "#c9c9c5",
+          "#efefea"
+        ]
+      },
+      "signal-orange-night": {
+        "role": "primary",
+        "displayName": "Signal Orange (night)",
+        "canonical": "oklch(67.0% 0.222 37.4)",
+        "tonalRamp": [
+          "#3a0000",
+          "#610000",
+          "#880000",
+          "#af2700",
+          "#d84f23",
+          "#ff754a",
+          "#ff9a6f",
+          "#ffc094"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Name (ink) and role (graphite), same size, one two-tone heading."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The one-sentence claim."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Drone line (graphite) and link labels (ink)."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "stack-links",
+        "value": "30rem",
+        "purpose": "Below this, contact links stack with 44px targets."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Contact Link",
+      "kind": "nav",
+      "refersTo": "contact-link",
+      "description": "Icon plus underlined label; the only interactive element.",
+      "html": "<a class=\"ds-contact-link\" href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8\"/></svg><span>GitHub</span></a>",
+      "css": ".ds-contact-link{display:inline-flex;align-items:center;gap:.6em;padding:.375rem 0;color:var(--ink,#141414);font:400 1rem/1.5 'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;text-decoration:none}.ds-contact-link svg{flex:none;width:1em;height:1em;fill:var(--muted,#64645f)}.ds-contact-link span{text-decoration:underline var(--accent,#e64600);text-decoration-thickness:.09em;text-underline-offset:.3em}.ds-contact-link:hover span{text-decoration-thickness:.18em}.ds-contact-link:hover svg{fill:var(--ink,#141414)}.ds-contact-link:focus-visible{outline:2px solid var(--accent,#e64600);outline-offset:3px;border-radius:2px}"
+    },
+    {
+      "name": "Title Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "Name in ink over role in graphite at the same display size.",
+      "html": "<hgroup class=\"ds-title\"><h1>Aryan Haghighi</h1><p>AI Engineer</p></hgroup>",
+      "css": ".ds-title h1,.ds-title p{margin:0;font:600 clamp(2.25rem,1rem + 5vw,5rem)/1.04 'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;color:var(--ink,#141414)}.ds-title p{color:var(--muted,#64645f)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Title Card",
+    "overview": "A name, a role, one claim and three links set like a film title card: one left-held block, slightly above center, right side empty. Type and space only, one accent for what you can click.",
+    "keyCharacteristics": [
+      "One face, two weights",
+      "Left-held block, empty right side",
+      "No boxes, rules, shadows or motion",
+      "Orange only on underlines and focus"
+    ],
+    "rules": [
+      {
+        "name": "The Two Uses Rule",
+        "body": "Orange appears on link underlines and the focus ring, nowhere else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Weights Rule",
+        "body": "400 and 600 only; hierarchy from size and color.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Keep the full name \"Aryan Haghighi\" everywhere.",
+      "Keep new copy out unless the owner writes it."
+    ],
+    "donts": [
+      "No \"Aryan\" alone as a short name and no \"AH\" monogram or favicon.",
+      "No third weight, second face, second accent or motion.",
+      "No centering, boxes, rules or cards."
+    ]
+  }
+}
