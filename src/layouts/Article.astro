@@ -1,0 +1,150 @@
+---
+// Reading pages: case studies and notes. Same room, one light from above.
+import Base from "./Base.astro";
+import { siteContent } from "../lib/content";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  back: { href: string; label: string };
+  draft?: boolean;
+}
+const { title, description, path, back, draft = false } = Astro.props;
+const { sections } = await siteContent();
+---
+
+<Base title={title} description={description} path={path} sections={sections} ogType="article">
+  <div class="glow" aria-hidden="true"></div>
+  <article class="article frame">
+    <a class="back" href={back.href}>{back.label}</a>
+    {draft && <p class="draft-tag">Draft: hidden in production</p>}
+    <slot name="header" />
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .glow {
+    position: absolute;
+    inset: -30svh 0 auto auto;
+    z-index: 0;
+    width: min(80vw, 60rem);
+    height: 70svh;
+    pointer-events: none;
+    background:
+      var(--grain),
+      radial-gradient(closest-side, rgb(247 188 124 / 0.1), rgb(247 188 124 / 0.03) 55%, transparent);
+    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+  }
+
+  .article {
+    position: relative;
+    z-index: 1;
+    padding-block-start: clamp(6rem, 4rem + 6vw, 9rem);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .back:hover {
+    color: var(--amber);
+  }
+
+  .article > :global(.draft-tag) {
+    display: block;
+    width: fit-content;
+    margin: 1rem 0 0;
+  }
+
+  /* Long-form body */
+  .prose {
+    max-width: var(--measure);
+    margin-block-start: clamp(2.5rem, 2rem + 2vw, 4rem);
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+
+  .prose :global(> * + *) {
+    margin-block-start: 1.1em;
+  }
+
+  .prose :global(h2) {
+    margin-block-start: 2.4em;
+    font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2rem);
+  }
+
+  .prose :global(h3) {
+    margin-block-start: 2em;
+    font-family: var(--text);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .prose :global(h2 + *),
+  .prose :global(h3 + *) {
+    margin-block-start: 0.6em;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-inline-start: 1.25em;
+  }
+
+  .prose :global(li + li) {
+    margin-block-start: 0.4em;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--muted);
+  }
+
+  .prose :global(blockquote) {
+    padding-inline-start: 1.25em;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .prose :global(code) {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.875em;
+  }
+
+  .prose :global(:not(pre) > code) {
+    padding: 0.1em 0.35em;
+    background: var(--surface);
+    border-radius: 3px;
+  }
+
+  .prose :global(pre) {
+    overflow-x: auto;
+    padding: 1.25rem;
+    background: var(--surface) !important;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    text-align: start;
+    border-block-end: 1px solid var(--wood);
+  }
+
+  .prose :global(img) {
+    height: auto;
+  }
+</style>
