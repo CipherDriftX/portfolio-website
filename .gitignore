@@ -1,3 +1,4 @@
 .impeccable/review/
 .impeccable/.chrome-prof-*/
-_photo/
+_photo/*
+!_photo/build.py
