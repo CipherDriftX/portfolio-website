@@ -5,7 +5,8 @@ Run from the repo root:
 
 Needs magick (ImageMagick 7 with AVIF and WebP support).
 
-Writes public/photo/{desk,phone}-<width>.{avif,webp,jpg} and _photo/og-crop.png.
+Writes public/photo/{desk,phone}-<width>.{avif,webp,jpg}. The link preview
+(_og/build.py) is cut from desk-1600.jpg.
 Every output is stripped of metadata (EXIF, GPS, XMP, ICC comments).
 
 The boxes below are fractions of the source size, so the same photo at any
@@ -83,8 +84,6 @@ def main():
         phone_w = cut(src, PHONE, phone)
         export(desk, "desk", DESK_WIDTHS, desk_w)
         export(phone, "phone", PHONE_WIDTHS, phone_w)
-        # Master for the link preview (built by _og/build.py).
-        run("magick", desk, "-resize", "1200x", "-strip", ROOT / "_photo" / "og-crop.png")
     for f in sorted(OUT.iterdir()):
         print(f"{f.relative_to(ROOT)}  {f.stat().st_size // 1024} KB")
 
