@@ -179,8 +179,11 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     z-index: 1;
     width: 100%;
     aspect-ratio: 4 / 5;
-    /* Short screens keep room for the links on the first screen. */
-    max-height: max(14rem, min(64svh, calc(100svh - 22rem)));
+    /* The photo gives way so the name, claim, links and the first section's
+       heading fit on the first screen. On short screens (under about 720px)
+       it keeps 44% of the height so the name never crosses his face; the
+       peek gives way there, the links never do. */
+    max-height: max(14rem, min(64svh, max(calc(100svh - 25rem), 44svh)));
     overflow: hidden;
   }
 
@@ -188,14 +191,15 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 30%;
-    /* No hard box: the bottom melts into the page, the top softens. */
+    /* The crop has headroom above his hair; a shorter box trims the arms. */
+    object-position: 50% 14%;
+    /* No hard box: the bottom melts into the page, the top softens under
+       the bar's own fade. */
     mask-image: linear-gradient(
       to bottom,
-      transparent 0%,
-      rgb(0 0 0 / 0.3) 7%,
-      rgb(0 0 0 / 0.75) 15%,
-      #000 24%,
+      rgb(0 0 0 / 0.35) 0%,
+      rgb(0 0 0 / 0.8) 7%,
+      #000 14%,
       #000 52%,
       rgb(0 0 0 / 0.75) 66%,
       rgb(0 0 0 / 0.35) 80%,
@@ -396,7 +400,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
   }
 
   .section.peek {
-    padding-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+    padding-block-start: clamp(2rem, 1rem + 4vw, 5rem);
   }
 
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) {
