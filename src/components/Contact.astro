@@ -1,0 +1,35 @@
+---
+import ContactLinks from "./ContactLinks.astro";
+import { site } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="contact frame" id="contact" aria-labelledby="contact-title">
+  <h2 id="contact-title">Contact</h2>
+  <ContactLinks label="Contact" class="contact-row" />
+  <p class="drone">{site.drone}</p>
+  <p class="year"><span class="num">© {year}</span> {site.name}</p>
+</footer>
+
+<style>
+  .contact {
+    padding-block: var(--step-section) clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    margin-block-end: 1.25rem;
+  }
+
+  .drone {
+    margin-block-start: 2.5rem;
+    color: var(--muted);
+  }
+
+  .year {
+    margin-block-start: 0.5rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+</style>
