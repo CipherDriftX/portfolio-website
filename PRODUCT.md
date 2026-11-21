@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Static HTML/CSS: one `index.html` with inline CSS, no JavaScript, no framework, no build step. Hosted on Vercel at aryanhaghighi.com (auto-deploys main). Under 20 KB total, not counting a font file.
+Static HTML/CSS: one `index.html` with inline CSS, no JavaScript, no framework, no build step. Hosted on Vercel at aryanhaghighi.com (auto-deploys main). Under 40 KB total, not counting a font file (raised from 20 KB on 2026-11-21 for the portrait: AVIF 5 KB at 2x, JPEG fallback 11 KB).
 
 ## Users
 
@@ -26,6 +26,7 @@ A one-screen holding page that replaces the Namecheap parking page until the rea
   - Line 1: AI Engineer
   - Line 2: I ship AI agents into production, with evals that prove they work.
   - Line 3 (smaller, quieter): Building autonomous drones.
+  - Portrait: portrait-256/384 (.avif + .jpg) from ~/Pictures/aryan-pfp.jpg, above the name.
   - Links: email aryan@aryanhaghighi.com (visible as the address, mailto), LinkedIn https://www.linkedin.com/in/aryan-haghighi-24b779304/, GitHub https://github.com/CipherDriftX
 - No taglines, greetings, "coming soon", countdowns, or calls to action. Missing content is asked for, never invented.
 - Meta: title "Aryan Haghighi, AI Engineer · production AI agents + evals", description from line 2, Open Graph + Twitter tags with a 1200x630 og:image, theme-color, inline SVG favicon.

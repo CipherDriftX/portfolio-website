@@ -11,13 +11,13 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff4f00'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="canonical" href="https://aryanhaghighi.com/">
+<link rel="canonical" href="https://www.aryanhaghighi.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aryan Haghighi">
 <meta property="og:title" content="Aryan Haghighi, AI Engineer · production AI agents + evals">
 <meta property="og:description" content="I ship AI agents into production, with evals that prove they work.">
-<meta property="og:url" content="https://aryanhaghighi.com/">
-<meta property="og:image" content="https://aryanhaghighi.com/og.png">
+<meta property="og:url" content="https://www.aryanhaghighi.com/">
+<meta property="og:image" content="https://www.aryanhaghighi.com/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,8 +26,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Aryan Haghighi, AI Engineer · production AI agents + evals">
 <meta name="twitter:description" content="I ship AI agents into production, with evals that prove they work.">
-<meta name="twitter:image" content="https://aryanhaghighi.com/og.png">
+<meta name="twitter:image" content="https://www.aryanhaghighi.com/og.png">
 <meta name="twitter:image:alt" content="Aryan Haghighi, AI Engineer. I ship AI agents into production, with evals that prove they work.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Aryan Haghighi","jobTitle":"AI Engineer","description":"I ship AI agents into production, with evals that prove they work.","url":"https://www.aryanhaghighi.com/","image":"https://www.aryanhaghighi.com/portrait-384.jpg","email":"mailto:aryan@aryanhaghighi.com","sameAs":["https://www.linkedin.com/in/aryan-haghighi-24b779304/","https://github.com/CipherDriftX"]}</script>
 <link rel="preload" href="fonts/hanken-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face {
@@ -72,6 +73,15 @@ main {
   width: min(100% - 2 * var(--gutter), 72rem);
   margin-inline: max(var(--gutter), min(10vw, (100% - 72rem) / 2)) auto;
   padding-block: clamp(2rem, 6vh, 4rem) clamp(3rem, 12vh, 7rem);
+}
+.portrait {
+  display: block;
+  width: clamp(5.5rem, 4.5rem + 3vw, 8rem);
+  height: auto;
+  aspect-ratio: 1;
+  margin: 0 0 clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+  border-radius: 2px;
+  background: var(--muted);
 }
 h1, hgroup p {
   margin: 0;
@@ -123,6 +133,10 @@ nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; bor
 </head>
 <body>
 <main>
+  <picture>
+    <source type="image/avif" srcset="portrait-256.avif 2x, portrait-384.avif 3x">
+    <img class="portrait" src="portrait-256.jpg" srcset="portrait-256.jpg 2x, portrait-384.jpg 3x" width="128" height="128" alt="Portrait of Aryan Haghighi" fetchpriority="high">
+  </picture>
   <hgroup>
     <h1>Aryan Haghighi</h1>
     <p>AI Engineer</p>
