@@ -40,6 +40,25 @@ const href = (id: string) => (onHome ? `#${id}` : `/#${id}`);
     gap: 1rem;
     /* Line up with the page frame (82rem wide, centered). */
     padding: 0.75rem max(var(--gutter), calc((100% - 82rem) / 2 + var(--gutter)));
+    isolation: isolate;
+  }
+
+  /* The links sit over the photo's ceiling bulbs. A soft fade of the page
+     base keeps them readable (4.5:1 or better) without a visible bar. */
+  .bar::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    height: 6.5rem;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(11 8 7 / 0.86) 0,
+      rgb(11 8 7 / 0.8) 3.75rem,
+      rgb(11 8 7 / 0.45) 5rem,
+      rgb(11 8 7 / 0) 100%
+    );
   }
 
   .home {
