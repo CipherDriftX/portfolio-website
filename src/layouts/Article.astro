@@ -94,9 +94,9 @@ const { sections } = await siteContent();
   }
 
   .prose :global(blockquote) {
+    /* Upright: only the roman Hanken file loads, so italic would be faked. */
     padding-inline-start: 1.25em;
     color: var(--muted);
-    font-style: italic;
   }
 
   .prose :global(code) {
