@@ -3,7 +3,7 @@
 Run from the repo root: python3 _icons/build.py
 Needs rsvg-convert (librsvg) and magick (ImageMagick 7).
 ImageMagick writes uncompressed ICO frames (about 15 KB), so the ICO is
-packed here from PNG frames instead (about 1.7 KB).
+packed here from PNG frames instead (about 2 KB).
 """
 import pathlib
 import struct
@@ -15,8 +15,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 ICONS = ROOT / "_icons"
 
 
-ORIGIN = ("Origin: rendered, not generated. _icons/touch.svg (flight-path marker on night) "
-          "rasterized by rsvg-convert at 180x180, then magick -colors 32 PNG8. No image model involved.")
+ORIGIN = ("Origin: rendered, not generated. _icons/touch.svg (signal-orange disc on night) "
+          "rasterized by rsvg-convert at 180x180, then magick -colors 16 as a 4-bit palette PNG. No image model involved.")
 ICO_ORIGIN = "Origin: rendered from _icons/mark.svg by _icons/build.py. No image model."
 
 
@@ -53,6 +53,8 @@ with tempfile.TemporaryDirectory() as tmp:
 
     touch = f"{tmp}/touch.png"
     run("rsvg-convert", "-w", "180", "-h", "180", str(ICONS / "touch.svg"), "-o", touch)
-    run("magick", touch, "-strip", "-define", "png:compression-level=9", "-colors", "32",
-        f"PNG8:{ROOT / 'apple-touch-icon.png'}")
+    run("magick", touch, "-strip", "-colors", "16", "-define", "png:bit-depth=4",
+        "-define", "png:color-type=3", "-define", "png:compression-level=9",
+        "-define", "png:compression-filter=0", "-define", "png:compression-strategy=0",
+        str(ROOT / "apple-touch-icon.png"))
     add_text(ROOT / "apple-touch-icon.png", "impeccable:prompt", ORIGIN)
