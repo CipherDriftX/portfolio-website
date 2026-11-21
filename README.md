@@ -16,5 +16,5 @@ Rebuild the preview image after changing the copy:
 
 ```sh
 chromium --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=og-raw.png _og/card.html
-magick og-raw.png -colorspace Gray -colors 16 -depth 4 -strip PNG8:og.png
+magick og-raw.png -colorspace Gray -colors 24 -strip PNG8:og.png
 ```
