@@ -1,124 +1,259 @@
 ---
 name: Aryan Haghighi
-description: One-screen holding page set like a film title card.
+description: The room in the photo, at night. A dark personal page lit only by the photo's own lights.
 colors:
-  paper: "#fafaf9"
-  ink: "#141414"
-  graphite: "#64645f"
-  signal-orange: "#e64600"
-  night: "#0f0f0f"
-  bone: "#ececea"
-  ash: "#9c9c98"
-  signal-orange-night: "#ff4f00"
+  base: "#0b0807"
+  surface: "#211413"
+  wood: "#432d26"
+  cream: "#f6e9ce"
+  muted: "#a38f7d"
+  amber: "#f7bc7c"
+  violet: "#d273ad"
+  blue: "#3021d7"
 typography:
   display:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, 1.25rem + 7vw, 5rem)"
-    fontWeight: 600
-    lineHeight: 1.04
-    letterSpacing: "-0.03em"
+    fontFamily: "Gloock, Iowan Old Style, Georgia, serif"
+    fontSize: "clamp(3.5rem, 15vw, 6rem)"
+    fontWeight: 400
+    lineHeight: 0.95
+    letterSpacing: "-0.01em"
+  page-title:
+    fontFamily: "Gloock, Iowan Old Style, Georgia, serif"
+    fontSize: "clamp(2.5rem, 1.75rem + 3.5vw, 4.5rem)"
+    fontWeight: 400
+    lineHeight: 1.05
+  headline:
+    fontFamily: "Gloock, Iowan Old Style, Georgia, serif"
+    fontSize: "clamp(2rem, 1.5rem + 2vw, 3rem)"
+    fontWeight: 400
+    lineHeight: 1.05
+  title:
+    fontFamily: "Gloock, Iowan Old Style, Georgia, serif"
+    fontSize: "clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem)"
+    fontWeight: 400
+    lineHeight: 1.15
   lead:
     fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(1.25rem, 1rem + 0.55vw, 1.5rem)"
+    fontSize: "clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem)"
     fontWeight: 400
-    lineHeight: 1.35
+    lineHeight: 1.4
+  role:
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(1.125rem, 1rem + 0.5vw, 1.375rem)"
+    fontWeight: 600
+    letterSpacing: "0.005em"
+  figure:
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.625rem"
+    fontWeight: 600
+    fontFeature: "tnum, lnum"
+  prose:
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
+    lineHeight: 1.65
   body:
     fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1rem"
+    fontSize: "1.0625rem"
     fontWeight: 400
-    lineHeight: 1.5
-  card-display:
-    fontFamily: "Hanken Grotesk, sans-serif"
-    fontSize: "96px"
-    fontWeight: 600
-    lineHeight: 1.04
-    letterSpacing: "-0.03em"
-  card-lead:
-    fontFamily: "Hanken Grotesk, sans-serif"
-    fontSize: "36px"
+    lineHeight: 1.55
+  label:
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.9375rem"
     fontWeight: 400
-    lineHeight: 1.3
 rounded:
-  focus: "2px"
+  none: "0px"
+  hairline: "2px"
+  mark: "7px"
 spacing:
-  gutter: "clamp(1rem, 5vw - 0.5rem, 6rem)"
-  tight: "0.75rem"
-  link-gap: "1.75rem"
-  section: "clamp(1.75rem, 1rem + 2vw, 3rem)"
-  links-top: "clamp(2rem, 1.25rem + 2vw, 3rem)"
+  gutter: "clamp(1rem, 7vw - 0.75rem, 6rem)"
+  section: "clamp(4.5rem, 3rem + 6vw, 9rem)"
+  frame: "82rem"
+  measure: "38rem"
+  tap: "2.75rem"
+  tight: "0.5rem"
+  step: "1.25rem"
+  links: "1.75rem"
+  group: "2.5rem"
 components:
+  link:
+    textColor: "{colors.cream}"
+  link-hover:
+    textColor: "{colors.amber}"
+  nav-link:
+    textColor: "{colors.cream}"
+    typography: "{typography.label}"
+    height: "{spacing.tap}"
   contact-link:
-    textColor: "{colors.ink}"
+    textColor: "{colors.cream}"
     typography: "{typography.body}"
-    padding: "0.375rem 0"
-  contact-link-mobile:
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    padding: "0.625rem 0"
+    height: "{spacing.tap}"
+  study-panel:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.none}"
+    padding: "clamp(1.25rem, 1rem + 1.5vw, 2.25rem)"
+  skip-link:
+    backgroundColor: "{colors.amber}"
+    textColor: "{colors.base}"
+    rounded: "{rounded.none}"
+    padding: "0.625rem 1rem"
+  site-mark:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.mark}"
+    size: "28px"
 ---
 
 # Design System: Aryan Haghighi
 
 ## Overview
 
-North star: "The Title Card". The page sets a name, a role, one claim and three links the way a film title card sets its credits. Everything sits in one block on the left, a little above the vertical center, and the right side of the screen stays empty. Visitors stay 5 to 10 seconds, so the block reads top to bottom in one pass: who, what, how to reach.
+**Creative North Star: "The Night Window"**
 
-The system is type and space, plus one portrait. The portrait (128 px, square, 2 px corners, above the name) puts a real face on the page so a cold-message reader sees a person. There are no boxes, rules, shadows, other images or motion. One face in two weights does all the work, and space alone groups the content. Color is near-monochrome, with one orange accent that marks what you can click.
+The site is the room in the photo, at night. The page is a warm near-black, the colour of a table top after dark. Every colour on it was sampled from the owner's own phone photo: the table, the curtain, the bulb glass, the bulb base, the neon on his cheek, the blue chair. Light on the page comes only from where it comes from in the photo. The page never invents a new light source.
 
-Rejected on purpose, from the brief: gradients, glass, glow, particles, 3D, emoji, icon-only rows, stock or drone imagery, typing or scroll animation, and the centered startup hero.
+It is a quiet, sparse page for a 5 to 10 second scan. One photo, one name set large in a serif, a few lines of plain grotesk text, and links that look like links. Grouping is done by space and type size, not by boxes. The photo is always the brightest thing on screen; the blooms behind it are faint enough to feel like air, not decoration.
+
+It rejects the dark-navy developer portfolio, the centered gradient hero with a button, bento grids, glass cards, cursor glows, animated blobs and skill-logo clouds. The old paper-and-ink title card with signal orange is gone and is not a reference.
+
+**Key Characteristics:**
+- Dark only. `color-scheme: dark`, no light mode, no toggle.
+- One interactive accent: tungsten amber, on underlines, hover, focus and selection only.
+- Violet and blue exist only as light: soft, dithered, static blooms.
+- Gloock for the name and headings, Hanken Grotesk for everything else, tabular figures for every number.
+- Flat. No shadows, no borders as decoration, square corners.
+- One load fade, then stillness.
 
 ## Colors
 
-Ink on paper in light mode, bone on night in dark mode, with one aerospace safety orange.
+A warm umber dark lit by tungsten, with two cold lights kept strictly as glow.
 
 ### Primary
-- Signal orange (#e64600 light, #ff4f00 dark): International orange, the color of aircraft safety markings. Used only on link underlines and the keyboard focus ring. The favicon uses #ff4f00. The light value is darker so the focus ring keeps 3.8:1 against paper.
+- **Tungsten Amber** (`amber`): the bulb base. The only interactive colour. Link underlines (1px, 2px on low-density screens), link and icon hover, the focus ring, text selection and the skip link. It is never body text colour at rest and never a fill on a large area. Also the warm bloom from the top of the first screen and the reading-page glow, at 12 to 13% opacity.
+
+### Secondary
+- **Neon Violet** (`violet`): the neon on his cheek. Light only. A bloom left of his face on desktop, below the photo on phones, peak alpha 0.16.
+
+### Tertiary
+- **Chair Blue** (`blue`): the blue chair. Light only. A low bloom on the photo side, peak alpha 0.26. It fails text contrast on the base, which is one reason it is never ink.
 
 ### Neutral
-- Paper (#fafaf9) and Night (#0f0f0f): page background per theme. Also the theme-color.
-- Ink (#141414) and Bone (#ececea): name, claim and link labels. 17.6:1 and 16.2:1.
-- Graphite (#64645f) and Ash (#9c9c98): the role line, the drone line and the link icons. 5.7:1 and 7.0:1, so they pass AA as body text.
+- **Table Top** (`base`): page background, `theme-color`, the top bar's fade, text on amber fills.
+- **Table** (`surface`): the one flat container colour. Case study panels, code blocks, inline code, the mark's square.
+- **Curtain** (`wood`): hairlines only. Table row rules in long-form prose and the scrollbar thumb.
+- **Bulb Glass** (`cream`): all primary text, headings and links at rest.
+- **Ash Umber** (`muted`): secondary text. The drone line, dates, figcaptions, dt labels, back links, contact icons at rest. 6.4:1 on base, 5.8:1 on surface.
 
-The Two Uses Rule. Orange appears on underlines and the focus ring and nowhere else on the page. A third use dilutes the only signal that says "click here".
+### Named Rules
+**The Light, Never Ink Rule.** Violet and blue appear only inside radial blooms. Never as text, icon, border, button or fill. If you can point at it and name its edge, it is ink and it is wrong.
+
+**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms and the mark's bulb.
+
+**The Real Source Rule.** Every bloom is tied to a light in the photo: amber from above (the bulbs), violet beside the face (the neon), blue low on the photo side (the chair). At most three per screen. No bloom without a source.
 
 ## Typography
 
-Font: Hanken Grotesk, self-hosted, Latin subset, variable weight 400 to 600 (12.6 KB woff2, SIL OFL). It was picked over Public Sans, Schibsted Grotesk, Archivo, B612 and the system stack in a side-by-side render. It was the calmest at display size and renders the same on every OS.
+**Display Font:** Gloock (with Iowan Old Style, Georgia, serif)
+**Body Font:** Hanken Grotesk, variable 400 to 600 (with ui-sans-serif, system-ui, sans-serif)
+
+**Character:** A high-contrast serif with the warmth of a film poster carries the name and headings; a plain, even grotesk carries every working line. Two files, self-hosted and preloaded, no third.
 
 ### Hierarchy
-- Display (600, clamp 40 to 80px, line-height 1.04, -0.03em): the name in ink and the role in graphite, the same size, stacked as one two-tone heading. On phones the name fills most of the line (42px at 320, 46px at 375), so the title card holds on small screens; it reaches 80px from 857px wide. The size uses rem and vw only, never vh, so it still grows when the visitor zooms.
-- Lead (400, clamp 20 to 24px, line-height 1.35, max 36rem, `text-wrap: balance`): the claim. No-break spaces keep "into production" and "with evals" together, so when the claim wraps it breaks after "production,".
-- Body (400, 16px, line-height 1.5): the drone line (graphite) and the link labels (ink).
-- Card display and card lead (96px/600 and 36px/400): fixed sizes for the 1200x630 link preview only. A preview shows as a small thumbnail, so its type runs larger than the page's display step.
+- **Display** (Gloock 400, `display`, line-height 0.95): the name only, on two lines, one word per line. On desktop the size is fitted to the dark side and capped by screen height: `clamp(2.5rem, min((100vw - photo width) / 5.2, 13svh), 6rem)`. The largest element on the site.
+- **Page title** (Gloock 400, `page-title`): the h1 on case studies and the 404, max 16 to 18ch. Notes use a slightly smaller step, clamp(2.25rem, 1.6rem + 3vw, 4rem), max 20ch.
+- **Headline** (Gloock 400, `headline`): section heads on the home page and Contact. Plain nouns.
+- **Title** (Gloock 400, `title`): entry titles inside sections. In long-form prose, h2 steps down to clamp(1.625rem, 1.4rem + 0.8vw, 2rem) and h3 switches to Hanken 600 at 1.125rem.
+- **Lead** (Hanken 400, `lead`): the claim (max 28 to 30ch, line-height 1.35), the offer (34ch), article leads and review quotes.
+- **Role** (Hanken 600, `role`): "AI Engineer" under the name.
+- **Figure** (Hanken 600, `figure`, tabular lining figures): eval results. 2rem on a case study page.
+- **Body** (Hanken 400, `body`): default text, line-height 1.55, `text-wrap: pretty`.
+- **Prose** (Hanken 400, `prose`): long-form reading, max 38rem.
+- **Label** (Hanken 400, `label`): nav links, dates, dt labels, back links, the footer year. Usually muted.
 
-The Two Weights Rule. 400 and 600 only. Hierarchy comes from size and color, never from a third weight.
+### Named Rules
+**The Serif Is For Names Rule.** Gloock sets names and headings only (h1 to h3, weight 400, balanced wrap). Every sentence, link, label and number is Hanken Grotesk.
+
+**The Tabular Rule.** Every number (eval results, dates, years) uses tabular lining figures.
+
+**The No Labels Rule.** Section heads are plain nouns in Gloock. No small uppercase labels above headings, no letter-spaced captions.
 
 ## Layout
 
-- One block in a 72rem frame. The left margin is `max(gutter, min(10vw, (100% - 72rem) / 2))`, giving 16px at 320 and 375, 64px at 1280, 144px at 1440 and 256px at 2560.
-- The block is vertically centered in `100svh`, with more padding below than above, so it sits slightly high.
-- Rhythm: heading, section gap (28 to 48px), claim, 12px, drone line, 32 to 48px, links.
-- Links sit in a row with a 1.75rem gap. Below 30rem they stack, with 44px tap targets.
-- No scroll from 1280x720 up, or on portrait phones. At 320 the page has a 16px margin and no horizontal scroll. Landscape phones (812x375) scroll about 30px of bottom padding; all content stays on the first screen.
+One centered frame, max 82rem, with a fluid side gutter (1rem at 320px, 6rem at its widest). The top bar lines up with the same frame. Sections stack vertically with a large fluid gap (`section`, 4.5rem to 9rem); within a section, steps are 0.5rem, 1.25rem, 1.75rem and 2.5rem. Reading text holds to a 38rem measure.
+
+**First screen, desktop** (min-width 40rem and aspect ratio at least 5:4): the photo sits on the right at full viewport height, min(55vw, 82svh) wide, so 16:9 screens get about 46% and the portrait is never cropped to a square. Its left, top and bottom edges are masked into the base with stepped gradients. Text sits left on the dark side, vertically centered: name, role, claim, drone line, contact links. The first live section's heading peeks at the fold (1.5rem top padding).
+
+**First screen, phones**: the photo goes on top in a 4:5 crop with headroom, its bottom dissolving. The name starts on the dissolved edge, pulled up by clamp(3.5rem, 16vw, 6rem). The photo gives way so the links always fit; under about 720px tall it keeps 44% of the height so the name never crosses his face. Landscape phones (under 32rem tall) tighten the steps so everything through the links fits.
+
+**Reading pages and the 404**: same frame, one amber glow from the top right, content starting about 6 to 9rem down. The 404 is one line and a link home, no Contact block.
+
+**Lists**: work projects in an auto-fill grid (min 20rem columns, gaps 2.5rem by 3rem). Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
+
+Works from 320px with no sideways scroll. Every link has a 44px (2.75rem) tap height.
 
 ## Elevation & Depth
 
-Flat. There are no shadows or layers, and grouping comes from space alone.
+Flat. There are no box shadows anywhere. Depth comes from light: three large, faint radial blooms behind the first screen and one glow on reading pages, each grain-dithered inside its own gradient (an SVG noise tinted to the bloom's colour, only its alpha moves) so dark gradients do not band. There is no full-page grain. The top bar has no visible edge; a soft fade of the base (86% to 0% over 6.5rem) keeps its links readable over the photo's ceiling bulbs. The only raised surface is the flat `surface` panel.
+
+### Named Rules
+**The Photo Is Brightest Rule.** Blooms stay at or below 0.13 alpha for amber, 0.16 for violet, 0.26 for blue. If a bloom competes with the bulbs in the photo, it is too strong.
+
+**The No Shadow Rule.** No box-shadow, text-shadow or drop shadow. Separation is space, then tone.
 
 ## Shapes
 
-No containers. The only radius is 2px on the focus ring.
+Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, and the mark's rounded square (7 on a 32 grid). Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
 
 ## Components
 
-- Contact link: a 1em icon (Bootstrap Icons 1.11.3: envelope-fill, linkedin, github) in graphite, then the label in ink with a signal-orange underline (0.09em thick, 2px on 1x screens so it does not render as a grey hairline, 0.3em offset). On hover the underline thickens to 0.18em and the icon turns ink. On focus there is a 2px signal-orange outline, 3px offset. The email shows the address itself, because a mailto link does nothing on desktops with no mail app.
-- Favicon: a solid signal-orange disc (#ff4f00) on a transparent background, like the orange marker balls on power lines. No letters and no fine detail, so it reads at 16px, where it fills 14 of the 16 pixels, centered. The page carries it inline as SVG. `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180px, disc on night) are file copies for Google Search, Safari before 26 and iOS home screens, built by `_icons/build.py`.
-- Link preview (og.png, 1200x630): the night theme, with name, role and claim left-aligned. It is rendered from `_og/card.html`.
+### Links
+Quiet and unmistakable.
+- **Default:** cream text with a 1px amber underline (2px on screens at 1.5x density or less), offset 0.28em.
+- **Hover:** text turns amber over 120ms ease-out.
+- **Focus:** 2px amber outline, 4px offset, 2px radius. Same everywhere.
+- **Title links** (entry headings): no underline at rest; the amber underline appears on hover and focus.
+
+### Navigation
+- **Top bar:** absolute over the first screen, no background edge, just the base fade. The site mark on the left in a 44px hit area; section links on the right in `label` size, no underline at rest, amber underline on hover.
+- **Live sections only:** it links only to sections that render in production, plus Contact.
+- **Phones:** the first two sections and Contact; the rest appear from 48rem up.
+
+### Contact links
+The email address written out in full, then LinkedIn and GitHub, each with a 1em Bootstrap Icons SVG in muted that turns amber on hover. The underline sits on the text only. In a narrow container the email takes its own row; from 28.5rem of container width all three sit on one row. Used in the hero and in the Contact footer.
+
+### Case study panel
+The one container: a flat `surface` block, no border, no radius, no shadow, fluid padding. Inside: Gloock title link, one-line summary, the eval result (large Hanken 600 figure, then metric and case count) and a muted client and year line.
+
+### Skip link
+Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.
+
+### Site mark
+A dark `surface` rounded square with one tungsten point offset to the upper right: an amber disc with a cream core, like the bulb in the photo. Same drawing as the favicon. No letters. Decorative; the link around it carries the full name.
+
+### Draft tag (dev only)
+A small muted label with a dashed muted border, shown only in `npm run dev` next to draft entries. It never ships and is not a pattern for production UI.
 
 ## Do's and Don'ts
 
-- Do keep the full name "Aryan Haghighi" everywhere.
-- Do keep new copy out unless the owner writes it.
-- Don't use "Aryan" alone as a short name, and don't use the initials "AH" in any mark, monogram or favicon.
-- Don't add a third weight, a second typeface, a second accent or any motion.
-- Don't center the block or add boxes, rules or cards around it.
+### Do:
+- **Do** use cream for text and amber only for underlines, hover, focus, selection and the skip link.
+- **Do** keep violet and blue inside radial blooms, dithered with their tinted grain, at their recorded alphas.
+- **Do** set every name and heading in Gloock 400 and everything else in Hanken Grotesk.
+- **Do** use tabular lining figures for every number.
+- **Do** group by space: the `section` step between sections, 0.5rem to 2.5rem inside them.
+- **Do** mask every edge of the photo into the base.
+- **Do** keep a 44px tap height on every link and the same amber focus ring everywhere.
+- **Do** use the flat `surface` panel when content truly needs a container, with no border or shadow.
+- **Do** keep motion to one opacity fade on load (700ms photo, 600ms text after 80ms, cubic-bezier(0.16, 1, 0.3, 1)) and 120ms hover transitions, all off under reduced motion.
+- **Do** write the name in full, "Aryan Haghighi", in every mark, title and alt text.
+
+### Don't:
+- **Don't** use violet, blue or any other cool light from the photo (the street through the window included) as text, icons, borders, buttons or fills.
+- **Don't** add a light mode or theme toggle.
+- **Don't** add a light source that is not in the photo, or more than three blooms on one screen.
+- **Don't** use box shadows, glass, blur panels, glowing borders, bento grids, pills or chips.
+- **Don't** add small uppercase labels or eyebrows above headings.
+- **Don't** put text on the bright part of the photo; text may overlap only its dissolved dark edge.
+- **Don't** use initials "AH" or any letter in the mark or favicon.
+- **Don't** add a third font file.
+- **Don't** add cursor-follow effects, animated gradients, scroll animations or counters.
+- **Don't** mirror, AI-edit, upscale or smooth the photo.
