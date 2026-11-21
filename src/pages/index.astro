@@ -340,7 +340,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
 
     /* The name fills the dark side, never the photo. */
     h1 {
-      font-size: clamp(3rem, (100vw - var(--pw)) / 5.2, 6rem);
+      font-size: clamp(2.5rem, min((100vw - var(--pw)) / 5.2, 13svh), 6rem);
     }
 
     .intro > * {
@@ -516,4 +516,28 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     max-width: var(--measure);
     font-size: 1.125rem;
   }
+  /* Landscape phones: everything up to the links fits in 390px. */
+  @media (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
+    .hero {
+      min-height: 100svh;
+      padding-block: 3.25rem 0.5rem;
+    }
+
+    .photo {
+      min-height: 0;
+    }
+
+    .role {
+      margin-block-start: 0.75rem;
+    }
+
+    .drone {
+      margin-block-start: 0.5rem;
+    }
+
+    .intro :global(.hero-links) {
+      margin-block-start: 0.75rem;
+    }
+  }
+
 </style>
