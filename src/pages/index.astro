@@ -1,0 +1,540 @@
+---
+import { render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import ContactLinks from "../components/ContactLinks.astro";
+import { site } from "../data/site";
+import * as content from "../lib/content";
+
+const [studies, projects, reviews, notes, about] = await Promise.all([
+  content.caseStudies(),
+  content.projects(),
+  content.reviews(),
+  content.notes(),
+  content.about(),
+]);
+const { enough, minimum } = content;
+const AboutBody = about ? (await render(about)).Content : null;
+
+// Sections in page order. Only live ones render and get a link in the top bar.
+const live = {
+  work: enough(projects.length, minimum.projects),
+  "case-studies": enough(studies.length, minimum.caseStudies),
+  how: true,
+  reviews: enough(reviews.length, minimum.reviews),
+  notes: enough(notes.length, minimum.notes),
+  about: Boolean(about),
+};
+const labels: Record<keyof typeof live, string> = {
+  work: "Work",
+  "case-studies": "Case studies",
+  how: "How I work",
+  reviews: "Reviews",
+  notes: "Notes",
+  about: "About",
+};
+const order = Object.keys(live) as (keyof typeof live)[];
+const shown = order.filter((id) => live[id]);
+const first = shown[0];
+const sections = [...shown.map((id) => ({ id, label: labels[id] })), { id: "contact", label: "Contact" }];
+
+// Must match the layout switch in the styles below.
+const DESK = "(min-width: 56rem) and (min-aspect-ratio: 5/4)";
+const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/desk-${w}.${ext} ${w}w`).join(", ");
+const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/phone-${w}.${ext} ${w}w`).join(", ");
+const date = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person>
+  <section class="hero" aria-labelledby="name">
+    <div class="light" aria-hidden="true">
+      <span class="bloom amber"></span>
+      <span class="bloom violet"></span>
+      <span class="bloom blue"></span>
+    </div>
+
+    <picture class="photo">
+      <source media={DESK} type="image/avif" srcset={desk("avif")} sizes="55vw" width="1600" height="2160" />
+      <source media={DESK} type="image/webp" srcset={desk("webp")} sizes="55vw" width="1600" height="2160" />
+      <source media={DESK} type="image/jpeg" srcset={desk("jpg")} sizes="55vw" width="1600" height="2160" />
+      <source type="image/avif" srcset={phone("avif")} sizes="100vw" />
+      <source type="image/webp" srcset={phone("webp")} sizes="100vw" />
+      <img
+        src="/photo/phone-720.jpg"
+        srcset={phone("jpg")}
+        sizes="100vw"
+        width="960"
+        height="1200"
+        alt={site.photo.alt}
+        fetchpriority="high"
+      />
+    </picture>
+
+    <div class="intro frame">
+      <h1 id="name"><span>Aryan</span> <span>Haghighi</span></h1>
+      <p class="role">{site.title}</p>
+      <p class="claim">{site.claim}</p>
+      <p class="drone">{site.drone}</p>
+      <ContactLinks label="Contact" class="hero-links" />
+    </div>
+  </section>
+
+  {
+    live.work && (
+      <section id="work" class:list={["section frame", { peek: first === "work" }]} aria-labelledby="work-title">
+        <h2 id="work-title">Work</h2>
+        <ul role="list" class="projects">
+          {projects.map((p) => (
+            <li>
+              <h3>
+                <a href={p.data.repo}>{p.data.name}</a>
+                {p.data.draft && <span class="draft-tag">Draft</span>}
+              </h3>
+              <p>{p.data.line}</p>
+              <p class="quiet">{p.data.why}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    live["case-studies"] && (
+      <section
+        id="case-studies"
+        class:list={["section frame", { peek: first === "case-studies" }]}
+        aria-labelledby="case-studies-title"
+      >
+        <h2 id="case-studies-title">Case studies</h2>
+        <ul role="list" class="studies">
+          {studies.map((s) => (
+            <li class="study">
+              <h3>
+                <a href={`/work/${s.id}`}>{s.data.title}</a>
+                {s.data.draft && <span class="draft-tag">Draft</span>}
+              </h3>
+              <p>{s.data.summary}</p>
+              <p class="eval">
+                <span class="num value">{s.data.evals.value}</span>
+                <span>
+                  {s.data.evals.metric}, on <span class="num">{s.data.evals.cases}</span> eval cases
+                </span>
+              </p>
+              <p class="quiet">
+                {s.data.clientType}, <span class="num">{s.data.year}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section id="how" class:list={["section frame", { peek: first === "how" }]} aria-labelledby="how-title">
+    <h2 id="how-title">How I work</h2>
+    <p class="offer">{site.offer}</p>
+  </section>
+
+  {
+    live.reviews && (
+      <section id="reviews" class="section frame" aria-labelledby="reviews-title">
+        <h2 id="reviews-title">Reviews</h2>
+        <ul role="list" class="reviews">
+          {reviews.map((r) => (
+            <li>
+              <figure>
+                <blockquote>
+                  <p>{r.data.quote}</p>
+                </blockquote>
+                <figcaption>
+                  <a href={r.data.link}>{r.data.name}</a>, {r.data.role}, {r.data.company}
+                  {r.data.draft && <span class="draft-tag">Draft</span>}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    live.notes && (
+      <section id="notes" class="section frame" aria-labelledby="notes-title">
+        <h2 id="notes-title">Notes</h2>
+        <ul role="list" class="notes">
+          {notes.map((n) => (
+            <li>
+              <time datetime={date(n.data.date)}>{date(n.data.date)}</time>
+              <div>
+                <h3>
+                  <a href={`/notes/${n.id}`}>{n.data.title}</a>
+                  {n.data.draft && <span class="draft-tag">Draft</span>}
+                </h3>
+                <p class="quiet">{n.data.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    about && AboutBody && (
+      <section id="about" class="section frame" aria-labelledby="about-title">
+        <h2 id="about-title">
+          About
+          {about.data.draft && <span class="draft-tag">Draft</span>}
+        </h2>
+        <div class="about">
+          <AboutBody />
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  /* ---------- First screen, phones first ---------- */
+
+  .hero {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .photo {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: 64svh;
+    overflow: hidden;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    /* No hard box: the bottom melts into the page, the top softens. */
+    mask-image: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.7) 0%,
+      #000 12%,
+      #000 52%,
+      rgb(0 0 0 / 0.75) 66%,
+      rgb(0 0 0 / 0.35) 80%,
+      rgb(0 0 0 / 0.1) 90%,
+      transparent 100%
+    );
+    animation: fade 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .intro {
+    position: relative;
+    z-index: 2;
+    margin-block-start: calc(-1 * clamp(3.5rem, 16vw, 6rem));
+    animation: fade 600ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+  }
+
+  h1 {
+    font-size: clamp(3.5rem, 15vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+
+  h1 span {
+    display: block;
+  }
+
+  .role {
+    margin-block-start: 1.25rem;
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+
+  .claim {
+    margin-block-start: 0.5rem;
+    max-width: 28ch;
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .drone {
+    margin-block-start: 0.875rem;
+    color: var(--muted);
+  }
+
+  .intro :global(.hero-links) {
+    margin-block-start: 1.75rem;
+  }
+
+  /* ---------- Light: three blooms, each from a real source ---------- */
+
+  .light {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bloom {
+    position: absolute;
+    border-radius: 50%;
+    /* grain inside the gradient only, masked to the same falloff */
+    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+  }
+
+  .amber {
+    display: none;
+  }
+
+  .violet {
+    left: -30%;
+    top: 34%;
+    width: 110%;
+    height: 50%;
+    background:
+      var(--grain),
+      radial-gradient(closest-side, rgb(210 115 173 / 0.16), rgb(210 115 173 / 0.05) 55%, transparent);
+  }
+
+  .blue {
+    right: -35%;
+    top: 40%;
+    width: 90%;
+    height: 40%;
+    background:
+      var(--grain),
+      radial-gradient(closest-side, rgb(48 33 215 / 0.26), rgb(48 33 215 / 0.08) 55%, transparent);
+  }
+
+  /* ---------- Desktop: photo right, text left ---------- */
+
+  @media (min-width: 56rem) and (min-aspect-ratio: 5/4) {
+    .hero {
+      --pw: min(55vw, 82svh);
+      display: grid;
+      align-items: center;
+      min-height: max(34rem, calc(100svh - 7rem));
+      padding-block: 5rem 2rem;
+    }
+
+    .photo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: var(--pw);
+      height: 100svh;
+      min-height: 36rem;
+      max-height: none;
+      aspect-ratio: auto;
+    }
+
+    .photo img {
+      object-position: 50% 88%;
+      /* Left edge melts toward the text, bottom into the next section,
+         top softens under the bar. */
+      mask-image:
+        linear-gradient(
+          to right,
+          transparent 0%,
+          rgb(0 0 0 / 0.08) 8%,
+          rgb(0 0 0 / 0.25) 16%,
+          rgb(0 0 0 / 0.5) 24%,
+          rgb(0 0 0 / 0.78) 32%,
+          #000 42%
+        ),
+        linear-gradient(
+          to bottom,
+          rgb(0 0 0 / 0.55) 0%,
+          #000 14%,
+          #000 72%,
+          rgb(0 0 0 / 0.6) 84%,
+          rgb(0 0 0 / 0.2) 93%,
+          transparent 100%
+        );
+      mask-composite: intersect;
+    }
+
+    .intro {
+      margin-block-start: 0;
+    }
+
+    .intro > * {
+      max-width: min(40rem, calc(100vw - var(--pw) - var(--gutter)));
+    }
+
+    .claim {
+      max-width: min(30ch, calc(100vw - var(--pw) - var(--gutter)));
+    }
+
+    .amber {
+      display: block;
+      right: calc(var(--pw) * 0.05);
+      top: -38svh;
+      width: calc(var(--pw) * 1.5);
+      height: 80svh;
+      background:
+        var(--grain),
+        radial-gradient(closest-side, rgb(247 188 124 / 0.13), rgb(247 188 124 / 0.04) 55%, transparent);
+    }
+
+    .violet {
+      left: auto;
+      right: calc(var(--pw) * 0.3);
+      top: 8svh;
+      width: calc(var(--pw) * 1.25);
+      height: 72svh;
+    }
+
+    .blue {
+      right: calc(var(--pw) * -0.3);
+      top: 62svh;
+      width: calc(var(--pw) * 0.9);
+      height: 56svh;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Sections ---------- */
+
+  .section {
+    position: relative;
+    z-index: 2;
+    padding-block-start: var(--step-section);
+  }
+
+  .section.peek {
+    padding-block-start: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+
+  @media (min-width: 56rem) and (min-aspect-ratio: 5/4) {
+    .section.peek {
+      padding-block-start: 1.5rem;
+    }
+  }
+
+  .section h2 {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    margin-block-end: 1.25rem;
+  }
+
+  .offer {
+    max-width: 34ch;
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    line-height: 1.4;
+  }
+
+  .quiet {
+    color: var(--muted);
+  }
+
+  h3 {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    line-height: 1.15;
+  }
+
+  h3 a {
+    text-decoration-color: transparent;
+  }
+
+  h3 a:hover,
+  h3 a:focus-visible {
+    text-decoration-color: var(--amber);
+  }
+
+  .projects {
+    display: grid;
+    gap: 2.5rem 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    max-width: 72rem;
+  }
+
+  .projects p,
+  .study p {
+    margin-block-start: 0.5rem;
+    max-width: var(--measure);
+  }
+
+  .studies {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 56rem;
+  }
+
+  .study {
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+    background: var(--surface);
+  }
+
+  .eval {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+  }
+
+  .study .eval {
+    margin-block-start: 1.25rem;
+  }
+
+  .value {
+    font-family: var(--text);
+    font-size: 1.625rem;
+    font-weight: 600;
+    color: var(--cream);
+  }
+
+  .reviews {
+    display: grid;
+    gap: 3rem;
+    max-width: 48rem;
+  }
+
+  blockquote p {
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    line-height: 1.4;
+  }
+
+  figcaption {
+    margin-block-start: 1rem;
+    color: var(--muted);
+  }
+
+  .notes {
+    display: grid;
+    gap: 2rem;
+    max-width: 52rem;
+  }
+
+  .notes li {
+    display: grid;
+    gap: 0.25rem 2rem;
+  }
+
+  .notes time {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    padding-block-start: 0.3rem;
+  }
+
+  @media (min-width: 40rem) {
+    .notes li {
+      grid-template-columns: 7rem 1fr;
+    }
+  }
+
+  .about {
+    max-width: var(--measure);
+    font-size: 1.125rem;
+  }
+</style>
