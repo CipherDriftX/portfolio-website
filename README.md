@@ -1,6 +1,6 @@
 # portfolio-website
 
-Source for [aryanhaghighi.com](https://www.aryanhaghighi.com). Astro 7, built to static HTML with no JavaScript, hosted on Vercel. Every push to `main` deploys the live site. Other branches get a preview URL.
+Source for [aryanhaghighi.com](https://www.aryanhaghighi.com). Astro 7, built to static HTML, hosted on Vercel. The only JavaScript is Vercel Web Analytics (about 3 KB, cookieless). Every push to `main` deploys the live site. Other branches get a preview URL.
 
 ## Run it
 
