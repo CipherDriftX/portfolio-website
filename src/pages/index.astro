@@ -253,6 +253,9 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    /* Blooms may spill down into the next section, never sideways: a page
+       wider than the screen pans sideways on iOS even with body clipped. */
+    overflow-x: clip;
   }
 
   .bloom {
