@@ -3,39 +3,10 @@ import { render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import ContactLinks from "../components/ContactLinks.astro";
 import { site } from "../data/site";
-import * as content from "../lib/content";
+import { siteContent } from "../lib/content";
 
-const [studies, projects, reviews, notes, about] = await Promise.all([
-  content.caseStudies(),
-  content.projects(),
-  content.reviews(),
-  content.notes(),
-  content.about(),
-]);
-const { enough, minimum } = content;
+const { live, first, sections, studies, projects, reviews, notes, about } = await siteContent();
 const AboutBody = about ? (await render(about)).Content : null;
-
-// Sections in page order. Only live ones render and get a link in the top bar.
-const live = {
-  work: enough(projects.length, minimum.projects),
-  "case-studies": enough(studies.length, minimum.caseStudies),
-  how: true,
-  reviews: enough(reviews.length, minimum.reviews),
-  notes: enough(notes.length, minimum.notes),
-  about: Boolean(about),
-};
-const labels: Record<keyof typeof live, string> = {
-  work: "Work",
-  "case-studies": "Case studies",
-  how: "How I work",
-  reviews: "Reviews",
-  notes: "Notes",
-  about: "About",
-};
-const order = Object.keys(live) as (keyof typeof live)[];
-const shown = order.filter((id) => live[id]);
-const first = shown[0];
-const sections = [...shown.map((id) => ({ id, label: labels[id] })), { id: "contact", label: "Contact" }];
 
 // Must match the layout switch in the styles below.
 const DESK = "(min-width: 56rem) and (min-aspect-ratio: 5/4)";

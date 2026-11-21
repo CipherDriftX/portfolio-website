@@ -33,3 +33,45 @@ export async function about() {
 // In dev it renders with drafts so the owner can see where they will go.
 export const minimum = { projects: 1, caseStudies: 1, reviews: 1, notes: 2 } as const;
 export const enough = (count: number, min: number) => (showDrafts ? count > 0 : count >= min);
+
+// Everything the pages need to know about which sections are live.
+// Order here is page order.
+const labels = {
+  work: "Work",
+  "case-studies": "Case studies",
+  how: "How I work",
+  reviews: "Reviews",
+  notes: "Notes",
+  about: "About",
+} as const;
+export type SectionId = keyof typeof labels;
+
+export async function siteContent() {
+  const [studies, projectList, reviewList, noteList, aboutEntry] = await Promise.all([
+    caseStudies(),
+    projects(),
+    reviews(),
+    notes(),
+    about(),
+  ]);
+  const live: Record<SectionId, boolean> = {
+    work: enough(projectList.length, minimum.projects),
+    "case-studies": enough(studies.length, minimum.caseStudies),
+    how: true,
+    reviews: enough(reviewList.length, minimum.reviews),
+    notes: enough(noteList.length, minimum.notes),
+    about: Boolean(aboutEntry),
+  };
+  const shown = (Object.keys(labels) as SectionId[]).filter((id) => live[id]);
+  const sections = [...shown.map((id) => ({ id, label: labels[id] })), { id: "contact", label: "Contact" }];
+  return {
+    live,
+    first: shown[0],
+    sections,
+    studies,
+    projects: projectList,
+    reviews: reviewList,
+    notes: noteList,
+    about: aboutEntry,
+  };
+}
