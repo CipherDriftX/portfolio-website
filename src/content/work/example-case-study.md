@@ -1,7 +1,7 @@
 ---
 # Copy this file to add a case study. The file name becomes the page URL:
 # src/content/work/support-agent.md -> /work/support-agent
-# Set draft: false when every [OWNER: ...] line is replaced.
+# Set draft: false once every OWNER line is replaced.
 title: "[OWNER: write the title, the agent's job in plain words]"
 summary: "[OWNER: write one line on what the agent does and for whom]"
 role: "[OWNER: write your role, e.g. sole engineer]"
