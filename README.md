@@ -1,6 +1,6 @@
 # portfolio-website
 
-Source for [aryanhaghighi.com](https://www.aryanhaghighi.com). Astro 7, built to static HTML with no JavaScript, hosted on Vercel. Every push to `main` deploys the live site. Other branches get a preview URL.
+Source for [aryanhaghighi.com](https://www.aryanhaghighi.com). Astro 7, built to static HTML, hosted on Vercel. The only JavaScript is Vercel Web Analytics (about 3 KB, cookieless). Every push to `main` deploys the live site. Other branches get a preview URL.
 
 ## Run it
 
@@ -82,7 +82,7 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 
 **Change the icon**
 
-1. Edit `_icons/<a|b|c>.svg`, its `-touch.svg` and its 16 px map in `_icons/build.py`. `SHIP` picks which one goes live.
+1. Edit `_icons/j.svg` (favicon tile) and `_icons/j-touch.svg` (phone icons), and `src/components/Mark.astro` (top bar) to match. `SHIP` in `_icons/build.py` picks the file name.
 2. Run `python3 _icons/build.py` and look at `_icons/sheet.png` at real size.
 3. Push.
 

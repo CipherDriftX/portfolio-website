@@ -23,13 +23,11 @@
   --base: #0b0807; /* table top, deepened */
   --surface: #211413; /* table */
   --wood: #432d26; /* curtain */
-  --umber: #50352c; /* shirt */
   --cream: #f6e9ce; /* bulb glass: text */
-  --muted: #a38f7d; /* cream and umber, 6.4:1 on base, 5.8:1 on surface */
+  --muted: #a38f7d; /* cream mixed with the shirt umber, 6.4:1 on base, 5.8:1 on surface */
   --amber: #f7bc7c; /* bulb base: the one interactive accent */
   --violet: #d273ad; /* neon on his cheek: light only */
   --blue: #3021d7; /* the chair: light only */
-  --street: #3f537c; /* street through the window: light only */
 
   --display: "Gloock", "Iowan Old Style", Georgia, serif;
   --text: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
