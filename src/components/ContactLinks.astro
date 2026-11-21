@@ -35,10 +35,28 @@ const { label, class: className } = Astro.props;
 </nav>
 
 <style>
+  /* Narrow: the email on its own row, LinkedIn and GitHub together below.
+     Wide enough for all three (about 28rem): one row. */
+  .contact-links {
+    container-type: inline-size;
+  }
+
   .contact-links ul {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: start;
     gap: 0.25rem 1.75rem;
+  }
+
+  .contact-links li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  @container (min-width: 28.5rem) {
+    .contact-links ul {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 
   .contact-links a {
