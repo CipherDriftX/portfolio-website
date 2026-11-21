@@ -13,7 +13,7 @@ colors:
 typography:
   display:
     fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, 1rem + 5vw, 5rem)"
+    fontSize: "clamp(2.5rem, 1.25rem + 7vw, 5rem)"
     fontWeight: 600
     lineHeight: 1.04
     letterSpacing: "-0.03em"
@@ -86,7 +86,7 @@ The Two Uses Rule. Orange appears on underlines and the focus ring and nowhere e
 Font: Hanken Grotesk, self-hosted, Latin subset, variable weight 400 to 600 (12.6 KB woff2, SIL OFL). It was picked over Public Sans, Schibsted Grotesk, Archivo, B612 and the system stack in a side-by-side render. It was the calmest at display size and renders the same on every OS.
 
 ### Hierarchy
-- Display (600, clamp 36 to 80px, line-height 1.04, -0.03em): the name in ink and the role in graphite, the same size, stacked as one two-tone heading.
+- Display (600, clamp 40 to 80px, line-height 1.04, -0.03em): the name in ink and the role in graphite, the same size, stacked as one two-tone heading. On phones the name fills most of the line (42px at 320, 46px at 375), so the title card holds on small screens; it reaches 80px from 857px wide. The size uses rem and vw only, never vh, so it still grows when the visitor zooms.
 - Lead (400, clamp 20 to 24px, line-height 1.35, max 36rem, `text-wrap: balance`): the claim. No-break spaces keep "into production" and "and prove" together, so the claim always breaks before "and prove they work".
 - Body (400, 16px, line-height 1.5): the drone line (graphite) and the link labels (ink).
 - Card display and card lead (96px/600 and 36px/400): fixed sizes for the 1200x630 link preview only. A preview shows as a small thumbnail, so its type runs larger than the page's display step.
@@ -99,7 +99,7 @@ The Two Weights Rule. 400 and 600 only. Hierarchy comes from size and color, nev
 - The block is vertically centered in `100svh`, with more padding below than above, so it sits slightly high.
 - Rhythm: heading, section gap (28 to 48px), claim, 12px, drone line, 32 to 48px, links.
 - Links sit in a row with a 1.75rem gap. Below 30rem they stack, with 44px tap targets.
-- No scroll from 1280x720 up. At 320 the page has a 16px margin and no horizontal scroll.
+- No scroll from 1280x720 up, or on portrait phones. At 320 the page has a 16px margin and no horizontal scroll. Landscape phones (812x375) scroll about 30px of bottom padding; all content stays on the first screen.
 
 ## Elevation & Depth
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-21T12:27:41+00:00",
+  "generatedAt": "2026-11-21T12:37:24+00:00",
   "title": "Design System: Aryan Haghighi",
   "extensions": {
     "colorMeta": {
@@ -172,7 +172,7 @@
       "refersTo": "display",
       "description": "Name in ink over role in graphite at the same display size.",
       "html": "<hgroup class=\"ds-title\"><h1>Aryan Haghighi</h1><p>AI Engineer</p></hgroup>",
-      "css": ".ds-title h1,.ds-title p{margin:0;font:600 clamp(2.25rem,1rem + 5vw,5rem)/1.04 'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;color:var(--ink,#141414)}.ds-title p{color:var(--muted,#64645f)}"
+      "css": ".ds-title h1,.ds-title p{margin:0;font:600 clamp(2.5rem,1.25rem + 7vw,5rem)/1.04 'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;color:var(--ink,#141414)}.ds-title p{color:var(--muted,#64645f)}"
     }
   ],
   "narrative": {
