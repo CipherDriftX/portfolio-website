@@ -6,32 +6,39 @@
 <!-- Source for public/og.jpg. Build: python3 _og/build.py -->
 <style>
 @font-face { font-family: "Hanken Grotesk"; src: url("../public/fonts/hanken-grotesk-var.woff2") format("woff2"); font-weight: 400 600; }
-@font-face { font-family: "Archivo Expanded"; src: url("../public/fonts/archivo-expanded-latin.woff2") format("woff2"); font-weight: 500 700; font-stretch: 125%; }
+@font-face { font-family: "Gloock"; src: url("../public/fonts/gloock-400-latin.woff2") format("woff2"); }
 html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
 body {
   position: relative;
-  background: #08090b;
-  color: #ece7dc;
+  background: #0b0807;
+  color: #f6e9ce;
   font-family: "Hanken Grotesk", sans-serif;
 }
-/* The print, cut out of the dark by the spot's edge (the jet's leading edge). */
-.print {
-  position: absolute; left: 600px; right: 0; top: 0; bottom: 0;
-  clip-path: url(#beam);
+.bloom { position: absolute; border-radius: 50%; }
+.amber { right: 60px; top: -300px; width: 760px; height: 560px;
+  background: radial-gradient(closest-side, rgb(247 188 124 / .13), rgb(247 188 124 / .04) 55%, transparent); }
+.violet { right: 230px; top: 40px; width: 640px; height: 520px;
+  background: radial-gradient(closest-side, rgb(210 115 173 / .16), rgb(210 115 173 / .05) 55%, transparent); }
+.blue { right: -160px; bottom: -220px; width: 520px; height: 460px;
+  background: radial-gradient(closest-side, rgb(48 33 215 / .26), rgb(48 33 215 / .08) 55%, transparent); }
+img {
+  position: absolute; right: 0; top: 0; width: 640px; height: 630px;
+  object-fit: cover; object-position: 50% 42%;
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgb(0 0 0 / .1) 8%, rgb(0 0 0 / .3) 16%, rgb(0 0 0 / .6) 25%, rgb(0 0 0 / .85) 33%, #000 42%),
+    linear-gradient(to bottom, rgb(0 0 0 / .6) 0%, #000 12%, #000 82%, rgb(0 0 0 / .5) 94%, rgb(0 0 0 / .2) 100%);
+  mask-composite: intersect;
 }
-.print img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
-.jet { position: absolute; left: 72px; top: 56px; height: 132px; }
-.text { position: absolute; left: 72px; bottom: 64px; width: 560px; }
-h1 { margin: 0; font-family: "Archivo Expanded", sans-serif; font-stretch: 125%; font-weight: 600; font-size: 64px; line-height: .94; text-transform: uppercase; }
+.text { position: absolute; left: 72px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; width: 600px; }
+h1 { margin: 0; font-family: "Gloock", serif; font-weight: 400; font-size: 104px; line-height: .95; letter-spacing: -.01em; }
 h1 span { display: block; }
-.role { margin: 22px 0 0; font-size: 26px; font-weight: 600; }
-.claim { margin: 6px 0 0; font-size: 26px; line-height: 1.32; max-width: 19em; text-wrap: balance; }
+.role { margin: 28px 0 0; font-size: 30px; font-weight: 600; }
+.claim { margin: 10px 0 0; font-size: 30px; line-height: 1.32; max-width: 15.5em; text-wrap: balance; }
 </style>
 </head>
 <body>
-  <svg width="0" height="0" style="position:absolute"><clipPath id="beam" clipPathUnits="objectBoundingBox"><path d="M0.357 0H1V1H0C0.24 0.595 0.321 0.317 0.357 0Z"/></clipPath></svg>
-  <div class="print"><img src="../public/photo/print-1280.jpg" alt=""></div>
-  <svg class="jet" viewBox="-2.7 0.3 20 31.7"><g transform="rotate(15 10 16)"><path fill="#24272d" d="M10 0C9 8 6.8 15 0.2 25.2L0.2 27.6L5.5 26.3L6.7 31.4L10 29.3Z"/><path fill="#ece7dc" d="M10 0C11 8 13.2 15 19.8 25.2L19.8 27.6L14.5 26.3L13.3 31.4L10 29.3Z"/></g></svg>
+  <span class="bloom amber"></span><span class="bloom violet"></span><span class="bloom blue"></span>
+  <img src="../public/photo/desk-1600.jpg" alt="">
   <div class="text">
     <h1><span>Aryan</span><span>Haghighi</span></h1>
     <p class="role">AI Engineer</p>

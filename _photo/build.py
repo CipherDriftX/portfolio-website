@@ -5,8 +5,8 @@ Run from the repo root:
 
 Needs magick (ImageMagick 7 with AVIF and WebP support).
 
-Writes public/photo/print-<width>.{avif,webp,jpg}: one black and white print,
-used on every screen size. The link preview (_og/build.py) uses print-1280.jpg.
+Writes public/photo/{desk,phone}-<width>.{avif,webp,jpg}. The link preview
+(_og/build.py) is cut from desk-1600.jpg.
 Every output is stripped of metadata (EXIF, GPS, XMP, ICC comments), then
 gets one origin note (Impeccable provenance): a JPEG comment, or a
 <file>.json sidecar for WebP and AVIF, which have no comment field.
@@ -30,20 +30,22 @@ OUT = ROOT / "public" / "photo"
 # (left, top, right, bottom) as fractions of the source width and height.
 # Checked on the 3024x4032 original: the glass starts at x 0.944, the
 # ashtray at y 0.908, the background person at x 0.903 (her blurred
-# edge at 0.893, so the box stops at 0.867, and its bottom at 0.810).
-PRINT = (0.200, 0.185, 0.86667, 0.810)  # head with headroom, shoulders, arms (4:5)
+# edge at 0.893, so the desk box stops at 0.882).
+DESK = (0.0, 0.0, 0.882, 0.893)    # window, street, bulbs, arms and watch
+PHONE = (0.200, 0.185, 0.86667, 0.810)  # head with headroom, shoulders, arms (4:5)
 
-WIDTHS = (480, 720, 960, 1280, 1600)
+DESK_WIDTHS = (640, 960, 1280, 1600)
+PHONE_WIDTHS = (480, 720, 960)
 
-# Black and white, levels only: Rec. 709 luma, black point 6%, white point
-# 96%, a little more contrast in the mids. The bar falls back into the dark
-# and the face holds the light. No smoothing, no face edits, no upscaling.
-GRADE = ["-grayscale", "Rec709Luma", "-level", "6%,96%,0.9"]
+# Light grade only: pull the black point down so the darkest table and
+# ceiling tones sit on the page base and the masked edge melts into it.
+# No smoothing, no face edits, no upscaling.
+GRADE = ["-channel", "RGB", "-level", "3%,100%,0.96", "+channel"]
 
 QUALITY = {"avif": "52", "webp": "72", "jpg": "78"}
 
 ORIGIN = ("Origin: sourced, not generated. The owner's own phone photo, cut to the {name} crop, "
-          "black and white levels-only grade and resize by _photo/build.py (ImageMagick). "
+          "levels-only grade and resize by _photo/build.py (ImageMagick). "
           "No AI edit, no upscaling, no smoothing, no face edits.")
 
 
@@ -97,8 +99,11 @@ def main():
     src = pathlib.Path(sys.argv[1]).expanduser()
     OUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
-        master = pathlib.Path(tmp) / "print.png"
-        export(master, "print", WIDTHS, cut(src, PRINT, master))
+        desk, phone = pathlib.Path(tmp) / "desk.png", pathlib.Path(tmp) / "phone.png"
+        desk_w = cut(src, DESK, desk)
+        phone_w = cut(src, PHONE, phone)
+        export(desk, "desk", DESK_WIDTHS, desk_w)
+        export(phone, "phone", PHONE_WIDTHS, phone_w)
     for f in sorted(OUT.glob("*-*.[aw]*")) + sorted(OUT.glob("*.jpg")):
         print(f"{f.relative_to(ROOT)}  {f.stat().st_size // 1024} KB")
 

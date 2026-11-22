@@ -10,7 +10,7 @@ web
 
 Astro 7.4.13 (pinned exact), static output. The only client JavaScript is Vercel Web Analytics (`@vercel/analytics/astro`, added at the owner's request 2026-11-21). Content collections (work, projects, reviews, notes, about) as one Markdown file per entry, core copy in `src/data/site.ts`. Drafts render in `npm run dev` only, and the production build fails if `[OWNER:` text reaches a live entry or the output. Hosted on Vercel; `main` deploys aryanhaghighi.com, other branches get preview URLs. `vercel.json` sets the framework, install, build and output. Photo, link preview and icons come from scripts kept in the repo (`_photo/`, `_og/`, `_icons/`).
 
-Budgets: home page at most 250 KB including the photo, JavaScript only for analytics (about 3.3 KB gzipped, loaded after the page), at most 3 font files (2 used: Archivo Expanded, Hanken Grotesk). PageSpeed Insights mobile 95 or more in all four categories, LCP at most 2.0 s, CLS 0. The owner's laptop is weak, so no heavy tooling.
+Budgets: home page at most 250 KB including the photo, JavaScript only for analytics (about 3.3 KB gzipped, loaded after the page), at most 3 font files (2 used: Gloock, Hanken Grotesk). PageSpeed Insights mobile 95 or more in all four categories, LCP at most 2.0 s, CLS 0. The owner's laptop is weak, so no heavy tooling.
 
 ## Users
 
@@ -53,4 +53,4 @@ LinkedIn and GitHub profiles only. No case studies, clients, reviews or metrics 
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA. Dark only (`color-scheme: dark`); text contrast checked over the photo at every layout. Semantic HTML, links look like links, visible heat-amber focus ring, skip link. Motion: on load the hall's lights switch on as hard cuts (jet, photo, label, first bay, all on by 600 ms, every state readable); later bays light as they scroll into view; hover transitions 150 ms max. All of it is off under reduced motion, where everything is lit from the start.
+WCAG 2.2 AA. Dark only (`color-scheme: dark`); text contrast checked over the photo at every layout. Semantic HTML, links look like links, visible amber focus ring, skip link. Motion is one opacity fade on load (700 ms max) and hover transitions (150 ms max), both off under reduced motion.

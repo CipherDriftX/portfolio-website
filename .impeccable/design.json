@@ -1,151 +1,154 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-22T09:31:16+00:00",
+  "generatedAt": "2026-11-21T19:10:50+00:00",
   "title": "Design System: Aryan Haghighi",
   "extensions": {
     "colorMeta": {
-      "heat": {
+      "amber": {
         "role": "primary",
-        "displayName": "Engine Heat",
-        "canonical": "oklch(78.3% 0.129 63.2)",
+        "displayName": "Tungsten Amber",
+        "canonical": "oklch(83.5% 0.106 67.8)",
         "tonalRamp": [
-          "#1f0100",
-          "#4c0700",
-          "#6f2c00",
-          "#924d00",
-          "#b76f1b",
-          "#dd9246",
-          "#f1be8f",
-          "#fcebdd"
+          "#140800",
+          "#361e00",
+          "#5b3600",
+          "#815214",
+          "#a47135",
+          "#c29463",
+          "#e3bc94",
+          "#ffebd7"
         ]
       },
-      "hall": {
-        "role": "neutral",
-        "displayName": "Hall Black",
-        "canonical": "oklch(13.9% 0.005 262.8)",
+      "violet": {
+        "role": "secondary",
+        "displayName": "Neon Violet",
+        "canonical": "oklch(68.0% 0.138 343.9)",
         "tonalRamp": [
-          "#0a0b0c",
-          "#242527",
-          "#414245",
-          "#606164",
-          "#818285",
-          "#a3a5a8",
-          "#c8c9cb",
-          "#eeeeef"
+          "#1b0011",
+          "#3f0d2e",
+          "#64244d",
+          "#8c3c6f",
+          "#b25a90",
+          "#cf82b0",
+          "#efadd3",
+          "#fee7f3"
         ]
       },
-      "pool": {
-        "role": "neutral",
-        "displayName": "Pool Graphite",
-        "canonical": "oklch(20.9% 0.010 268.2)",
+      "blue": {
+        "role": "tertiary",
+        "displayName": "Chair Blue",
+        "canonical": "oklch(43.2% 0.253 271.9)",
         "tonalRamp": [
-          "#0a0b0e",
-          "#23252a",
-          "#404248",
-          "#5f6167",
-          "#808289",
-          "#a2a5ac",
-          "#c7c9ce",
-          "#eeeef0"
+          "#040033",
+          "#13066f",
+          "#2524a4",
+          "#3940dc",
+          "#5468fd",
+          "#7f97f9",
+          "#b0c1fc",
+          "#e9eeff"
         ]
       },
-      "bone": {
+      "base": {
         "role": "neutral",
-        "displayName": "Bone",
-        "canonical": "oklch(92.9% 0.016 86.4)",
+        "displayName": "Table Top",
+        "canonical": "oklch(13.8% 0.006 41.9)",
         "tonalRamp": [
-          "#0d0b07",
-          "#28251c",
-          "#464239",
-          "#656157",
-          "#868278",
-          "#a9a59a",
-          "#ccc9c2",
-          "#efeeec"
+          "#0c0b0a",
+          "#262323",
+          "#423f3e",
+          "#615d5b",
+          "#807c7a",
+          "#a19d9c",
+          "#c6c3c2",
+          "#f0eeed"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Table",
+        "canonical": "oklch(20.8% 0.022 24.0)",
+        "tonalRamp": [
+          "#0f0909",
+          "#2a2221",
+          "#483c3b",
+          "#685958",
+          "#897977",
+          "#a99a99",
+          "#cdc1c0",
+          "#f6eceb"
+        ]
+      },
+      "wood": {
+        "role": "neutral",
+        "displayName": "Curtain",
+        "canonical": "oklch(32.1% 0.035 38.4)",
+        "tonalRamp": [
+          "#120906",
+          "#2e201c",
+          "#4d3b35",
+          "#6e5851",
+          "#90776f",
+          "#af9992",
+          "#d2bfb9",
+          "#faebe6"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Bulb Glass",
+        "canonical": "oklch(93.7% 0.038 85.3)",
+        "tonalRamp": [
+          "#0f0b04",
+          "#292316",
+          "#473f2e",
+          "#675c47",
+          "#877c65",
+          "#a79d89",
+          "#cbc3b2",
+          "#f4eee1"
         ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Label Grey",
-        "canonical": "oklch(65.3% 0.011 267.3)",
+        "displayName": "Ash Umber",
+        "canonical": "oklch(66.3% 0.035 64.2)",
         "tonalRamp": [
-          "#0a0b0e",
-          "#23252b",
-          "#3f4248",
-          "#5e6168",
-          "#7f8289",
-          "#a2a5ac",
-          "#c7c9ce",
-          "#eeeef0"
-        ]
-      },
-      "shade": {
-        "role": "neutral",
-        "displayName": "Shade Facet",
-        "canonical": "oklch(27.2% 0.012 264.4)",
-        "tonalRamp": [
-          "#0a0b0e",
-          "#22252b",
-          "#3f4249",
-          "#5e6168",
-          "#7f828a",
-          "#a1a5ad",
-          "#c6c9ce",
-          "#eeeef0"
-        ]
-      },
-      "steel": {
-        "role": "neutral",
-        "displayName": "Steel",
-        "canonical": "oklch(35.5% 0.015 264.4)",
-        "tonalRamp": [
-          "#090b0f",
-          "#21252d",
-          "#3e424a",
-          "#5d616a",
-          "#7e828c",
-          "#a0a5af",
-          "#c6c9d0",
-          "#edeef0"
+          "#100a05",
+          "#2c2219",
+          "#4a3d31",
+          "#6b5a4b",
+          "#8c7969",
+          "#ac9b8c",
+          "#cfc1b5",
+          "#f7ece3"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The name only, Aryan Haghighi, two lines, uppercase. Phones clamp(2.25rem, 11.5vw, 4rem)."
-      },
-      "beat": {
-        "displayName": "Beat",
-        "purpose": "How I work's title only; raised 0.46em out of its bay."
+        "purpose": "The name only, two lines, sized to the dark side and capped by screen height."
       },
       "page-title": {
-        "displayName": "Page Title",
-        "purpose": "h1 on case studies and the 404, sentence case."
-      },
-      "wall": {
-        "displayName": "Wall",
-        "purpose": "Every section title, uppercase, one size for every bay."
+        "displayName": "Page title",
+        "purpose": "h1 on case studies and the 404."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "h2 inside long-form prose."
-      },
-      "offer": {
-        "displayName": "Offer",
-        "purpose": "The How I work offer, max 32ch."
-      },
-      "lead": {
-        "displayName": "Lead",
-        "purpose": "The claim; case study and note leads and review quotes on nearby steps."
-      },
-      "role": {
-        "displayName": "Role",
-        "purpose": "AI Engineer under the name."
+        "purpose": "Section heads on the home page and Contact. Plain nouns."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Bold first line of each exhibit label."
+        "purpose": "Entry titles inside sections."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The claim, the offer, article leads, review quotes."
+      },
+      "role": {
+        "displayName": "Role",
+        "purpose": "\"AI Engineer\" under the name."
       },
       "figure": {
         "displayName": "Figure",
@@ -153,7 +156,7 @@
       },
       "prose": {
         "displayName": "Prose",
-        "purpose": "Long-form reading, max 38rem."
+        "purpose": "Long-form reading, 38rem measure."
       },
       "body": {
         "displayName": "Body",
@@ -161,80 +164,56 @@
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Top bar links (500); back links, dt labels, footer year at 400."
-      },
-      "display-phone": {
-        "displayName": "Display, phones",
-        "purpose": "The name on phones and portrait tablets, two lines, uppercase."
-      },
-      "quote": {
-        "displayName": "Quote",
-        "purpose": "A review's exact words, upright, in the Reviews bay."
-      },
-      "table": {
-        "displayName": "Table",
-        "purpose": "Tables inside case study and note prose, tabular figures, rows set apart by alternating pool fills, no rules."
-      },
-      "code": {
-        "displayName": "Code",
-        "purpose": "Inline code in prose only. The system monospace, no web font loaded."
+        "purpose": "Nav links, dates, dt labels, back links, footer year. Usually muted."
       }
     },
     "shadows": [],
-    "light": {
-      "states": [
-        "hall",
-        "pool"
-      ],
-      "edge": "hard",
-      "purpose": "Two-state light: a surface is hall (unlit) or pool (lit). No gradients, blooms, haze, blur or grain.",
-      "contrast": {
-        "bone-on-hall": 16.15,
-        "bone-on-pool": 14.4,
-        "muted-on-hall": 6.23,
-        "muted-on-pool": 5.55,
-        "heat-on-hall": 9.78,
-        "hall-on-heat": 9.78
+    "light": [
+      {
+        "name": "bloom-amber",
+        "value": "var(--grain-amber), radial-gradient(closest-side, rgb(247 188 124 / 0.13), rgb(247 188 124 / 0.04) 55%, transparent)",
+        "purpose": "Desktop first screen, from the top: the bulbs. Hidden on phones."
+      },
+      {
+        "name": "bloom-violet",
+        "value": "var(--grain-violet), radial-gradient(closest-side, rgb(210 115 173 / 0.16), rgb(210 115 173 / 0.05) 55%, transparent)",
+        "purpose": "Left of the face: the neon."
+      },
+      {
+        "name": "bloom-blue",
+        "value": "var(--grain-blue), radial-gradient(closest-side, rgb(48 33 215 / 0.26), rgb(48 33 215 / 0.08) 55%, transparent)",
+        "purpose": "Low on the photo side: the chair."
+      },
+      {
+        "name": "glow-reading",
+        "value": "var(--grain-amber), radial-gradient(closest-side, rgb(247 188 124 / 0.12), rgb(247 188 124 / 0.04) 55%, transparent)",
+        "purpose": "Reading pages and the 404: one light from above, top right."
+      },
+      {
+        "name": "bloom-mask",
+        "value": "mask-image: radial-gradient(closest-side, #000 40%, transparent 100%)",
+        "purpose": "Applied to every bloom so grain follows the same falloff."
+      },
+      {
+        "name": "bar-fade",
+        "value": "linear-gradient(to bottom, rgb(11 8 7 / 0.86) 0, rgb(11 8 7 / 0.8) 3.75rem, rgb(11 8 7 / 0.45) 5rem, rgb(11 8 7 / 0) 100%)",
+        "purpose": "6.5rem fade under the top bar; keeps links 4.5:1 over the photo's bulbs with no visible bar."
       }
-    },
-    "curve": {
-      "name": "jet-leading-edge",
-      "purpose": "The one governing curve: the jet's leading edge, used as the print's clip path and as the mark.",
-      "clipWide": "M0.357 0H1V1H0C0.24 0.595 0.321 0.317 0.357 0Z",
-      "clipTall": "M0.32 0H1V1H0C0.215 0.595 0.287 0.317 0.32 0Z",
-      "markShade": "M10 0C9 8 6.8 15 0.2 25.2L0.2 27.6L5.5 26.3L6.7 31.4L10 29.3Z",
-      "markLit": "M10 0C11 8 13.2 15 19.8 25.2L19.8 27.6L14.5 26.3L13.3 31.4L10 29.3Z",
-      "hungRotation": "15deg"
-    },
+    ],
     "focus": {
-      "value": "outline: 2px solid var(--heat); outline-offset: 4px; border-radius: 2px",
-      "purpose": "Every focusable element; the skip link uses a bone outline on its heat fill."
+      "value": "outline: 2px solid var(--amber); outline-offset: 4px; border-radius: 2px",
+      "purpose": "The one focus ring, everywhere. Cream on the amber skip link."
     },
     "motion": [
       {
-        "name": "facet-on",
-        "value": "facet-on 1ms steps(1, end) 100ms both",
-        "purpose": "Hung jet's lit facet snaps from shade to bone."
+        "name": "fade-photo",
+        "value": "fade 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        "purpose": "Opacity-only load fade on the hero photo."
       },
       {
-        "name": "print-on",
-        "value": "print-on 1ms steps(1, end) 280ms both",
-        "purpose": "Print snaps from brightness 0.3 to full."
-      },
-      {
-        "name": "label-on",
-        "value": "label-on 1ms steps(1, end) 460ms both",
-        "purpose": "Label text snaps from label grey to bone."
-      },
-      {
-        "name": "bay-on",
-        "value": "bay-on 1ms steps(1, end) 560ms both",
-        "purpose": "First bay snaps from hall to pool; all lit by 600ms."
-      },
-      {
-        "name": "spot-on",
-        "value": "spot-on linear both; animation-timeline: view(); animation-range: entry 0% entry 50%",
-        "purpose": "Later bays snap from hall to pool at the step midway through entry; lit by default without scroll timelines."
+        "name": "fade-text",
+        "value": "fade 600ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both",
+        "purpose": "Opacity-only load fade on the hero text."
       },
       {
         "name": "hover",
@@ -244,34 +223,42 @@
       {
         "name": "reduced-motion",
         "value": "animation: none; transition: none; scroll-behavior: auto",
-        "purpose": "Under prefers-reduced-motion everything is lit from the start."
+        "purpose": "All motion off under prefers-reduced-motion."
       }
     ],
     "breakpoints": [
       {
-        "name": "wide",
-        "value": "(min-width: 40rem) and (min-aspect-ratio: 5/4)"
+        "name": "desk",
+        "value": "(min-width: 40rem) and (min-aspect-ratio: 5/4)",
+        "purpose": "Photo right, text left."
       },
       {
-        "name": "landscape-phone",
-        "value": "wide and (max-height: 32rem)"
+        "name": "desk-short",
+        "value": "(min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem)",
+        "purpose": "Landscape phones: tighter steps."
       },
       {
-        "name": "short-phone",
-        "value": "(max-height: 45rem), not wide"
+        "name": "notes-columns",
+        "value": "(min-width: 40rem)",
+        "purpose": "Notes date column."
       },
       {
-        "name": "bar-wide",
-        "value": "48rem"
+        "name": "nav-wide",
+        "value": "(min-width: 48rem)",
+        "purpose": "All section links in the top bar."
       },
       {
         "name": "contact-row",
-        "value": "container 28.5rem"
+        "value": "@container (min-width: 28.5rem)",
+        "purpose": "Email, LinkedIn, GitHub on one row."
       }
     ],
     "photo": {
-      "treatment": "Owner's own phone photo, black and white, cropped and lightly graded; never AI edited, upscaled or smoothed.",
-      "layout": "Clipped by the jet's curve; edge lands at 44vw wide, 32% on phones, 56vw on landscape phones; phones zoom 1.1 from the left edge."
+      "desktopWidth": "min(55vw, 82svh)",
+      "desktopHeight": "100svh",
+      "phoneCrop": "4 / 5, object-position 50% 14%",
+      "phoneMaxHeight": "max(14rem, min(64svh, max(calc(100svh - 25rem), 44svh)))",
+      "rule": "Every edge that meets the page is masked into the base. Never mirrored, never AI edited."
     }
   },
   "components": [
@@ -279,97 +266,89 @@
       "name": "Text link",
       "kind": "custom",
       "refersTo": "link",
-      "description": "Bone text, heat underline; heat text on hover; heat focus ring.",
-      "html": "<p class=\"ds-p\">Read the <a class=\"ds-a\" href=\"#\">case study</a> first.</p>",
-      "css": ".ds-p{color:var(--bone,#ece7dc);font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:1.0625rem;line-height:1.55;background:var(--hall,#08090b);padding:1rem}.ds-a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--heat,#f2a55a);text-decoration-thickness:1px;text-underline-offset:.28em;transition:color 120ms ease-out,text-decoration-color 120ms ease-out}.ds-a:hover{color:var(--heat,#f2a55a)}.ds-a:focus-visible{outline:2px solid var(--heat,#f2a55a);outline-offset:4px;border-radius:2px}"
+      "description": "Cream text, amber underline; amber text on hover; amber focus ring.",
+      "html": "<p class=\"ds-p\">Read the <a class=\"ds-link\" href=\"#\">case study</a> first.</p>",
+      "css": ".ds-p{color:var(--cream);font-family:var(--text);font-size:1.0625rem;line-height:1.55;background:var(--base);padding:1rem}.ds-link{color:inherit;text-decoration-line:underline;text-decoration-color:var(--amber);text-decoration-thickness:1px;text-underline-offset:.28em;transition:color 120ms ease-out,text-decoration-color 120ms ease-out}.ds-link:hover{color:var(--amber)}.ds-link:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:2px}"
     },
     {
       "name": "Top bar",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "The ceiling: no fill or edge; mark left on inner pages, section links right, 44px tall.",
-      "html": "<header class=\"ds-bar\"><a class=\"ds-home\" href=\"#\" aria-label=\"Aryan Haghighi, home\"><svg width=\"20\" height=\"32\" viewBox=\"0 0 20 32\" aria-hidden=\"true\"><path fill=\"#8d9097\" d=\"M10 0 C9 8 6.8 15 0.2 25.2 L0.2 27.6 L5.5 26.3 L6.7 31.4 L10 29.3Z\"/><path fill=\"#ece7dc\" d=\"M10 0 C11 8 13.2 15 19.8 25.2 L19.8 27.6 L14.5 26.3 L13.3 31.4 L10 29.3Z\"/></svg></a><nav><a class=\"ds-nav\" href=\"#\">How I work</a><a class=\"ds-nav\" href=\"#\">Contact</a></nav></header>",
-      "css": ".ds-bar{display:flex;align-items:center;justify-content:space-between;height:4rem;padding-inline:1.5rem;background:var(--hall,#08090b);color:var(--bone,#ece7dc);font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif}.ds-home{display:grid;place-items:center;width:2.75rem;height:2.75rem;margin-inline-start:-.75rem;border-radius:.5rem}.ds-bar nav{display:flex;gap:1.75rem}.ds-nav{display:inline-flex;align-items:center;min-height:2.75rem;font-size:.9375rem;font-weight:500;color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.28em;transition:color 120ms ease-out,text-decoration-color 120ms ease-out}.ds-nav:hover{text-decoration-color:var(--heat,#f2a55a)}.ds-nav:focus-visible,.ds-home:focus-visible{outline:2px solid var(--heat,#f2a55a);outline-offset:4px}"
+      "description": "Mark left, live section links right, over a soft base fade.",
+      "html": "<header class=\"ds-bar\"><a class=\"ds-home\" href=\"#\" aria-label=\"Aryan Haghighi, home\"><svg class=\"mark\" width=\"20\" height=\"32\" viewBox=\"0 0 20 32\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"#cf9a63\" d=\"M10 0 C9 8 6.8 15 0.2 25.2 L0.2 27.6 L5.5 26.3 L6.7 31.4 L10 29.3Z\"></path><path fill=\"#f6e9ce\" d=\"M10 0 C11 8 13.2 15 19.8 25.2 L19.8 27.6 L14.5 26.3 L13.3 31.4 L10 29.3Z\"></path></svg></a><nav><a class=\"ds-nav\" href=\"#\">How I work</a><a class=\"ds-nav\" href=\"#\">Contact</a></nav></header>",
+      "css": ".ds-bar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;background:linear-gradient(to bottom,rgb(11 8 7/.86),rgb(11 8 7/0));background-color:var(--base);color:var(--cream);font-family:var(--text)}.ds-home{display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:.5rem}.ds-bar nav{display:flex;gap:1.5rem}.ds-nav{display:inline-flex;align-items:center;min-height:2.75rem;font-size:.9375rem;color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.28em;transition:color 120ms ease-out,text-decoration-color 120ms ease-out}.ds-nav:hover{color:var(--amber);text-decoration-color:var(--amber)}.ds-nav:focus-visible,.ds-home:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:2px}"
     },
     {
       "name": "Contact links",
       "kind": "custom",
       "refersTo": "contact-link",
-      "description": "Email in full, LinkedIn, GitHub; label-grey icons, heat underline on the text only, 44px rows.",
-      "html": "<ul class=\"ds-cl\"><li><a href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z\"/></svg><span>aryan@aryanhaghighi.com</span></a></li><li><a href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z\"/></svg><span>LinkedIn</span></a></li><li><a href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8\"/></svg><span>GitHub</span></a></li></ul>",
-      "css": ".ds-cl{display:flex;flex-wrap:wrap;gap:.25rem 1.75rem;list-style:none;margin:0;padding:1rem;background:var(--hall,#08090b);color:var(--bone,#ece7dc);font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:1.0625rem}.ds-cl a{display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;color:inherit;text-decoration:none;transition:color 120ms ease-out}.ds-cl span{text-decoration:underline;text-decoration-color:var(--heat,#f2a55a);text-decoration-thickness:1px;text-underline-offset:.28em}.ds-cl svg{width:1em;height:1em;fill:var(--muted,#8d9097);transition:fill 120ms ease-out}.ds-cl a:hover{color:var(--heat,#f2a55a)}.ds-cl a:hover svg{fill:var(--heat,#f2a55a)}.ds-cl a:focus-visible{outline:2px solid var(--heat,#f2a55a);outline-offset:4px;border-radius:2px}"
+      "description": "Email written out, LinkedIn, GitHub; muted SVG icon, amber on hover.",
+      "html": "<ul class=\"ds-contact\"><li><a href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z\"/></svg><span>aryan@aryanhaghighi.com</span></a></li><li><a href=\"#\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><rect width=\"16\" height=\"16\" rx=\"1.2\"/></svg><span>LinkedIn</span></a></li></ul>",
+      "css": ".ds-contact{display:flex;flex-wrap:wrap;gap:.25rem 1.75rem;list-style:none;margin:0;padding:1rem;background:var(--base);font-family:var(--text);font-size:1.0625rem}.ds-contact a{display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;color:var(--cream);text-decoration:none;transition:color 120ms ease-out}.ds-contact span{text-decoration:underline;text-decoration-color:var(--amber);text-underline-offset:.28em}.ds-contact svg{width:1em;height:1em;fill:var(--muted);transition:fill 120ms ease-out}.ds-contact a:hover{color:var(--amber)}.ds-contact a:hover svg{fill:var(--amber)}.ds-contact a:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:2px}"
     },
     {
-      "name": "Pool bay with wall title",
+      "name": "Case study panel",
       "kind": "card",
-      "refersTo": "pool",
-      "description": "A full-bleed graphite pool on the hall floor, hard edges, wall title in Archivo Expanded capitals.",
-      "html": "<div class=\"ds-hall\"><section class=\"ds-pool\"><h2 class=\"ds-wall\">Work</h2><p class=\"ds-body\">One ordered column of exhibits stands here.</p></section></div>",
-      "css": ".ds-hall{background:var(--hall,#08090b);padding-block:3rem}.ds-pool{background:var(--pool,#16181d);padding:3rem 1.5rem;color:var(--bone,#ece7dc)}.ds-wall{font-family:'Archivo Expanded','Arial Black',ui-sans-serif,sans-serif;font-stretch:125%;font-weight:600;letter-spacing:0;text-transform:uppercase;font-size:2rem;line-height:1;margin:0 0 1.5rem}.ds-body{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:1.0625rem;line-height:1.55;margin:0}"
+      "refersTo": "study-panel",
+      "description": "The one container: flat surface, no border, radius or shadow.",
+      "html": "<article class=\"ds-study\"><h3><a href=\"#\">Support triage agent</a></h3><p>One-line summary of the build.</p><p class=\"ds-eval\"><span class=\"ds-value\">94%</span><span>accuracy, on 120 eval cases</span></p><p class=\"ds-quiet\">SaaS, 2026</p></article>",
+      "css": ".ds-study{padding:clamp(1.25rem,1rem + 1.5vw,2.25rem);background:var(--surface);color:var(--cream);font-family:var(--text);font-size:1.0625rem;line-height:1.55}.ds-study h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(1.375rem,1.2rem + .6vw,1.75rem);line-height:1.15}.ds-study h3 a{color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.28em;transition:text-decoration-color 120ms ease-out}.ds-study h3 a:hover,.ds-study h3 a:focus-visible{text-decoration-color:var(--amber)}.ds-study p{margin:.5rem 0 0}.ds-eval{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .75rem;margin-top:1.25rem!important}.ds-value{font-size:1.625rem;font-weight:600;font-variant-numeric:tabular-nums lining-nums}.ds-quiet{color:var(--muted)}"
     },
     {
-      "name": "How I work beat",
+      "name": "Hero name block",
       "kind": "custom",
-      "refersTo": "beat-title",
-      "description": "The one title larger than the rest, raised 0.46em so the bay's hard top edge cuts its capitals.",
-      "html": "<div class=\"ds-hall2\"><div class=\"ds-spacer\"></div><section class=\"ds-bay\"><h2 class=\"ds-beat\">How I work</h2><p class=\"ds-offer\">I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it.</p></section></div>",
-      "css": ".ds-hall2{background:var(--hall,#08090b);color:var(--bone,#ece7dc)}.ds-spacer{height:2.5rem}.ds-bay{background:var(--pool,#16181d);padding:0 1.5rem 3rem}.ds-beat{font-family:'Archivo Expanded','Arial Black',ui-sans-serif,sans-serif;font-stretch:125%;font-weight:600;letter-spacing:0;text-transform:uppercase;position:relative;top:-.46em;font-size:3rem;line-height:1;margin:0 0 calc(1.5rem - .46em)}.ds-offer{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:1.5rem;line-height:1.35;max-width:32ch;margin:0}"
-    },
-    {
-      "name": "Exhibit row",
-      "kind": "custom",
-      "refersTo": "exhibit",
-      "description": "One ordered column, identical label lines: title, kind and year, text, eval figure.",
-      "html": "<ul class=\"ds-row\"><li><h3 class=\"ds-t\"><a href=\"#\">Support triage agent</a></h3><p class=\"ds-q\">Agency, <span class=\"ds-n\">2026</span></p><p>Routes tickets with evals on every change.</p><p class=\"ds-ev\"><span class=\"ds-n ds-v\">94%</span><span>accuracy, on <span class=\"ds-n\">120</span> eval cases</span></p></li><li><h3 class=\"ds-t\"><a href=\"#\">Invoice reader</a></h3><p class=\"ds-q\">SaaS, <span class=\"ds-n\">2026</span></p><p>Pulls fields from PDFs into the ledger.</p></li></ul>",
-      "css": ".ds-row{display:grid;gap:2.5rem;max-width:38rem;list-style:none;margin:0;padding:2rem 1.5rem;background:var(--pool,#16181d);color:var(--bone,#ece7dc);font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:1.0625rem;line-height:1.55}.ds-row p{margin:.375rem 0 0}.ds-t{margin:0;font-size:1.1875rem;font-weight:600;line-height:1.25}.ds-t a{color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.28em;transition:color 120ms ease-out,text-decoration-color 120ms ease-out}.ds-t a:hover,.ds-t a:focus-visible{text-decoration-color:var(--heat,#f2a55a)}.ds-t a:focus-visible{outline:2px solid var(--heat,#f2a55a);outline-offset:4px;border-radius:2px}.ds-q{color:var(--muted,#8d9097)}.ds-n{font-variant-numeric:tabular-nums lining-nums}.ds-ev{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .75rem;margin-top:1rem!important}.ds-v{font-size:1.625rem;font-weight:600}"
-    },
-    {
-      "name": "Museum label and hung jet",
-      "kind": "custom",
-      "refersTo": "hung-jet-lit",
-      "description": "The hero label under the hung jet: name in display capitals, role, claim, drone line; jet facets snap on as hard cuts.",
-      "html": "<div class=\"ds-hero\"><svg class=\"ds-jet\" viewBox=\"-2.7 0.3 20 31.7\" aria-hidden=\"true\"><g transform=\"rotate(15 10 16)\"><path class=\"ds-shade\" d=\"M10 0C9 8 6.8 15 0.2 25.2L0.2 27.6L5.5 26.3L6.7 31.4L10 29.3Z\"/><path class=\"ds-lit\" d=\"M10 0C11 8 13.2 15 19.8 25.2L19.8 27.6L14.5 26.3L13.3 31.4L10 29.3Z\"/></g></svg><h1 class=\"ds-name\"><span>Aryan</span> <span>Haghighi</span></h1><p class=\"ds-role\">AI Engineer</p><p class=\"ds-claim\">I ship AI agents into production, with evals that prove they work.</p><p class=\"ds-drone\">Building autonomous drones.</p></div>",
-      "css": ".ds-hero{background:var(--hall,#08090b);color:var(--bone,#ece7dc);padding:1.5rem;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif}.ds-jet{height:7rem;width:auto;margin-bottom:1rem}.ds-shade{fill:var(--shade,#24272d)}.ds-lit{fill:var(--bone,#ece7dc);animation:ds-facet 1ms steps(1,end) 100ms both}.ds-name{font-family:'Archivo Expanded','Arial Black',ui-sans-serif,sans-serif;font-stretch:125%;font-weight:600;letter-spacing:0;text-transform:uppercase;font-size:3rem;line-height:.94;margin:0;animation:ds-label 1ms steps(1,end) 460ms both}.ds-name span{display:block}.ds-role{margin:1rem 0 0;font-size:1.25rem;font-weight:600}.ds-claim{margin:.375rem 0 0;max-width:28ch;font-size:1.3rem;line-height:1.35}.ds-drone{margin:.75rem 0 0;color:var(--muted,#8d9097)}@keyframes ds-facet{from{fill:var(--shade,#24272d)}}@keyframes ds-label{from{color:var(--muted,#8d9097)}}@media (prefers-reduced-motion:reduce){.ds-lit,.ds-name{animation:none}}"
+      "refersTo": "display",
+      "description": "Name in Gloock on two lines, role, claim, muted drone line.",
+      "html": "<div class=\"ds-intro\"><h1><span>Aryan</span> <span>Haghighi</span></h1><p class=\"ds-role\">AI Engineer</p><p class=\"ds-claim\">I ship AI agents into production, with evals that prove they work.</p><p class=\"ds-drone\">Building autonomous drones.</p></div>",
+      "css": ".ds-intro{padding:1.5rem;background:var(--base);color:var(--cream);font-family:var(--text)}.ds-intro h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(3.5rem,15vw,6rem);line-height:.95;letter-spacing:-.01em}.ds-intro h1 span{display:block}.ds-role{margin:1.25rem 0 0;font-size:clamp(1.125rem,1rem + .5vw,1.375rem);font-weight:600;letter-spacing:.005em}.ds-claim{margin:.5rem 0 0;max-width:28ch;font-size:clamp(1.25rem,1.05rem + .7vw,1.625rem);line-height:1.35}.ds-drone{margin:.875rem 0 0;color:var(--muted);font-size:1.0625rem}"
     },
     {
       "name": "Skip link",
       "kind": "button",
       "refersTo": "skip-link",
-      "description": "Heat fill, hall text, square; appears on focus.",
+      "description": "Amber block, base text; hidden until focused.",
       "html": "<a class=\"ds-skip\" href=\"#\">Skip to content</a>",
-      "css": ".ds-skip{display:inline-block;padding:.625rem 1rem;background:var(--heat,#f2a55a);color:var(--hall,#08090b);font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-weight:600;text-decoration:none}.ds-skip:focus-visible{outline:2px solid var(--bone,#ece7dc);outline-offset:4px;border-radius:2px}"
+      "css": ".ds-skip{display:inline-block;padding:.625rem 1rem;background:var(--amber);color:var(--base);font-family:var(--text);font-weight:600;text-decoration:none}.ds-skip:focus-visible{outline:2px solid var(--cream);outline-offset:4px;border-radius:2px}"
+    },
+    {
+      "name": "Section head",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Plain-noun Gloock heading followed by lead text.",
+      "html": "<section class=\"ds-section\"><h2>How I work</h2><p>I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it.</p></section>",
+      "css": ".ds-section{padding:1.5rem;background:var(--base);color:var(--cream)}.ds-section h2{margin:0 0 1.25rem;font-family:var(--display);font-weight:400;font-size:clamp(2rem,1.5rem + 2vw,3rem);line-height:1.05}.ds-section p{margin:0;max-width:34ch;font-family:var(--text);font-size:clamp(1.25rem,1.05rem + .7vw,1.625rem);line-height:1.4}"
     }
   ],
   "narrative": {
-    "northStar": "The Night Hall",
-    "overview": "**Creative North Star: \"The Night Hall\"**\n\nThe site is a great aviation hall after dark. The floor is cool black. Light falls in pools with hard edges, and a pool is either lit or unlit; nothing sits between. Under the ceiling hangs one matte black jet, the site mark drawn large, with one facet catching the spot. His photo, in black and white, stands in the spot's light, cut out of the dark by the jet's own leading-edge curve. The name and section titles are set wide and upright like the lettering on a hall wall; everything else reads like a museum object label: a bold first line, plain lines under it, figures that line up.\n\nIt is a quiet, sparse page for a 5 to 10 second scan. Grouping is done by light alone: a bay of the hall is a full-width graphite pool on the black floor. There are no boxes, no rules, no dividers, no shadows, no gradients and no haze. One warm colour exists, engine heat, and it only marks what you can act on.\n\nThe jet is a theme, never a costume. The hall rejects HUD and cockpit symbols, insignia, blueprint lines, stencil lettering, technical callouts, neon edges and the photo-beside-name hero on a glowing dark gradient.",
+    "northStar": "The Night Window",
+    "overview": "**Creative North Star: \"The Night Window\"**\n\nThe site is the room in the photo, at night. The page is a warm near-black, the colour of a table top after dark. Every colour on it was sampled from the owner's own phone photo: the table, the curtain, the bulb glass, the bulb base, the neon on his cheek, the blue chair. Light on the page comes only from where it comes from in the photo. The page never invents a new light source.\n\nIt is a quiet, sparse page for a 5 to 10 second scan. One photo, one name set large in a serif, a few lines of plain grotesk text, and links that look like links. Grouping is done by space and type size, not by boxes. The photo is always the brightest thing on screen; the blooms behind it are faint enough to feel like air, not decoration.\n\nIt rejects the dark-navy developer portfolio, the centered gradient hero with a button, bento grids, glass cards, cursor glows, animated blobs and skill-logo clouds. The old paper-and-ink title card with signal orange is gone and is not a reference.",
     "keyCharacteristics": [
-      "Dark only (`color-scheme: dark`), no light mode, no toggle.",
-      "Two states of light: hall black or pool graphite, hard edges, no in-between.",
-      "One governing curve: the jet's leading edge is the edge of the print.",
-      "One accent, heat, for links, focus and selection only.",
-      "Archivo Expanded capitals for the name and wall titles; Hanken Grotesk for every label line.",
-      "Lights up as hard cuts on load and as bays scroll into view; under reduced motion everything is lit."
+      "Dark only. `color-scheme: dark`, no light mode, no toggle.",
+      "One interactive accent: tungsten amber, on underlines, hover, focus and selection only.",
+      "Violet and blue exist only as light: soft, dithered, static blooms.",
+      "Gloock for the name and headings, Hanken Grotesk for everything else, tabular figures for every number.",
+      "Flat. No shadows, no borders as decoration, square corners.",
+      "One load fade, then stillness."
     ],
     "rules": [
       {
-        "name": "The Two-State Light Rule",
-        "body": "A surface is hall (unlit) or pool (lit). Edges between them are hard. No gradient, blur, bloom, glow, haze or grain ever stands between the two.",
+        "name": "The Light, Never Ink Rule",
+        "body": "Violet and blue appear only inside radial blooms. Never as text, icon, border, button or fill. If you can point at it and name its edge, it is ink and it is wrong.",
         "section": "colors"
       },
       {
-        "name": "The Heat Is For Action Rule",
-        "body": "Heat appears only on links, focus and selection (and the skip link, which is a link). If it is heat and you cannot act on it, it is wrong.",
+        "name": "The One Accent Rule",
+        "body": "Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms and the mark's bulb.",
         "section": "colors"
       },
       {
-        "name": "The Bone And Shade Rule",
-        "body": "The hung jet has exactly two flat facets: lit in bone, shade in the shade colour. No outline, no gradient, no third tone.",
+        "name": "The Real Source Rule",
+        "body": "Every bloom is tied to a light in the photo: amber from above (the bulbs), violet beside the face (the neon), blue low on the photo side (the chair). At most three per screen. No bloom without a source.",
         "section": "colors"
       },
       {
-        "name": "The Hall Lettering Rule",
-        "body": "Archivo Expanded sets the name, wall titles, page titles and prose h2 only, always width 125, weight 600, letter-spacing 0. Every sentence, link, label line and number is Hanken Grotesk.",
+        "name": "The Serif Is For Names Rule",
+        "body": "Gloock sets names and headings only (h1 to h3, weight 400, balanced wrap). Every sentence, link, label and number is Hanken Grotesk.",
         "section": "typography"
       },
       {
@@ -378,59 +357,44 @@
         "section": "typography"
       },
       {
-        "name": "The Plain Noun Rule",
-        "body": "Section titles are plain nouns on the wall. No small uppercase captions, kickers or eyebrows above titles, no stencil or military lettering, no technical labels.",
+        "name": "The No Labels Rule",
+        "body": "Section heads are plain nouns in Gloock. No small uppercase labels above headings, no letter-spaced captions.",
         "section": "typography"
       },
       {
-        "name": "The One Ordered Row Rule",
-        "body": "Exhibits are one column read top to bottom. Never a grid of cards, never side-by-side tiles.",
-        "section": "layout"
-      },
-      {
-        "name": "The Identical Label Rule",
-        "body": "Every exhibit in a section carries the same lines in the same order. A missing line is left out; it is never replaced by a different kind of line.",
-        "section": "layout"
-      },
-      {
-        "name": "The No Haze Rule",
-        "body": "No gradients, blooms, glows, blur or grain. If an edge between light and dark is soft, it is wrong.",
+        "name": "The Photo Is Brightest Rule",
+        "body": "Blooms stay at or below 0.13 alpha for amber, 0.16 for violet, 0.26 for blue. If a bloom competes with the bulbs in the photo, it is too strong.",
         "section": "elevation"
       },
       {
-        "name": "The Light Groups Rule",
-        "body": "Grouping is done by pools of light and space. No boxes, borders, rules, dividers or hairlines. Prose tables read by alternate pool rows, not by lines.",
+        "name": "The No Shadow Rule",
+        "body": "No box-shadow, text-shadow or drop shadow. Separation is space, then tone.",
         "section": "elevation"
-      },
-      {
-        "name": "The One Curve Rule",
-        "body": "The jet's leading edge is the only curve in the system, and the print's edge is that curve. Any new cut, crop or silhouette reuses it or stays square.",
-        "section": "shapes"
       }
     ],
     "dos": [
-      "**Do** write the full name \"Aryan Haghighi\" wherever the name appears, in the display capitals on two lines on the home page.",
-      "**Do** group by light: a new section is a full-width pool on the hall floor with `gap-hall` before it.",
-      "**Do** keep every lit and unlit edge hard, and every light change a step (1ms, `steps(1, end)`), never a fade.",
-      "**Do** light later bays on scroll with the same hard cut, and leave everything lit under reduced motion.",
-      "**Do** keep heat to links, focus, selection and the skip link.",
-      "**Do** reuse the jet's leading-edge curve for any new silhouette or crop, or stay square.",
-      "**Do** give every exhibit the identical label lines and stand exhibits in one ordered column.",
-      "**Do** set every number in tabular lining figures.",
-      "**Do** keep 44px hit heights, AA contrast (bone and label grey both pass on hall and pool) and no horizontal scroll from 320px.",
-      "**Do** show the owner's photo in black and white, cropped and lightly graded only."
+      "**Do** use cream for text and amber only for underlines, hover, focus, selection and the skip link.",
+      "**Do** keep violet and blue inside radial blooms, dithered with their tinted grain, at their recorded alphas.",
+      "**Do** set every name and heading in Gloock 400 and everything else in Hanken Grotesk.",
+      "**Do** use tabular lining figures for every number.",
+      "**Do** group by space: the `section` step between sections, 0.5rem to 2.5rem inside them.",
+      "**Do** mask every edge of the photo into the base.",
+      "**Do** keep a 44px tap height on every link and the same amber focus ring everywhere.",
+      "**Do** use the flat `surface` panel when content truly needs a container, with no border or shadow.",
+      "**Do** keep motion to one opacity fade on load (700ms photo, 600ms text after 80ms, cubic-bezier(0.16, 1, 0.3, 1)) and 120ms hover transitions, all off under reduced motion.",
+      "**Do** write the name in full, \"Aryan Haghighi\", in every mark, title and alt text."
     ],
     "donts": [
-      "**Don't** use initials or an \"AH\" monogram in any mark, favicon or logo; the mark is the jet, with no letters.",
-      "**Don't** add HUD or cockpit symbols, insignia, roundels, blueprint or grid lines, stencil lettering, coordinates, part numbers or technical callouts. The jet is a theme only.",
-      "**Don't** draw boxes, cards, borders, rules, dividers or hairlines.",
-      "**Don't** use gradients, glows, blooms, blur, haze, grain or shadows.",
-      "**Don't** add a second accent colour or use heat as decoration or large fills.",
-      "**Don't** put exhibits in a grid or side-by-side tiles.",
-      "**Don't** break a second title out of its bay; How I work is the only one.",
-      "**Don't** add kickers, eyebrows or small captions above titles.",
-      "**Don't** AI-edit, upscale or smooth the photo, or let the crop include the beer glass, the ashtray and cigarette, or the woman in red.",
-      "**Don't** hang a second jet in the same view; the home page's bar leaves the mark out for that reason."
+      "**Don't** use violet, blue or any other cool light from the photo (the street through the window included) as text, icons, borders, buttons or fills.",
+      "**Don't** add a light mode or theme toggle.",
+      "**Don't** add a light source that is not in the photo, or more than three blooms on one screen.",
+      "**Don't** use box shadows, glass, blur panels, glowing borders, bento grids, pills or chips.",
+      "**Don't** add small uppercase labels or eyebrows above headings.",
+      "**Don't** put text on the bright part of the photo; text may overlap only its dissolved dark edge.",
+      "**Don't** use initials \"AH\" or any letter in the mark or favicon.",
+      "**Don't** add a third font file.",
+      "**Don't** add cursor-follow effects, animated gradients, scroll animations or counters.",
+      "**Don't** mirror, AI-edit, upscale or smooth the photo."
     ]
   }
 }

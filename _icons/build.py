@@ -7,11 +7,10 @@ Needs rsvg-convert (librsvg), magick (ImageMagick 7) and chromium (for the sheet
 
 The mark (SHIP below): j, a hypersonic jet seen from above, nose up, its
 leading edge one blended curve, two flat facets lit from the right.
-  j-favicon.svg  favicon.svg, transparent: bone/muted on dark tabs, hall
-                 black/graphite on light tabs (prefers-color-scheme inside the SVG)
-  j.svg          16/32/48 px ICO frames, transparent, the hall's greys (PNG
-                 frames cannot switch colour; muted #8d9097 holds about 3:1 on
-                 both tabs, the shade facet #5d6169 sits under it)
+  j-favicon.svg  favicon.svg, transparent: cream/tan on dark tabs, near-black
+                 on light tabs (prefers-color-scheme inside the SVG)
+  j.svg          16/32/48 px ICO frames, transparent, copper (PNG frames
+                 cannot switch colour; copper holds about 3:1 on both tabs)
   j-touch.svg    180/192/512 px, flat dark tile (iOS fills transparency black)
 
 Writes to public/: favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png,

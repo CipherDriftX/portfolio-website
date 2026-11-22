@@ -4,8 +4,8 @@
   "description": "I ship AI agents into production, with evals that prove they work.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#08090b",
-  "theme_color": "#08090b",
+  "background_color": "#0b0807",
+  "theme_color": "#0b0807",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
