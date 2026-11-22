@@ -8,9 +8,9 @@ web
 
 ## Stack
 
-Astro 7.4.13 (pinned exact), static output. The only client JavaScript is Vercel Web Analytics (`@vercel/analytics/astro`, added at the owner's request 2026-11-21). Content collections (work, projects, reviews, notes, about) as one Markdown file per entry, core copy in `src/data/site.ts`. Drafts render in `npm run dev` only, and the production build fails if `[OWNER:` text reaches a live entry or the output. Hosted on Vercel; `main` deploys aryanhaghighi.com, other branches get preview URLs. `vercel.json` sets the framework, install, build and output. Photo, link preview and icons come from scripts kept in the repo (`_photo/`, `_og/`, `_icons/`).
+Astro 7.4.13 (pinned exact), static output. The only client JavaScript is Vercel Web Analytics (`@vercel/analytics/astro`, added at the owner's request 2026-11-21) and Vercel Speed Insights (`@vercel/speed-insights/astro`, added at the owner's request 2026-11-22). Content collections (work, projects, reviews, notes, about) as one Markdown file per entry, core copy in `src/data/site.ts`. Drafts render in `npm run dev` only, and the production build fails if `[OWNER:` text reaches a live entry or the output. Hosted on Vercel; `main` deploys aryanhaghighi.com, other branches get preview URLs. `vercel.json` sets the framework, install, build and output. Photo, link preview and icons come from scripts kept in the repo (`_photo/`, `_og/`, `_icons/`).
 
-Budgets: home page at most 250 KB including the photo, JavaScript only for analytics (about 3.3 KB gzipped, loaded after the page), at most 3 font files (2 used: Gloock, Hanken Grotesk). PageSpeed Insights mobile 95 or more in all four categories, LCP at most 2.0 s, CLS 0. The owner's laptop is weak, so no heavy tooling.
+Budgets: home page at most 250 KB including the photo, JavaScript only for Web Analytics and Speed Insights (about 10 KB gzipped together, loaded after the page), at most 3 font files (2 used: Gloock, Hanken Grotesk). PageSpeed Insights mobile 95 or more in all four categories, LCP at most 2.0 s, CLS 0. The owner's laptop is weak, so no heavy tooling.
 
 ## Users
 
