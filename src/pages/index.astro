@@ -9,38 +9,51 @@ const { live, first, sections, studies, projects, reviews, notes, about } = awai
 const AboutBody = about ? (await render(about)).Content : null;
 
 // Must match the layout switch in the styles below.
-const DESK = "(min-width: 40rem) and (min-aspect-ratio: 5/4)";
-const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/desk-${w}.${ext} ${w}w`).join(", ");
-const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/phone-${w}.${ext} ${w}w`).join(", ");
+const WIDE = "(min-width: 40rem) and (min-aspect-ratio: 5/4)";
+const print = (ext: string) => [480, 720, 960, 1280, 1600].map((w) => `/photo/print-${w}.${ext} ${w}w`).join(", ");
+const sizes = `${WIDE} 56vw, 100vw`;
 const date = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person>
   <section class="hero" aria-labelledby="name">
-    <div class="light" aria-hidden="true">
-      <span class="bloom amber"></span>
-      <span class="bloom violet"></span>
-      <span class="bloom blue"></span>
-    </div>
+    <!-- The spot's edge: the jet's leading edge, from nose to wingtip, drawn
+         at the size of the room. Wide screens light the right side, tall
+         screens the top. -->
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <clipPath id="beam-wide" clipPathUnits="objectBoundingBox">
+        <path d="M0.357 0H1V1H0C0.24 0.595 0.321 0.317 0.357 0Z"></path>
+      </clipPath>
+      <clipPath id="beam-tall" clipPathUnits="objectBoundingBox">
+        <path d="M0.32 0H1V1H0C0.215 0.595 0.287 0.317 0.32 0Z"></path>
+      </clipPath>
+    </svg>
 
-    <picture class="photo">
-      <source media={DESK} type="image/avif" srcset={desk("avif")} sizes="55vw" width="1600" height="2160" />
-      <source media={DESK} type="image/webp" srcset={desk("webp")} sizes="55vw" width="1600" height="2160" />
-      <source media={DESK} type="image/jpeg" srcset={desk("jpg")} sizes="55vw" width="1600" height="2160" />
-      <source type="image/avif" srcset={phone("avif")} sizes="100vw" />
-      <source type="image/webp" srcset={phone("webp")} sizes="100vw" />
+    <picture class="print">
+      <source type="image/avif" srcset={print("avif")} sizes={sizes} />
+      <source type="image/webp" srcset={print("webp")} sizes={sizes} />
       <img
-        src="/photo/phone-720.jpg"
-        srcset={phone("jpg")}
-        sizes="100vw"
-        width="960"
-        height="1200"
+        src="/photo/print-960.jpg"
+        srcset={print("jpg")}
+        sizes={sizes}
+        width="1600"
+        height="2000"
         alt={site.photo.alt}
         fetchpriority="high"
       />
     </picture>
 
-    <div class="intro frame">
+    <!-- The hall's one object: the site mark, hung nose up, leaning toward the spot. -->
+    <div class="hang" aria-hidden="true">
+      <svg class="jet" viewBox="-2.7 0.3 20 31.7" focusable="false">
+        <g transform="rotate(15 10 16)">
+          <path class="shade" d="M10 0C9 8 6.8 15 0.2 25.2L0.2 27.6L5.5 26.3L6.7 31.4L10 29.3Z"></path>
+          <path class="lit" d="M10 0C11 8 13.2 15 19.8 25.2L19.8 27.6L14.5 26.3L13.3 31.4L10 29.3Z"></path>
+        </g>
+      </svg>
+    </div>
+
+    <div class="label frame">
       <h1 id="name"><span>Aryan</span> <span>Haghighi</span></h1>
       <p class="role">{site.title}</p>
       <p class="claim">{site.claim}</p>
@@ -51,20 +64,22 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
 
   {
     live.work && (
-      <section id="work" class:list={["section frame", { peek: first === "work" }]} aria-labelledby="work-title">
-        <h2 id="work-title">Work</h2>
-        <ul role="list" class="projects">
-          {projects.map((p) => (
-            <li>
-              <h3>
-                <a href={p.data.repo}>{p.data.name}</a>
-                {p.data.draft && <span class="draft-tag">Draft</span>}
-              </h3>
-              <p>{p.data.line}</p>
-              <p class="quiet">{p.data.why}</p>
-            </li>
-          ))}
-        </ul>
+      <section id="work" class:list={["pool", first === "work" ? "first" : "walk"]} aria-labelledby="work-title">
+        <div class="frame">
+          <h2 id="work-title" class="wall">Work</h2>
+          <ul role="list" class="row">
+            {projects.map((p) => (
+              <li class="exhibit">
+                <h3>
+                  <a href={p.data.repo}>{p.data.name}</a>
+                  {p.data.draft && <span class="draft-tag">Draft</span>}
+                </h3>
+                <p>{p.data.line}</p>
+                <p class="quiet">{p.data.why}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     )
   }
@@ -73,93 +88,103 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     live["case-studies"] && (
       <section
         id="case-studies"
-        class:list={["section frame", { peek: first === "case-studies" }]}
+        class:list={["pool", first === "case-studies" ? "first" : "walk"]}
         aria-labelledby="case-studies-title"
       >
-        <h2 id="case-studies-title">Case studies</h2>
-        <ul role="list" class="studies">
-          {studies.map((s) => (
-            <li class="study">
-              <h3>
-                <a href={`/work/${s.id}`}>{s.data.title}</a>
-                {s.data.draft && <span class="draft-tag">Draft</span>}
-              </h3>
-              <p>{s.data.summary}</p>
-              <p class="eval">
-                <span class="num value">{s.data.evals.value}</span>
-                <span>
-                  {s.data.evals.metric}, on <span class="num">{s.data.evals.cases}</span> eval {s.data.evals.cases === 1 ? "case" : "cases"}
-                </span>
-              </p>
-              <p class="quiet">
-                {s.data.clientType}, <span class="num">{s.data.year}</span>
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div class="frame">
+          <h2 id="case-studies-title" class="wall">Case studies</h2>
+          <ul role="list" class="row">
+            {studies.map((s) => (
+              <li class="exhibit">
+                <h3>
+                  <a href={`/work/${s.id}`}>{s.data.title}</a>
+                  {s.data.draft && <span class="draft-tag">Draft</span>}
+                </h3>
+                <p class="quiet">
+                  {s.data.clientType}, <span class="num">{s.data.year}</span>
+                </p>
+                <p>{s.data.summary}</p>
+                <p class="eval">
+                  <span class="num value">{s.data.evals.value}</span>
+                  <span>
+                    {s.data.evals.metric}, on <span class="num">{s.data.evals.cases}</span> eval {s.data.evals.cases === 1 ? "case" : "cases"}
+                  </span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     )
   }
 
-  <section id="how" class:list={["section frame", { peek: first === "how" }]} aria-labelledby="how-title">
-    <h2 id="how-title">How I work</h2>
-    <p class="offer">{site.offer}</p>
+  <section id="how" class:list={["pool how", first === "how" ? "first" : "walk"]} aria-labelledby="how-title">
+    <div class="frame">
+      <h2 id="how-title" class="wall">How I work</h2>
+      <p class="offer">{site.offer}</p>
+    </div>
   </section>
 
   {
     live.reviews && (
-      <section id="reviews" class="section frame" aria-labelledby="reviews-title">
-        <h2 id="reviews-title">Reviews</h2>
-        <ul role="list" class="reviews">
-          {reviews.map((r) => (
-            <li>
-              <figure>
-                <blockquote>
-                  <p>{r.data.quote}</p>
-                </blockquote>
-                <figcaption>
-                  <a href={r.data.link}>{r.data.name}</a>, {r.data.role}, {r.data.company}
-                  {r.data.draft && <span class="draft-tag">Draft</span>}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+      <section id="reviews" class="pool walk" aria-labelledby="reviews-title">
+        <div class="frame">
+          <h2 id="reviews-title" class="wall">Reviews</h2>
+          <ul role="list" class="row">
+            {reviews.map((r) => (
+              <li class="exhibit">
+                <figure>
+                  <blockquote>
+                    <p>{r.data.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <a href={r.data.link}>{r.data.name}</a>, {r.data.role}, {r.data.company}
+                    {r.data.draft && <span class="draft-tag">Draft</span>}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     )
   }
 
   {
     live.notes && (
-      <section id="notes" class="section frame" aria-labelledby="notes-title">
-        <h2 id="notes-title">Notes</h2>
-        <ul role="list" class="notes">
-          {notes.map((n) => (
-            <li>
-              <time datetime={date(n.data.date)}>{date(n.data.date)}</time>
-              <div>
+      <section id="notes" class="pool walk" aria-labelledby="notes-title">
+        <div class="frame">
+          <h2 id="notes-title" class="wall">Notes</h2>
+          <ul role="list" class="row">
+            {notes.map((n) => (
+              <li class="exhibit">
                 <h3>
                   <a href={`/notes/${n.id}`}>{n.data.title}</a>
                   {n.data.draft && <span class="draft-tag">Draft</span>}
                 </h3>
-                <p class="quiet">{n.data.summary}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+                <p class="quiet">
+                  <time datetime={date(n.data.date)}>{date(n.data.date)}</time>
+                </p>
+                <p>{n.data.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     )
   }
 
   {
     about && AboutBody && (
-      <section id="about" class="section frame" aria-labelledby="about-title">
-        <h2 id="about-title">
-          About
-          {about.data.draft && <span class="draft-tag">Draft</span>}
-        </h2>
-        <div class="about">
-          <AboutBody />
+      <section id="about" class="pool walk" aria-labelledby="about-title">
+        <div class="frame">
+          <h2 id="about-title" class="wall">
+            About
+            {about.data.draft && <span class="draft-tag">Draft</span>}
+          </h2>
+          <div class="about">
+            <AboutBody />
+          </div>
         </div>
       </section>
     )
@@ -174,52 +199,64 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     isolation: isolate;
   }
 
-  .photo {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    /* The photo gives way so the name, claim, links and the first section's
-       heading fit on the first screen. On short screens (under about 740px)
-       it keeps 46% of the height so the name stays clear of his face; the
-       peek gives way there, the links never do. */
-    max-height: max(14rem, min(64svh, max(calc(100svh - 25rem), 46svh)));
-    overflow: hidden;
+  .defs {
+    position: absolute;
   }
 
-  .photo img {
+  /* The print: his photo in black and white, cut out of the dark by the
+     spot's edge. Hard edges all round; the light is on or off. */
+  .print {
+    position: relative;
+    height: max(12.5rem, min(44svh, calc(100svh - 30rem)));
+    overflow: clip;
+    clip-path: url(#beam-tall);
+  }
+
+  .print img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* The crop has headroom above his hair; a shorter box trims the arms. */
-    object-position: 50% 14%;
-    /* No hard box: the bottom melts into the page, the top softens under
-       the bar's own fade. */
-    mask-image: linear-gradient(
-      to bottom,
-      rgb(0 0 0 / 0.35) 0%,
-      rgb(0 0 0 / 0.8) 7%,
-      #000 14%,
-      #000 52%,
-      rgb(0 0 0 / 0.75) 66%,
-      rgb(0 0 0 / 0.35) 80%,
-      rgb(0 0 0 / 0.1) 90%,
-      transparent 100%
-    );
-    animation: fade 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* The crop has headroom above his hair; a shorter box trims the arms.
+       Phones: a little closer in, anchored left, so his face clears the
+       spot's edge. */
+    object-position: 50% 20%;
+    scale: 1.1;
+    transform-origin: 0% 20%;
+    animation: print-on 1ms steps(1, end) 280ms both;
   }
 
-  .intro {
-    position: relative;
-    z-index: 2;
-    margin-block-start: calc(-1 * clamp(3.5rem, 16vw, 6rem));
-    animation: fade 600ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+  .hang {
+    position: absolute;
+    top: 0.5rem;
+    left: var(--gutter);
+    height: clamp(5rem, 22vw, 7.5rem);
+  }
+
+  .jet {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 20 / 31.7;
+  }
+
+  .jet .shade {
+    fill: var(--shade);
+  }
+
+  .jet .lit {
+    fill: var(--steel);
+    animation: facet-on 1ms steps(1, end) 100ms both;
+  }
+
+  /* The museum label: name, role, claim, drone line, then the links. */
+  .label {
+    padding-block-start: 1.5rem;
+    animation: label-on 1ms steps(1, end) 460ms both;
   }
 
   h1 {
-    font-size: clamp(3.5rem, 15vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.25rem, 11.5vw, 4rem);
+    line-height: 0.94;
+    text-transform: uppercase;
   }
 
   h1 span {
@@ -227,247 +264,192 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
   }
 
   .role {
-    margin-block-start: 1.25rem;
+    margin-block-start: 1rem;
     font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
     font-weight: 600;
-    letter-spacing: 0.005em;
   }
 
   .claim {
-    margin-block-start: 0.5rem;
+    margin-block-start: 0.375rem;
     max-width: 28ch;
-    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem);
     line-height: 1.35;
     text-wrap: balance;
   }
 
   .drone {
-    margin-block-start: 0.875rem;
+    margin-block-start: 0.75rem;
     color: var(--muted);
   }
 
-  .intro :global(.hero-links) {
-    margin-block-start: 1.75rem;
+  .label :global(.hero-links) {
+    margin-block-start: 1.25rem;
   }
 
-  /* ---------- Light: three blooms, each from a real source ---------- */
-
-  .light {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    /* Blooms may spill down into the next section, never sideways: a page
-       wider than the screen pans sideways on iOS even with body clipped. */
-    overflow-x: clip;
-  }
-
-  .bloom {
-    position: absolute;
-    border-radius: 50%;
-    /* grain inside the gradient only, masked to the same falloff */
-    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
-  }
-
-  .amber {
-    display: none;
-  }
-
-  .violet {
-    left: -30%;
-    top: 34%;
-    width: 110%;
-    height: 50%;
-    background:
-      var(--grain-violet),
-      radial-gradient(closest-side, rgb(210 115 173 / 0.16), rgb(210 115 173 / 0.05) 55%, transparent);
-  }
-
-  .blue {
-    right: -35%;
-    top: 40%;
-    width: 90%;
-    height: 40%;
-    background:
-      var(--grain-blue),
-      radial-gradient(closest-side, rgb(48 33 215 / 0.26), rgb(48 33 215 / 0.08) 55%, transparent);
-  }
-
-  /* ---------- Desktop: photo right, text left ---------- */
+  /* ---------- Wide screens: the spot lights the right, the label sits left ---------- */
 
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) {
     .hero {
-      --pw: min(55vw, 82svh);
-      display: grid;
-      align-items: center;
-      min-height: max(34rem, calc(100svh - 6rem));
-      padding-block: 5rem 2rem;
+      /* The first bay shows its lit edge and its whole title at the fold. */
+      --peek: calc(1.75rem + clamp(2rem, 0.75rem + 3.6vw, 4.25rem));
+      /* Where the spot's edge lands on the floor: the label stays left of it. */
+      --edge: 44vw;
+      --frame-left: max(var(--gutter), calc((100vw - 82rem) / 2 + var(--gutter)));
+      display: flex;
+      flex-direction: column;
+      min-height: max(30rem, calc(100svh - var(--bar) - var(--peek)));
+      padding-block-end: 3rem;
     }
 
-    .photo {
+    .print {
       position: absolute;
-      top: 0;
-      right: 0;
-      width: var(--pw);
-      height: 100svh;
-      min-height: 36rem;
-      max-height: none;
-      aspect-ratio: auto;
+      inset: 0 0 1.5rem var(--edge);
+      height: auto;
+      clip-path: url(#beam-wide);
     }
 
-    .photo img {
-      object-position: 50% 88%;
-      /* Left edge melts toward the text, bottom into the next section,
-         top softens under the bar. */
-      mask-image:
-        linear-gradient(
-          to right,
-          transparent 0%,
-          rgb(0 0 0 / 0.08) 8%,
-          rgb(0 0 0 / 0.25) 16%,
-          rgb(0 0 0 / 0.5) 24%,
-          rgb(0 0 0 / 0.78) 32%,
-          #000 42%
-        ),
-        linear-gradient(
-          to bottom,
-          rgb(0 0 0 / 0.55) 0%,
-          #000 14%,
-          #000 72%,
-          rgb(0 0 0 / 0.6) 84%,
-          rgb(0 0 0 / 0.2) 93%,
-          transparent 100%
-        );
-      mask-composite: intersect;
+    .print img {
+      object-position: 50% 28%;
+      scale: none;
     }
 
-    .intro {
-      margin-block-start: 0;
+    /* Hung high on the left, filling the dark above the label. */
+    .hang {
+      position: relative;
+      inset: auto;
+      flex: 1 1 0;
+      min-height: 7rem;
+      max-height: 26rem;
+      margin: clamp(0.75rem, 3svh, 2rem) 0 clamp(1.5rem, 4svh, 2.5rem) var(--frame-left);
     }
 
-    /* The name fills the dark side, never the photo. */
-    h1 {
-      font-size: clamp(2.5rem, min((100vw - var(--pw)) / 5.2, 13svh), 6rem);
+    .label {
+      padding-block-start: 0;
     }
 
-    .intro > * {
-      max-width: min(40rem, calc(100vw - var(--pw) - var(--gutter)));
+    .label > * {
+      max-width: calc(var(--edge) - var(--frame-left) - 2.5rem);
+    }
+
+    /* The name may run past the floor line: higher up, the spot's edge
+       leans away to the right, so the name never reaches the light. */
+    .label > h1 {
+      max-width: none;
+      font-size: clamp(2.5rem, min(5.6vw, 10.5svh), 6rem);
     }
 
     .claim {
-      max-width: min(30ch, calc(100vw - var(--pw) - var(--gutter)));
-    }
-
-    .amber {
-      display: block;
-      right: calc(var(--pw) * 0.05);
-      top: -38svh;
-      width: calc(var(--pw) * 1.5);
-      height: 80svh;
-      background:
-        var(--grain-amber),
-        radial-gradient(closest-side, rgb(247 188 124 / 0.13), rgb(247 188 124 / 0.04) 55%, transparent);
-    }
-
-    .violet {
-      left: auto;
-      right: calc(var(--pw) * 0.3);
-      top: 8svh;
-      width: calc(var(--pw) * 1.25);
-      height: 72svh;
-    }
-
-    .blue {
-      right: calc(var(--pw) * -0.3);
-      top: 62svh;
-      width: calc(var(--pw) * 0.9);
-      height: 56svh;
+      max-width: min(26ch, calc(var(--edge) - var(--frame-left) - 2.5rem));
     }
   }
 
-  @keyframes fade {
+  /* Landscape phones: the label alone fits under 32rem; the jet waits. */
+  @media (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
+    .hero {
+      min-height: calc(100svh - var(--bar));
+      padding-block-end: 1rem;
+    }
+
+    .hang {
+      display: none;
+    }
+
+    .role {
+      margin-block-start: 0.5rem;
+    }
+
+    .drone {
+      margin-block-start: 0.375rem;
+    }
+
+    .label :global(.hero-links) {
+      margin-block-start: 0.5rem;
+    }
+  }
+
+  /* ---------- Lights up: jet, print, label, then the first bay. Hard cuts,
+     all on by 600 ms; every state is readable. ---------- */
+
+  @keyframes facet-on {
     from {
-      opacity: 0;
+      fill: var(--shade);
     }
   }
 
-  /* ---------- Sections ---------- */
-
-  .section {
-    position: relative;
-    z-index: 2;
-    padding-block-start: var(--step-section);
-  }
-
-  .section.peek {
-    padding-block-start: clamp(2rem, 1rem + 4vw, 5rem);
-  }
-
-  /* Short phones: no room for a clean peek, so the heading starts fully
-     below the fold instead of showing as a sliver. */
-  @media (max-height: 45rem) {
-    .section.peek {
-      padding-block-start: var(--step-section);
+  @keyframes print-on {
+    from {
+      filter: brightness(0.3);
     }
   }
 
-  @media (min-width: 40rem) and (min-aspect-ratio: 5/4) {
-    .section.peek {
-      padding-block-start: 1.5rem;
+  @keyframes label-on {
+    from {
+      color: var(--muted);
     }
   }
 
-  .section h2 {
-    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
-    margin-block-end: 1.25rem;
+  @keyframes bay-on {
+    from {
+      background-color: var(--hall);
+    }
+  }
+
+  /* ---------- Bays ---------- */
+
+  .pool.first {
+    padding-block-start: 1.25rem;
+    animation: bay-on 1ms steps(1, end) 560ms both;
+  }
+
+  /* Short phones: no room for the whole title, so only the lit edge shows
+     at the fold and the title starts below it, never as a sliver. */
+  @media (max-height: 45rem) and (not ((min-width: 40rem) and (min-aspect-ratio: 5/4))) {
+    .pool.first {
+      padding-block-start: 3rem;
+    }
+  }
+
+  /* How I work is the hall's one big move: its title and offer are set
+     larger than every other bay. */
+  .how .wall {
+    font-size: clamp(2rem, 0.75rem + 3.6vw, 4.25rem);
+    margin-block-end: clamp(1.25rem, 1rem + 1vw, 2rem);
   }
 
   .offer {
-    max-width: 34ch;
-    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
-    line-height: 1.4;
+    max-width: 30ch;
+    font-size: clamp(1.3125rem, 1rem + 1.1vw, 2.125rem);
+    line-height: 1.35;
   }
 
   .quiet {
     color: var(--muted);
   }
 
-  h3 {
-    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
-    line-height: 1.15;
+  /* Exhibits stand in one row; every label has the same lines in the same
+     order: title, kind and year, text. */
+  .row {
+    display: grid;
+    gap: 2.5rem 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
   }
 
-  h3 a {
+  .exhibit h3 {
+    font-size: 1.1875rem;
+  }
+
+  .exhibit h3 a {
     text-decoration-color: transparent;
   }
 
-  h3 a:hover,
-  h3 a:focus-visible {
-    text-decoration-color: var(--amber);
+  .exhibit h3 a:hover,
+  .exhibit h3 a:focus-visible {
+    text-decoration-color: var(--heat);
   }
 
-  .projects {
-    display: grid;
-    gap: 2.5rem 3rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    max-width: 72rem;
-  }
-
-  .projects p,
-  .study p {
-    margin-block-start: 0.5rem;
+  .exhibit p {
+    margin-block-start: 0.375rem;
     max-width: var(--measure);
-  }
-
-  .studies {
-    display: grid;
-    gap: 1.5rem;
-    max-width: 56rem;
-  }
-
-  .study {
-    padding: clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
-    background: var(--surface);
   }
 
   .eval {
@@ -477,25 +459,17 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     gap: 0.25rem 0.75rem;
   }
 
-  .study .eval {
-    margin-block-start: 1.25rem;
+  .exhibit .eval {
+    margin-block-start: 1rem;
   }
 
   .value {
-    font-family: var(--text);
     font-size: 1.625rem;
     font-weight: 600;
-    color: var(--cream);
-  }
-
-  .reviews {
-    display: grid;
-    gap: 3rem;
-    max-width: 48rem;
   }
 
   blockquote p {
-    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
     line-height: 1.4;
   }
 
@@ -504,55 +478,8 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     color: var(--muted);
   }
 
-  .notes {
-    display: grid;
-    gap: 2rem;
-    max-width: 52rem;
-  }
-
-  .notes li {
-    display: grid;
-    gap: 0.25rem 2rem;
-  }
-
-  .notes time {
-    color: var(--muted);
-    font-size: 0.9375rem;
-    padding-block-start: 0.3rem;
-  }
-
-  @media (min-width: 40rem) {
-    .notes li {
-      grid-template-columns: 7rem 1fr;
-    }
-  }
-
   .about {
     max-width: var(--measure);
     font-size: 1.125rem;
   }
-  /* Landscape phones: everything up to the links fits in 390px. */
-  @media (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
-    .hero {
-      min-height: 100svh;
-      padding-block: 3.25rem 0.5rem;
-    }
-
-    .photo {
-      min-height: 0;
-    }
-
-    .role {
-      margin-block-start: 0.75rem;
-    }
-
-    .drone {
-      margin-block-start: 0.5rem;
-    }
-
-    .intro :global(.hero-links) {
-      margin-block-start: 0.75rem;
-    }
-  }
-
 </style>
