@@ -327,8 +327,9 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
       padding-block-start: 0;
     }
 
-    .label > * {
-      max-width: calc(var(--edge) - var(--frame-left) - 2.5rem);
+    /* :global(*) so the links' <nav>, a child component, is held too. */
+    .label > :global(*) {
+      max-width: calc(var(--edge) - var(--frame-left) - 1.5rem);
     }
 
     /* The name may run past the floor line: higher up, the spot's edge
@@ -339,15 +340,26 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     }
 
     .claim {
-      max-width: min(26ch, calc(var(--edge) - var(--frame-left) - 2.5rem));
+      max-width: min(26ch, calc(var(--edge) - var(--frame-left) - 1.5rem));
     }
   }
 
-  /* Landscape phones: the label alone fits under 32rem; the jet waits. */
+  /* Landscape phones: the label alone fits under 32rem; the jet waits, and
+     the dark side widens so the links stay out of the light. */
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
     .hero {
+      --edge: 56vw;
       min-height: calc(100svh - var(--bar));
       padding-block-end: 1rem;
+    }
+
+    .print {
+      clip-path: url(#beam-tall);
+    }
+
+    .claim {
+      font-size: 1.125rem;
+      max-width: min(30ch, calc(var(--edge) - var(--frame-left) - 1.5rem));
     }
 
     .hang {
