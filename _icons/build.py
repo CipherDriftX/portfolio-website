@@ -5,10 +5,13 @@ Run from the repo root:
 
 Needs rsvg-convert (librsvg), magick (ImageMagick 7) and chromium (for the sheet).
 
-The mark (SHIP below): j, a hypersonic jet seen from above, nose up, lit
-from the right so one half is a step darker, tail running into amber. Drawn
-in j.svg (dark tile, used for 16/32/48 px and favicon.svg) and j-touch.svg
-(full bleed with a faint violet bloom and engine heat, 180 px and up).
+The mark (SHIP below): j, a hypersonic jet seen from above, nose up, its
+leading edge one blended curve, two flat facets lit from the right.
+  j-favicon.svg  favicon.svg, transparent: cream/tan on dark tabs, near-black
+                 on light tabs (prefers-color-scheme inside the SVG)
+  j.svg          16/32/48 px ICO frames, transparent, copper (PNG frames
+                 cannot switch colour; copper holds about 3:1 on both tabs)
+  j-touch.svg    180/192/512 px, flat dark tile (iOS fills transparency black)
 
 Writes to public/: favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png,
 icon-192.png, icon-512.png. Writes the comparison sheet to _icons/sheet.png.
@@ -130,7 +133,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         all_files = {name: render(name, pathlib.Path(tmp) / name) for name in (SHIP,)}
         ship = all_files[SHIP]
-        shutil.copyfile(ICONS / f"{SHIP}.svg", PUBLIC / "favicon.svg")
+        shutil.copyfile(ICONS / f"{SHIP}-favicon.svg", PUBLIC / "favicon.svg")
         ico([(s, ship[s]) for s in (16, 32, 48)], PUBLIC / "favicon.ico")
         shutil.copyfile(ship[180], PUBLIC / "apple-touch-icon.png")
         shutil.copyfile(ship[192], PUBLIC / "icon-192.png")
