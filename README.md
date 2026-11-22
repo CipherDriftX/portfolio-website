@@ -24,7 +24,7 @@ The production build stops with an error if any live entry still has `[OWNER: ..
 | `src/content/reviews/` | Reviews, one file each, only with the person's permission |
 | `src/content/notes/` | Notes, one file each, each gets a page at `/notes/<file name>` |
 | `src/content/about/about.md` | The About text |
-| `src/pages/` | Home, case study page, note page, 404 |
+| `src/pages/` | Home, case study page, note page, 404, and `llms.txt.ts` (a plain-text map of the site for AI answer engines, built from the same content) |
 | `src/styles/global.css` | Colours, fonts, links, focus |
 | `public/photo/` | The photo, cut by `_photo/build.py` |
 | `public/fonts/` | Gloock (headings) and Hanken Grotesk (text), both SIL Open Font License 1.1 |
@@ -32,7 +32,7 @@ The production build stops with an error if any live entry still has `[OWNER: ..
 | `CNAME`, `_config.yml` | Left over from GitHub Pages. Not deployed |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design notes. Not deployed (see `.vercelignore`) |
 
-A section shows on the site only when it has live entries: one project, one case study, one review, or two notes. Drafts (`draft: true`) show in `npm run dev` with a Draft tag and never go live. How I work and Contact always show.
+A section shows on the site only when it has live entries: one project, one case study, one review, or one note. Drafts (`draft: true`) show in `npm run dev` with a Draft tag and never go live. How I work and Contact always show.
 
 Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 
@@ -59,7 +59,7 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 **Add a note**
 
 1. Copy `src/content/notes/example-note.md` to `src/content/notes/<short-name>.md`.
-2. Write it and set `draft: false`. The Notes section appears once two notes are live.
+2. Write it and set `draft: false`. The Notes section appears once one note is live.
 3. `npm run build`, then push.
 
 **Write the About text**

@@ -42,7 +42,7 @@ The portfolio for Aryan Haghighi. In 5 to 10 seconds the first screen must answe
 
 ## Evidence on Hand
 
-LinkedIn and GitHub profiles only. No case studies, clients, reviews or metrics exist yet, and none may be invented. Every missing item is a draft placeholder with an `[OWNER: ...]` line until the owner writes it.
+LinkedIn, GitHub, and the owner's public repos: plarix-scan (live case study and note, facts from its README), hippo.c-1 and the reaction wheel pendulum. No clients, reviews or eval metrics exist yet, and none may be invented; a case study leaves `evals` out until real results exist. Every missing item is a draft placeholder with an `[OWNER: ...]` line until the owner writes it.
 
 ## Product Principles
 
