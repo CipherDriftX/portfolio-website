@@ -11,7 +11,6 @@ const year = new Date().getFullYear();
     <div class="frame">
       <h2 id="contact-title" class="wall">Contact</h2>
       <ContactLinks label="Contact" class="contact-row" />
-      <p class="drone">{site.drone}</p>
     </div>
   </div>
   <p class="year frame"><span class="num">© {year}</span> {site.name}</p>
@@ -20,11 +19,6 @@ const year = new Date().getFullYear();
 <style>
   .contact {
     margin-block-start: var(--gap-hall);
-  }
-
-  .drone {
-    margin-block-start: 1.5rem;
-    color: var(--muted);
   }
 
   .year {
