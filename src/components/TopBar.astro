@@ -68,7 +68,8 @@ const phoneHidden = (id: string, i: number) => id !== "contact" && i >= 2;
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
-    margin-inline-start: -0.5rem;
+    /* 44px hit area, 20px mark: pull back so the wingtip sits on the text edge. */
+    margin-inline-start: -0.75rem;
     border-radius: 0.5rem;
   }
 
