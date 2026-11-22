@@ -17,6 +17,6 @@ export const site = {
   photo: {
     alt: "Aryan Haghighi sitting at a table by a window at night.",
     // Used by the Person schema and as a fallback share image.
-    schema: "/photo/phone-960.jpg",
+    schema: "/photo/print-960.jpg",
   },
 } as const;
