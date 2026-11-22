@@ -7,6 +7,8 @@ export const site = {
   drone: "Building autonomous drones.",
   offer:
     "I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month.",
+  // What search engines and AI answers should link to the name (Person knowsAbout).
+  topics: ["AI agents", "LLM evaluation", "Large language models", "LLM cost tracking", "Autonomous drones", "Robotics"],
   pageTitle: "Aryan Haghighi, AI Engineer · production AI agents + evals",
   url: "https://www.aryanhaghighi.com",
   email: "aryan@aryanhaghighi.com",

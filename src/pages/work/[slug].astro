@@ -18,6 +18,14 @@ const d = entry.data;
   title={`${d.title} · ${site.name}`}
   description={d.summary}
   path={`/work/${entry.id}/`}
+  schema={{
+    "@type": "Article",
+    headline: d.title,
+    description: d.summary,
+    datePublished: String(d.year),
+    keywords: d.stack.join(", "),
+    ...(d.links.code && { isBasedOn: d.links.code }),
+  }}
   back={{ href: "/#case-studies", label: "All case studies" }}
   draft={d.draft}
 >
@@ -25,10 +33,16 @@ const d = entry.data;
     <h1>{d.title}</h1>
     <p class="lead">{d.summary}</p>
 
-    <p class="result">
-      <span class="num value">{d.evals.value}</span>
-      <span>{d.evals.metric}, on <span class="num">{d.evals.cases}</span> eval {d.evals.cases === 1 ? "case" : "cases"}</span>
-    </p>
+    {
+      d.evals && (
+        <p class="result">
+          <span class="num value">{d.evals.value}</span>
+          <span>
+            {d.evals.metric}, on <span class="num">{d.evals.cases}</span> eval {d.evals.cases === 1 ? "case" : "cases"}
+          </span>
+        </p>
+      )
+    }
 
     <dl class="facts">
       <div><dt>Role</dt><dd>{d.role}</dd></div>
