@@ -64,7 +64,6 @@ typography:
 rounded:
   none: "0px"
   hairline: "2px"
-  mark: "7px"
 spacing:
   gutter: "clamp(1rem, 7vw - 0.75rem, 6rem)"
   section: "clamp(4.5rem, 3rem + 6vw, 9rem)"
@@ -99,8 +98,8 @@ components:
     padding: "0.625rem 1rem"
   site-mark:
     backgroundColor: "transparent"
-    height: "28px"
-    width: "17.5px"
+    height: "32px"
+    width: "20px"
 ---
 
 # Design System: Aryan Haghighi
@@ -146,7 +145,7 @@ A warm umber dark lit by tungsten, with two cold lights kept strictly as glow.
 ### Named Rules
 **The Light, Never Ink Rule.** Violet and blue appear only inside radial blooms. Never as text, icon, border, button or fill. If you can point at it and name its edge, it is ink and it is wrong.
 
-**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms and the engine heat on the mark's tail.
+**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms.
 
 **The Real Source Rule.** Every bloom is tied to a light in the photo: amber from above (the bulbs), violet beside the face (the neon), blue low on the photo side (the chair). At most three per screen. No bloom without a source.
 
@@ -201,7 +200,7 @@ Flat. There are no box shadows anywhere. Depth comes from light: three large, fa
 
 ## Shapes
 
-Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, and the favicon's rounded tile (7 on a 32 grid). The page mark has no tile. Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
+Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, The mark has no tile anywhere a background shows through; phone icons are full-bleed squares that the OS rounds. Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
 
 ## Components
 
@@ -227,7 +226,7 @@ The one container: a flat `surface` block, no border, no radius, no shadow, flui
 Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.
 
 ### Site mark
-A hypersonic jet seen from above, nose up: an original planform with a long chined nose, a sharp delta and a W trailing edge. Lit from the right, so the left half sits a step darker (the faceted, stealth look); cream at the nose running into amber engine heat at the tail. On the page it stands alone at 28px tall, no tile; the favicon puts the same drawing on a `surface` rounded tile. It carries the theme (dark, fast jets) without aerospace job-seeker cues: no HUD symbols, insignia, blueprint lines or technical labels. No letters. Decorative; the link around it carries the full name.
+A hypersonic jet seen from above, nose up: an original planform whose leading edge is one blended curve from needle nose to wingtip, with a forward-swept W trailing edge ending in two pointed engine tails. Two flat facets split on the centreline, lit from the right: tan `#cf9a63` on the left, `cream` on the right. No gradients, no outlines, no glow; it must hold as a solid silhouette at 16px. On the page it stands alone at 32px tall, its wingtip on the text edge. The favicon is transparent: `favicon.svg` uses the same facets on dark tabs and near-black `#140b09` / `#3b2822` on light tabs (prefers-color-scheme inside the SVG); the ICO frames, which cannot switch, are copper `#a65c2b` / `#c97a40`, about 3:1 on both. Phone and manifest icons put it on a flat `#120b09` square at 64% of the height. It carries the theme (dark, fast jets) without aerospace job-seeker cues: no HUD symbols, insignia, blueprint lines or technical labels. No letters. Decorative; the link around it carries the full name.
 
 ### Draft tag (dev only)
 A small muted label with a dashed muted border, shown only in `npm run dev` next to draft entries. It never ships and is not a pattern for production UI.

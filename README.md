@@ -82,7 +82,7 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 
 **Change the icon**
 
-1. Edit `_icons/j.svg` (favicon tile) and `_icons/j-touch.svg` (phone icons), and `src/components/Mark.astro` (top bar) to match. `SHIP` in `_icons/build.py` picks the file name.
+1. The jet is drawn in four places with the same two paths: `_icons/j-favicon.svg` (browser tab, switches light/dark), `_icons/j.svg` (ICO, copper), `_icons/j-touch.svg` (phone icons) and `src/components/Mark.astro` (top bar). Change all four together.
 2. Run `python3 _icons/build.py` and look at `_icons/sheet.png` at real size.
 3. Push.
 
