@@ -4,7 +4,7 @@ Notes for search engines and AI answers. Not deployed (see `.vercelignore`).
 
 ## Fixed words
 
-- Head phrase: **AI Engineer · production AI agents + evals**. It is the title tag, the schema `jobTitle` plus `description`, and should be the LinkedIn and GitHub headline. Keep it fixed: each change makes engines relearn who you are.
+- Head phrase: **AI Engineer · production AI agents + evals**. It is in the title tag, and it should be the LinkedIn and GitHub headline. The schema says the same thing in two fields: `jobTitle` is "AI Engineer" and `description` is the claim. Keep all of it fixed: each change makes engines relearn who you are.
 - Name: always **Aryan Haghighi** in full.
 - Topic lanes (schema `knowsAbout`): AI agents, LLM evaluation, large language models, autonomous drones. Every case study and note fits one lane.
 
@@ -13,7 +13,7 @@ Notes for search engines and AI answers. Not deployed (see `.vercelignore`).
 | Piece | Where |
 |---|---|
 | ProfilePage + Person (one `@id`), WebSite, Article schema | `src/layouts/Base.astro` |
-| Sitemap with real `lastmod` dates only | `astro.config.mjs`, `src/lib/lastmod.ts`, `site.updated` in `src/data/site.ts` |
+| Sitemap with real `lastmod` dates only: `date` on notes, `updated` on case studies, projects and reviews, `updated` in `src/data/site.ts` for the copy and About | `astro.config.mjs`, `src/lib/lastmod.ts` |
 | IndexNow ping to Bing and others after each production deploy | `scripts/indexnow.mjs`, `.github/workflows/indexnow.yml`, key file in `public/` |
 | `/llms.txt` map for AI answer engines | `src/pages/llms.txt.ts` |
 | robots.txt open to all crawlers, AI ones included | `public/robots.txt` |

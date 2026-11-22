@@ -31,6 +31,8 @@ const work = defineCollection({
       })
       .default({}),
     year: z.number().int(),
+    // The day this entry was added or last changed. Feeds the sitemap lastmod.
+    updated: z.coerce.date(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
@@ -44,6 +46,8 @@ const projects = defineCollection({
     repo: z.url(),
     line: z.string(), // one line: what it is
     why: z.string(), // one line: why it matters
+    // The day this entry was added or last changed. Feeds the sitemap lastmod.
+    updated: z.coerce.date(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
@@ -60,6 +64,8 @@ const reviews = defineCollection({
       company: z.string(),
       link: z.url(),
       permission: z.boolean(),
+      // The day this entry was added or last changed. Feeds the sitemap lastmod.
+      updated: z.coerce.date(),
       draft: z.boolean().default(false),
     })
     .refine((r) => r.draft || r.permission, {
