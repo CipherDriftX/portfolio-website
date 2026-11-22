@@ -1,6 +1,9 @@
 # After Vercel finishes a production deploy of main, tell IndexNow search
 # engines (Bing and others) which pages changed. Google reads the sitemap.
-# Vercel reports deploys as commit statuses named "Vercel".
+# Vercel reports deploys as commit statuses named "Vercel". For a status
+# event, github.sha is the newest commit on main, so requiring the status to
+# be for that commit means: the production deploy of main's head. Preview
+# deploys of merged branch commits finish late and must not send again.
 name: IndexNow
 
 on:
@@ -21,12 +24,12 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event.context == 'Vercel' &&
        github.event.state == 'success' &&
-       contains(github.event.branches.*.name, 'main'))
+       github.event.sha == github.sha)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7.0.1
         with:
-          ref: ${{ github.event.sha || github.sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 2
       - run: node scripts/indexnow.mjs ${{ inputs.all && '--all' || '' }}
