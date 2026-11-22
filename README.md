@@ -42,22 +42,24 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 
 ## How to update
 
+When you edit a live case study, project or review later, set its `updated` to that day too. Search engines use it to know what changed.
+
 **Add a case study**
 
 1. Copy `src/content/work/example-case-study.md` to `src/content/work/<short-name>.md`.
-2. Replace every `[OWNER: ...]` line, then set `draft: false`.
+2. Replace every `[OWNER: ...]` line, set `updated` to today's date, then set `draft: false`.
 3. `npm run build`, then push.
 
 **Add a project to Work**
 
 1. Copy `src/content/projects/example-project.md` to `src/content/projects/<repo-name>.md`.
-2. Fill in the name, repo link and two lines, then set `draft: false`.
+2. Fill in the name, repo link and two lines, set `updated` to today's date, then set `draft: false`.
 3. `npm run build`, then push.
 
 **Add a review**
 
 1. Get the person's written OK to quote them.
-2. Copy `src/content/reviews/example-review.md`, paste their exact words, set `permission: true` and `draft: false`.
+2. Copy `src/content/reviews/example-review.md`, paste their exact words, set `updated` to today's date, `permission: true` and `draft: false`.
 3. `npm run build`, then push.
 
 **Add a note**

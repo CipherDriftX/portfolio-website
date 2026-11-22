@@ -9,9 +9,9 @@ export const site = {
     "I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month.",
   // What search engines and AI answers should link to the name (Person knowsAbout).
   topics: ["AI agents", "LLM evaluation", "Large language models", "Autonomous drones"],
-  // The day the facts on this page (name, title, claim, topics, links, About)
-  // last changed. Bump it when you change them. It feeds the sitemap and the
-  // home page schema; new notes move the date forward on their own.
+  // The day the facts in this file or the About text last changed. Bump it
+  // when you change them. It feeds the sitemap and the home page schema.
+  // Notes, case studies, projects and reviews move the date on their own.
   updated: "2026-11-22",
   pageTitle: "Aryan Haghighi, AI Engineer · production AI agents + evals",
   url: "https://www.aryanhaghighi.com",

@@ -23,6 +23,7 @@ const d = entry.data;
     headline: d.title,
     description: d.summary,
     datePublished: String(d.year),
+    dateModified: d.updated.toISOString().slice(0, 10),
     keywords: d.stack.join(", "),
     ...(d.links.code && { isBasedOn: d.links.code }),
   }}

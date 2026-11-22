@@ -7,5 +7,6 @@ role: "[OWNER: write their role]"
 company: "[OWNER: write their company]"
 link: "https://www.linkedin.com/"
 permission: false
+updated: 2026-11-22 # OWNER: set to the day you add or change this file
 draft: true
 ---
