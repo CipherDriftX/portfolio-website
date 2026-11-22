@@ -29,9 +29,10 @@ export async function about() {
   return (await getCollection("about", keep))[0];
 }
 
-// A section only renders when it has enough live entries.
-// In dev it renders with drafts so the owner can see where they will go.
-export const minimum = { projects: 1, caseStudies: 1, reviews: 1, notes: 1 } as const;
+// Work, Case studies and Notes always render; with no live entries they show
+// one placeholder line until the owner adds files. Reviews render only with a
+// real, permitted review. In dev, drafts show so the owner can see the spots.
+export const minimum = { reviews: 1 } as const;
 export const enough = (count: number, min: number) => (showDrafts ? count > 0 : count >= min);
 
 // Everything the pages need to know about which sections are live.
@@ -55,11 +56,11 @@ export async function siteContent() {
     about(),
   ]);
   const live: Record<SectionId, boolean> = {
-    work: enough(projectList.length, minimum.projects),
-    "case-studies": enough(studies.length, minimum.caseStudies),
+    work: true,
+    "case-studies": true,
     how: true,
     reviews: enough(reviewList.length, minimum.reviews),
-    notes: enough(noteList.length, minimum.notes),
+    notes: true,
     about: Boolean(aboutEntry),
   };
   const shown = (Object.keys(labels) as SectionId[]).filter((id) => live[id]);
