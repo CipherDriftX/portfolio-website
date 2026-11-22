@@ -199,6 +199,12 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     isolation: isolate;
   }
 
+  /* When How I work follows the first screen, its title rises half out of
+     the bay, so the hero keeps dark floor under the links for it. */
+  .hero:has(+ .how) {
+    padding-block-end: calc(0.46 * var(--how-size) + 1.5rem);
+  }
+
   .defs {
     position: absolute;
   }
@@ -242,8 +248,10 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     fill: var(--shade);
   }
 
+  /* One facet catches the spot, bone like the label; the other stays in the
+     dark, just visible enough to close the planform. */
   .jet .lit {
-    fill: var(--steel);
+    fill: var(--bone);
     animation: facet-on 1ms steps(1, end) 100ms both;
   }
 
@@ -290,8 +298,9 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
 
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) {
     .hero {
-      /* The first bay shows its lit edge and its whole title at the fold. */
-      --peek: calc(1.75rem + clamp(2rem, 0.75rem + 3.6vw, 4.25rem));
+      /* The first bay shows its lit edge and its whole title at the fold:
+         the title's upper half already stands on the dark above it. */
+      --peek: calc(0.54 * var(--how-size) + 1rem);
       /* Where the spot's edge lands on the floor: the label stays left of it. */
       --edge: 44vw;
       --frame-left: max(var(--gutter), calc((100vw - 82rem) / 2 + var(--gutter)));
@@ -313,14 +322,23 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
       scale: none;
     }
 
-    /* Hung high on the left, filling the dark above the label. */
+    .hero:has(+ .how) {
+      padding-block-end: calc(0.46 * var(--how-size) + 2rem);
+    }
+
+    .hero:has(+ .how) .print {
+      bottom: calc(0.46 * var(--how-size) + 1rem);
+    }
+
+    /* Hung from the ceiling on the left, filling the dark above the label.
+       The home bar's left end is empty (no mark), so the jet rises into it. */
     .hang {
       position: relative;
       inset: auto;
       flex: 1 1 0;
       min-height: 7rem;
-      max-height: 26rem;
-      margin: clamp(0.75rem, 3svh, 2rem) 0 clamp(1.5rem, 4svh, 2.5rem) var(--frame-left);
+      max-height: 28rem;
+      margin: calc(1rem - var(--bar)) 0 clamp(1rem, 3svh, 2rem) var(--frame-left);
     }
 
     .label {
@@ -347,13 +365,16 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
   /* Landscape phones: the label alone fits under 32rem; the jet waits, and
      the dark side widens so the links stay out of the light. */
   @media (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
-    .hero {
+    .hero,
+    .hero:has(+ .how) {
       --edge: 56vw;
-      min-height: calc(100svh - var(--bar));
+      min-height: calc(100svh - var(--bar) - 1.5rem);
       padding-block-end: 1rem;
     }
 
-    .print {
+    .print,
+    .hero:has(+ .how) .print {
+      bottom: 1.5rem;
       clip-path: url(#beam-tall);
     }
 
@@ -413,19 +434,37 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     animation: bay-on 1ms steps(1, end) 560ms both;
   }
 
-  /* Short phones: no room for the whole title, so only the lit edge shows
-     at the fold and the title starts below it, never as a sliver. */
-  @media (max-height: 45rem) and (not ((min-width: 40rem) and (min-aspect-ratio: 5/4))) {
+  /* How I work is the hall's one decisive beat: its title, larger than any
+     other, breaks its bay. The bay's hard top edge cuts through the letters,
+     upper half on the dark floor, lower half in the light. */
+  .pool.how {
+    padding-block-start: 0;
+  }
+
+  .how .wall {
+    position: relative;
+    top: -0.46em;
+    font-size: var(--how-size);
+    margin-block-end: calc(clamp(1.25rem, 1rem + 1vw, 2rem) - 0.46em);
+  }
+
+  /* Short phones and landscape phones: no room for the whole title at the
+     fold, so only the first bay's lit edge shows there and its title starts
+     inside the bay below it, never as a sliver. */
+  @media (max-height: 45rem) and (not ((min-width: 40rem) and (min-aspect-ratio: 5/4))),
+    (min-width: 40rem) and (min-aspect-ratio: 5/4) and (max-height: 32rem) {
     .pool.first {
       padding-block-start: 3rem;
     }
-  }
 
-  /* How I work is the hall's one big move: its title and offer are set
-     larger than every other bay. */
-  .how .wall {
-    font-size: clamp(2rem, 0.75rem + 3.6vw, 4.25rem);
-    margin-block-end: clamp(1.25rem, 1rem + 1vw, 2rem);
+    .hero:has(+ .how) {
+      padding-block-end: 1rem;
+    }
+
+    .how.first .wall {
+      top: 0;
+      margin-block-end: clamp(1.25rem, 1rem + 1vw, 2rem);
+    }
   }
 
   .offer {
@@ -438,12 +477,13 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     color: var(--muted);
   }
 
-  /* Exhibits stand in one row; every label has the same lines in the same
-     order: title, kind and year, text. */
+  /* Exhibits stand in one ordered file down the hall, read in sequence,
+     never a grid; every label has the same lines in the same order: title,
+     kind and year, text. */
   .row {
     display: grid;
-    gap: 2.5rem 3rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: 2.5rem;
+    max-width: var(--measure);
   }
 
   .exhibit h3 {
