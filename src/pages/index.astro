@@ -53,6 +53,11 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     live.work && (
       <section id="work" class:list={["section frame", { peek: first === "work" }]} aria-labelledby="work-title">
         <h2 id="work-title">Work</h2>
+        {projects.length === 0 && (
+          <p class="quiet empty">
+            Selected projects go here soon. Until then, my code is on <a href={site.links.github}>GitHub</a>.
+          </p>
+        )}
         <ul role="list" class="projects">
           {projects.map((p) => (
             <li>
@@ -77,6 +82,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
         aria-labelledby="case-studies-title"
       >
         <h2 id="case-studies-title">Case studies</h2>
+        {studies.length === 0 && <p class="quiet empty">Case studies go here soon.</p>}
         <ul role="list" class="studies">
           {studies.map((s) => (
             <li class="study">
@@ -136,6 +142,7 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     live.notes && (
       <section id="notes" class="section frame" aria-labelledby="notes-title">
         <h2 id="notes-title">Notes</h2>
+        {notes.length === 0 && <p class="quiet empty">Notes go here soon.</p>}
         <ul role="list" class="notes">
           {notes.map((n) => (
             <li>
@@ -528,6 +535,11 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     .notes li {
       grid-template-columns: 7rem 1fr;
     }
+  }
+
+  /* A section with no entries yet shows only its placeholder line. */
+  ul:empty {
+    display: none;
   }
 
   .about {
