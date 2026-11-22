@@ -1,0 +1,32 @@
+# After Vercel finishes a production deploy of main, tell IndexNow search
+# engines (Bing and others) which pages changed. Google reads the sitemap.
+# Vercel reports deploys as commit statuses named "Vercel".
+name: IndexNow
+
+on:
+  status:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Send every page in the sitemap, not only the changed ones
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.context == 'Vercel' &&
+       github.event.state == 'success' &&
+       contains(github.event.branches.*.name, 'main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.sha || github.sha }}
+          fetch-depth: 2
+      - run: node scripts/indexnow.mjs ${{ inputs.all && '--all' || '' }}
