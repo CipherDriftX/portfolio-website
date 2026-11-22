@@ -26,8 +26,8 @@ The production build stops with an error if any live entry still has `[OWNER: ..
 | `src/content/about/about.md` | The About text |
 | `src/pages/` | Home, case study page, note page, 404 |
 | `src/styles/global.css` | Colours, fonts, links, focus |
-| `public/photo/` | The photo, cut by `_photo/build.py` |
-| `public/fonts/` | Gloock (headings) and Hanken Grotesk (text), both SIL Open Font License 1.1 |
+| `public/photo/` | The photo, one black and white print, cut by `_photo/build.py` |
+| `public/fonts/` | Archivo Expanded (name and section titles) and Hanken Grotesk (text), both SIL Open Font License 1.1 |
 | `_photo/build.py`, `_og/build.py`, `_icons/build.py` | Scripts that make the photo files, the link preview and the icons |
 | `CNAME`, `_config.yml` | Left over from GitHub Pages. Not deployed |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design notes. Not deployed (see `.vercelignore`) |
@@ -78,12 +78,12 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 
 1. Check the crop boxes at the top of `_photo/build.py` against the new photo (nothing private in frame).
 2. Run `python3 _photo/build.py <path to photo>`, then `python3 _og/build.py`.
-3. Look at every file in `public/photo/` and `public/og.jpg`, then push.
+3. Look at every file in `public/photo/` and `public/og.jpg`, then push. The home page cuts the print with the spot's curved edge, so check his face stays clear of it on a phone and on a wide screen.
 
 **Change the icon**
 
-1. The jet is drawn in four places with the same two paths: `_icons/j-favicon.svg` (browser tab, switches light/dark), `_icons/j.svg` (ICO, copper), `_icons/j-touch.svg` (phone icons) and `src/components/Mark.astro` (top bar). Change all four together.
-2. Run `python3 _icons/build.py` and look at `_icons/sheet.png` at real size.
+1. The jet is drawn in six places with the same two paths: `_icons/j-favicon.svg` (browser tab, switches light/dark), `_icons/j.svg` (ICO, copper), `_icons/j-touch.svg` (phone icons), `src/components/Mark.astro` (top bar on every page but home), the jet hung in the hall in `src/pages/index.astro`, and `_og/card.html` (link preview). Change all six together.
+2. Run `python3 _icons/build.py` and `python3 _og/build.py`, and look at `_icons/sheet.png` at real size and at `public/og.jpg`.
 3. Push.
 
 **Publish to the live site**

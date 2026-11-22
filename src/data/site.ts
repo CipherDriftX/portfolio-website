@@ -15,8 +15,8 @@ export const site = {
     github: "https://github.com/CipherDriftX",
   },
   photo: {
-    alt: "Aryan Haghighi sitting at a table by a window at night.",
+    alt: "Black and white photo of Aryan Haghighi sitting at a table at night, looking to the side.",
     // Used by the Person schema and as a fallback share image.
-    schema: "/photo/phone-960.jpg",
+    schema: "/photo/print-960.jpg",
   },
 } as const;

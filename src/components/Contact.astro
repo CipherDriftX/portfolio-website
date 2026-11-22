@@ -5,30 +5,24 @@ import { site } from "../data/site";
 const year = new Date().getFullYear();
 ---
 
-<footer class="contact frame" id="contact" aria-labelledby="contact-title">
-  <h2 id="contact-title">Contact</h2>
-  <ContactLinks label="Contact" class="contact-row" />
-  <p class="drone">{site.drone}</p>
-  <p class="year"><span class="num">© {year}</span> {site.name}</p>
+<!-- The last bay closes the hall: its spot snaps on as it walks into view. -->
+<footer class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="pool walk">
+    <div class="frame">
+      <h2 id="contact-title" class="wall">Contact</h2>
+      <ContactLinks label="Contact" class="contact-row" />
+    </div>
+  </div>
+  <p class="year frame"><span class="num">© {year}</span> {site.name}</p>
 </footer>
 
 <style>
   .contact {
-    padding-block: var(--step-section) clamp(2.5rem, 2rem + 2vw, 4rem);
-  }
-
-  h2 {
-    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
-    margin-block-end: 1.25rem;
-  }
-
-  .drone {
-    margin-block-start: 2.5rem;
-    color: var(--muted);
+    margin-block-start: var(--gap-hall);
   }
 
   .year {
-    margin-block-start: 0.5rem;
+    padding-block: 1.75rem 2.5rem;
     color: var(--muted);
     font-size: 0.9375rem;
   }

@@ -4,7 +4,7 @@ Run from the repo root, after _photo/build.py:
     python3 _og/build.py
 
 Needs chromium and magick. The card is _og/card.html; edit the copy there.
-The photo comes from public/photo/desk-1600.jpg, which already leaves out
+The photo comes from public/photo/print-1280.jpg, which already leaves out
 the glass, the ashtray and the background person.
 """
 import pathlib
@@ -16,8 +16,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CARD = ROOT / "_og" / "card.html"
 OUT = ROOT / "public" / "og.jpg"
 LIMIT = 120 * 1024
-ORIGIN = ("Origin: rendered, not generated. _og/card.html (Gloock and Hanken Grotesk over "
-          "public/photo/desk-1600.jpg, a crop of the owner's own photo) screenshotted by chromium. No image model.")
+ORIGIN = ("Origin: rendered, not generated. _og/card.html (Archivo Expanded and Hanken Grotesk over "
+          "public/photo/print-1280.jpg, a black and white crop of the owner's own photo) screenshotted by chromium. No image model.")
 
 
 def run(*cmd):
