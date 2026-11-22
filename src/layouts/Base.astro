@@ -4,6 +4,7 @@ import TopBar from "../components/TopBar.astro";
 import Contact from "../components/Contact.astro";
 import Analytics from "@vercel/analytics/astro";
 import { site } from "../data/site";
+import { homeLastmod } from "../lib/lastmod";
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ interface Props {
   path: string;
   sections?: { id: string; label: string }[];
   onHome?: boolean;
-  /** Add the Person schema (home page only). */
+  /** Add the ProfilePage + Person and WebSite schema (home page only). */
   person?: boolean;
   noindex?: boolean;
   ogType?: "website" | "article";
@@ -39,9 +40,14 @@ const canonical = new URL(path, site.url + "/").href;
 const ogImage = `${site.url}/og.jpg`;
 const ogAlt = `${site.name} at a table by a window at night, next to the words: ${site.name}, ${site.title}. ${site.claim}`;
 
+// One id per thing, so search engines and AI answers read the site, its
+// pages and the person as one connected record.
+const personId = `${site.url}/#person`;
+const websiteId = `${site.url}/#website`;
+
 const personSchema = {
-  "@context": "https://schema.org",
   "@type": "Person",
+  "@id": personId,
   name: site.name,
   jobTitle: site.title,
   description: site.claim,
@@ -52,19 +58,38 @@ const personSchema = {
   knowsAbout: site.topics,
 };
 
+// Home: a profile page about one person (schema.org ProfilePage).
+const profileSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${site.url}/#profile`,
+  url: `${site.url}/`,
+  name: title,
+  inLanguage: "en",
+  dateModified: homeLastmod(),
+  isPartOf: { "@id": websiteId },
+  mainEntity: personSchema,
+};
+
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": websiteId,
   name: site.name,
   url: `${site.url}/`,
+  inLanguage: "en",
+  publisher: { "@id": personId },
 };
 
 // Case studies and notes: the page's own Article, written by the Person.
 const pageSchema = schema && {
   "@context": "https://schema.org",
+  image: ogImage,
+  inLanguage: "en",
   ...schema,
   url: canonical,
-  author: { "@type": "Person", name: site.name, url: `${site.url}/` },
+  isPartOf: { "@id": websiteId },
+  author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
 };
 ---
 
@@ -105,7 +130,7 @@ const pageSchema = schema && {
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogAlt} />
 
-    {person && <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
+    {person && <script type="application/ld+json" set:html={JSON.stringify(profileSchema)} />}
     {person && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />}
     {pageSchema && <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />}
   </head>
