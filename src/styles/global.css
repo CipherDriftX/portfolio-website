@@ -27,8 +27,8 @@
   --bone: #ece7dc; /* label text */
   --muted: #8d9097; /* second label lines: 6.2:1 on hall, 5.6:1 on pool */
   --heat: #f2a55a; /* engine heat: links, focus, selection only */
-  --steel: #383c44; /* the lit facet of the hung jet */
-  --shade: #24272d; /* its facet away from the light */
+  --steel: #383c44; /* scrollbar thumb */
+  --shade: #24272d; /* the hung jet's facet away from the light */
 
   --display: "Archivo Expanded", "Arial Black", ui-sans-serif, sans-serif;
   --text: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -38,6 +38,7 @@
   --bar: 4rem;
   --gap-hall: clamp(4rem, 2.5rem + 6vw, 8rem); /* dark floor between two pools */
   --pad-pool: clamp(3rem, 2rem + 4vw, 6rem); /* light inside a pool */
+  --how-size: clamp(2rem, 0.75rem + 3.6vw, 4.25rem); /* How I work's title, the one big move */
 }
 
 *,
