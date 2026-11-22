@@ -3,6 +3,7 @@ import "../styles/global.css";
 import TopBar from "../components/TopBar.astro";
 import Contact from "../components/Contact.astro";
 import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import { site } from "../data/site";
 
 interface Props {
@@ -118,6 +119,8 @@ const pageSchema = schema && {
     {contact && <Contact />}
     <!-- Vercel Web Analytics: cookieless page views, about 1 KB, deferred. -->
     <Analytics />
+    <!-- Vercel Speed Insights: real-visitor Core Web Vitals, deferred. -->
+    <SpeedInsights />
   </body>
 </html>
 
