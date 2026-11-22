@@ -30,7 +30,11 @@ The production build stops with an error if any live entry still has `[OWNER: ..
 | `public/fonts/` | Gloock (headings) and Hanken Grotesk (text), both SIL Open Font License 1.1 |
 | `_photo/build.py`, `_og/build.py`, `_icons/build.py` | Scripts that make the photo files, the link preview and the icons |
 | `CNAME`, `_config.yml` | Left over from GitHub Pages. Not deployed |
+| `src/lib/lastmod.ts` | Real last-changed dates for the sitemap and the home page schema |
+| `scripts/indexnow.mjs`, `.github/workflows/indexnow.yml` | After each production deploy, tells Bing and other IndexNow engines which pages changed. Run it by hand from the Actions tab (IndexNow, Run workflow) |
+| `public/<long hex>.txt` | The IndexNow key file. Keep it |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design notes. Not deployed (see `.vercelignore`) |
+| `SEO.md` | Fixed words, keyword map, page rules and the monthly baseline. Not deployed |
 
 Work, Case studies and Notes always show; with no live entries they show one placeholder line. Reviews shows only with one live review. Drafts (`draft: true`) show in `npm run dev` with a Draft tag and never go live. How I work and Contact always show.
 
@@ -65,12 +69,12 @@ Link icons are from Bootstrap Icons 1.11.3 (MIT, The Bootstrap Authors).
 **Write the About text**
 
 1. Open `src/content/about/about.md` and replace the `[OWNER: ...]` line with 3 sentences.
-2. Set `draft: false`.
+2. Set `draft: false`, and set `updated` in `src/data/site.ts` to today's date.
 3. `npm run build`, then push.
 
 **Change the claim, title, offer or links**
 
-1. Edit the line in `src/data/site.ts`.
+1. Edit the line in `src/data/site.ts`, and set `updated` to today's date.
 2. If you changed the name, title or claim, edit `_og/card.html` too and run `python3 _og/build.py`.
 3. `npm run build`, then push.
 
