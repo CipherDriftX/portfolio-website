@@ -9,12 +9,14 @@ interface Props {
   path: string;
   back: { href: string; label: string };
   draft?: boolean;
+  /** schema.org fields for this page (an Article); Base adds author, url and @context. */
+  schema?: Record<string, unknown>;
 }
-const { title, description, path, back, draft = false } = Astro.props;
+const { title, description, path, back, draft = false, schema } = Astro.props;
 const { sections } = await siteContent();
 ---
 
-<Base title={title} description={description} path={path} sections={sections} ogType="article">
+<Base title={title} description={description} path={path} sections={sections} ogType="article" schema={schema}>
   <div class="glow" aria-hidden="true"></div>
   <article class="article frame">
     <a class="back" href={back.href}>{back.label}</a>

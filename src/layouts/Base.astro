@@ -18,6 +18,8 @@ interface Props {
   ogType?: "website" | "article";
   /** The Contact block and footer. Off on the 404, which is one line and a link home. */
   contact?: boolean;
+  /** schema.org fields for this page, e.g. an Article on case studies and notes. */
+  schema?: Record<string, unknown>;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   noindex = false,
   ogType = "website",
   contact = true,
+  schema,
 } = Astro.props;
 
 const canonical = new URL(path, site.url + "/").href;
@@ -46,6 +49,22 @@ const personSchema = {
   image: `${site.url}${site.photo.schema}`,
   email: `mailto:${site.email}`,
   sameAs: [site.links.linkedin, site.links.github],
+  knowsAbout: site.topics,
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: `${site.url}/`,
+};
+
+// Case studies and notes: the page's own Article, written by the Person.
+const pageSchema = schema && {
+  "@context": "https://schema.org",
+  ...schema,
+  url: canonical,
+  author: { "@type": "Person", name: site.name, url: `${site.url}/` },
 };
 ---
 
@@ -87,6 +106,8 @@ const personSchema = {
     <meta name="twitter:image:alt" content={ogAlt} />
 
     {person && <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
+    {person && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />}
+    {pageSchema && <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />}
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

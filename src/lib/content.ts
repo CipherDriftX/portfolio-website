@@ -31,7 +31,7 @@ export async function about() {
 
 // A section only renders when it has enough live entries.
 // In dev it renders with drafts so the owner can see where they will go.
-export const minimum = { projects: 1, caseStudies: 1, reviews: 1, notes: 2 } as const;
+export const minimum = { projects: 1, caseStudies: 1, reviews: 1, notes: 1 } as const;
 export const enough = (count: number, min: number) => (showDrafts ? count > 0 : count >= min);
 
 // Everything the pages need to know about which sections are live.

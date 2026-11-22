@@ -19,6 +19,7 @@ const iso = d.date.toISOString().slice(0, 10);
   title={`${d.title} · ${site.name}`}
   description={d.summary}
   path={`/notes/${entry.id}/`}
+  schema={{ "@type": "Article", headline: d.title, description: d.summary, datePublished: iso }}
   back={{ href: "/#notes", label: "All notes" }}
   draft={d.draft}
 >

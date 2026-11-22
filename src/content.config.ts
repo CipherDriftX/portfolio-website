@@ -16,11 +16,14 @@ const work = defineCollection({
     role: z.string(),
     clientType: z.string(), // "Seed-stage SaaS", never a client name unless approved
     stack: z.array(z.string()).min(1),
-    evals: z.object({
-      metric: z.string(), // what was measured
-      value: z.string(), // the result, e.g. "94%"
-      cases: z.number().int().positive(), // how many eval cases
-    }),
+    // Optional: leave it out until the eval results exist. Never estimate.
+    evals: z
+      .object({
+        metric: z.string(), // what was measured
+        value: z.string(), // the result, e.g. "94%"
+        cases: z.number().int().positive(), // how many eval cases
+      })
+      .optional(),
     links: z
       .object({
         code: z.url().optional(),
