@@ -12,8 +12,12 @@ export async function caseStudies() {
   return all.sort((a, b) => featuredFirst(a, b) || b.data.year - a.data.year);
 }
 
+// Agents first, then the safety tools; inside a lane, by `order`.
+const laneOrder = { agents: 0, safety: 1 } as const;
 export async function projects() {
-  return (await getCollection("projects", keep)).sort(featuredFirst);
+  return (await getCollection("projects", keep)).sort(
+    (a, b) => laneOrder[a.data.lane] - laneOrder[b.data.lane] || a.data.order - b.data.order,
+  );
 }
 
 export async function reviews() {
