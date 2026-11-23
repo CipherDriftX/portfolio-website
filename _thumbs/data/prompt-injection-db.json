@@ -1,0 +1,497 @@
+{
+"source": "https://github.com/plarix-ai/prompt-injection-db exports/corpus_flat.json, read 2026-11-23",
+"records": [
+{
+"id": "1.1-001",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "1.1-002",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "1.2-001",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "1.2-002",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "1.3-001",
+"category": "authority-hijacking",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "1.3-002",
+"category": "authority-hijacking",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "1.4-001",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "1.4-002",
+"category": "authority-hijacking",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "1.5-001",
+"category": "authority-hijacking",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "1.5-002",
+"category": "authority-hijacking",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "2.1-001",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "2.1-002",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "2.2-001",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "2.2-002",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "2.3-001",
+"category": "context-manipulation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "2.3-002",
+"category": "context-manipulation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "2.4-001",
+"category": "context-manipulation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "2.4-002",
+"category": "context-manipulation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "2.5-001",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "2.5-002",
+"category": "context-manipulation",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "3.1-001",
+"category": "socio-emotional-leverage",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "3.1-002",
+"category": "socio-emotional-leverage",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "3.2-001",
+"category": "socio-emotional-leverage",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "3.2-002",
+"category": "socio-emotional-leverage",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "3.3-001",
+"category": "socio-emotional-leverage",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "3.3-002",
+"category": "socio-emotional-leverage",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "3.4-001",
+"category": "socio-emotional-leverage",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "3.4-002",
+"category": "socio-emotional-leverage",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "4.1-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "4.1-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "4.2-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "4.2-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "low",
+"stealth": "high"
+},
+{
+"id": "4.3-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "4.3-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "4.4-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "4.4-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "4.5-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "4.5-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "4.6-001",
+"category": "obfuscation-and-misdirection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "4.6-002",
+"category": "obfuscation-and-misdirection",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "5.1-001",
+"category": "information-extraction",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "5.1-002",
+"category": "information-extraction",
+"difficulty": "low",
+"stealth": "low"
+},
+{
+"id": "5.2-001",
+"category": "information-extraction",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "5.2-002",
+"category": "information-extraction",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "5.3-001",
+"category": "information-extraction",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "5.3-002",
+"category": "information-extraction",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "5.4-001",
+"category": "information-extraction",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "5.4-002",
+"category": "information-extraction",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "5.5-001",
+"category": "information-extraction",
+"difficulty": "low",
+"stealth": "medium"
+},
+{
+"id": "5.5-002",
+"category": "information-extraction",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "6.1-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.1-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.2-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.2-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.3-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "6.3-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "6.4-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.4-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.5-001",
+"category": "structural-logical-exploitation",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "6.5-002",
+"category": "structural-logical-exploitation",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "6.6-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.6-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.7-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "6.7-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "6.8-001",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "medium"
+},
+{
+"id": "6.8-002",
+"category": "structural-logical-exploitation",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.1-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.1-002",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.2-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.2-002",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.3-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.3-002",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.4-001",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.4-002",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.5-001",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.5-002",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.6-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.6-002",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.7-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.7-002",
+"category": "indirect-injection",
+"difficulty": "high",
+"stealth": "high"
+},
+{
+"id": "7.8-001",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+},
+{
+"id": "7.8-002",
+"category": "indirect-injection",
+"difficulty": "medium",
+"stealth": "high"
+}
+]
+}
