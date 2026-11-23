@@ -1,5 +1,5 @@
 ---
-name: "graph-research"
+name: "Graph Research"
 repo: "https://github.com/CipherDriftX/graph-research"
 lane: agents
 order: 1

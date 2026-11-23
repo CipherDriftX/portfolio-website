@@ -1,5 +1,5 @@
 ---
-name: "prompt-injection-db"
+name: "Prompt Injection Database"
 repo: "https://github.com/plarix-ai/prompt-injection-db"
 lane: safety
 order: 3

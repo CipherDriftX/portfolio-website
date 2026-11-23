@@ -1,5 +1,5 @@
 ---
-name: "wyscan"
+name: "WyScan"
 repo: "https://github.com/plarix-ai/wyscan"
 lane: safety
 order: 1
@@ -14,7 +14,7 @@ figures:
     label: "critical findings: calls that delete data or run code, reachable from a tool with no permission check"
 stack: ["TypeScript", "Node.js", "tree-sitter"]
 exhibit:
-  caption: "One finding, as wyscan prints it."
+  caption: "One finding, as WyScan prints it."
   text: |-
     ● CRITICAL  setup.py:60:5
       shutil.rmtree(agent_dir)
