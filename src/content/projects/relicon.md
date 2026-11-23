@@ -3,7 +3,7 @@ name: "Relicon"
 repo: "https://github.com/aegix-ai/relicon"
 lane: agents
 order: 3
-year: 2026
+year: 2025
 language: "Python, TypeScript"
 line: "A self-improving ad engine: it makes video ads, reads how they did, and makes the next batch better."
 figures:
