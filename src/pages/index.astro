@@ -23,9 +23,20 @@ const DESK = "(min-width: 40rem) and (min-aspect-ratio: 5/4)";
 const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/desk-${w}.${ext} ${w}w`).join(", ");
 const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/phone-${w}.${ext} ${w}w`).join(", ");
 const date = (d: Date) => d.toISOString().slice(0, 10);
+
+// Live projects for the SoftwareSourceCode schema. Drafts never reach it.
+const code = projects
+  .filter((p) => !p.data.draft)
+  .map((p) => ({
+    name: p.data.name,
+    description: p.data.line,
+    repo: p.data.repo,
+    language: p.data.language,
+    dateModified: date(p.data.updated),
+  }));
 ---
 
-<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person>
+<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person code={code}>
   <section class="hero" aria-labelledby="name">
     <div class="light" aria-hidden="true">
       <span class="bloom amber"></span>

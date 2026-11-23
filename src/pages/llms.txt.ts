@@ -20,7 +20,19 @@ export const GET: APIRoute = async () => {
     ...live(studies).map((s) => `- [Case study: ${s.data.title}](${site.url}/work/${s.id}/): ${s.data.summary}`),
     ...live(noteList).map((n) => `- [Note: ${n.data.title}](${site.url}/notes/${n.id}/): ${n.data.summary}`),
     "",
-    ...(live(repos).length ? ["## Work", "", ...live(repos).map((p) => `- [${p.data.name}](${p.data.repo}): ${p.data.line}`), ""] : []),
+    ...(live(repos).length
+      ? [
+          "## Work",
+          "",
+          "All public code. Every number comes from the repo.",
+          "",
+          ...live(repos).map((p) => {
+            const figures = p.data.figures.map((f) => `${f.value} ${f.label}`).join("; ");
+            return `- [${p.data.name}](${p.data.repo}): ${p.data.line}${figures ? ` (${figures})` : ""} Built with ${p.data.stack.join(", ")}.`;
+          }),
+          "",
+        ]
+      : []),
     ...(aboutEntry && !aboutEntry.data.draft ? ["## About", "", aboutEntry.body?.trim() ?? "", ""] : []),
     "## Contact",
     "",

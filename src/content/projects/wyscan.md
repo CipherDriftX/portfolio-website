@@ -12,7 +12,7 @@ figures:
     label: "files scanned across 10 open-source agent codebases, AutoGPT, MetaGPT and OpenHands among them"
   - value: "20"
     label: "critical findings: calls that delete data or run code, reachable from a tool with no permission check"
-stack: ["TypeScript", "tree-sitter", "OWASP Agentic AI Top 10"]
+stack: ["TypeScript", "Node.js", "tree-sitter"]
 exhibit:
   caption: "One finding, as wyscan prints it."
   text: |-
