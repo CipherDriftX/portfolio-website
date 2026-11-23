@@ -3,7 +3,6 @@ name: "Relicon"
 repo: "https://github.com/aegix-ai/relicon"
 lane: agents
 order: 3
-context: "Relicon"
 year: 2026
 language: "Python, TypeScript"
 line: "Turns one sentence about a product into a packaged video ad, ready to post."
