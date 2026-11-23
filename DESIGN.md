@@ -185,7 +185,7 @@ One centered frame, max 82rem, with a fluid side gutter (1rem at 320px, 6rem at 
 
 **Reading pages and the 404**: same frame, one amber glow from the top right, content starting about 6 to 9rem down. The 404 is one line and a link home, no Contact block.
 
-**Lists**: work projects in an auto-fill grid (min 20rem columns, gaps 2.5rem by 3rem). Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
+**Lists**: Work comes in two lanes, Agents and Agent safety. From 64rem up each lane has a 13rem sticky rail on the left (lane name in Gloock title size, one muted line) and its projects stacked on the right, 4 to 6.5rem apart, no boxes and no rules. Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
 
 Works from 320px with no sideways scroll. Every link has a 44px (2.75rem) tap height.
 
@@ -221,6 +221,9 @@ The email address written out in full, then LinkedIn and GitHub, each with a 1em
 
 ### Case study panel
 The one container: a flat `surface` block, no border, no radius, no shadow, fluid padding. Inside: Gloock title link, one-line summary, the eval result (large Hanken 600 figure, then metric and case count) and a muted client and year line.
+
+### Project entry
+One project in Work. From 48rem: text on the left (Gloock name at 1.875 to 2.75rem, a muted line with place, year and language, the one-line lead, a short paragraph, the stack joined by middots in muted, then a "Code" link with the GitHub icon), and a right column of 11 to 15rem with up to two figures: Hanken 600 at 2.25 to 3.25rem, tabular, cream, each with a muted label of at most 24ch. On phones the figures move up under the lead, two side by side. Every figure must be checkable in the repo it links to. An optional exhibit shows a few lines of the tool's real output in a flat `surface` panel, system monospace, `white-space: pre`; a narrow screen scrolls the panel, never the page.
 
 ### Skip link
 Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.

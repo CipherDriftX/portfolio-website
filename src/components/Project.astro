@@ -1,0 +1,268 @@
+---
+// One project on the home page: name, line, how it works, up to two real
+// numbers, the stack, a link to the code and, for some, a few lines of the
+// tool's own output.
+// GitHub icon: Bootstrap Icons 1.11.3, (c) 2019-2024 The Bootstrap Authors, MIT License,
+// https://github.com/twbs/icons/blob/v1.11.3/LICENSE
+import { render, type CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+const { project } = Astro.props;
+const p = project.data;
+const { Content } = await render(project);
+const titleId = `project-${project.id}`;
+---
+
+<article class="project" aria-labelledby={titleId}>
+  <header class="head">
+    <h4 id={titleId}>
+      <a href={p.repo}>{p.name}</a>
+      {p.draft && <span class="draft-tag">Draft</span>}
+    </h4>
+    <p class="meta">
+      {p.context && <span>{p.context}</span>}
+      <span class="num">{p.year}</span>
+      <span>{p.language}</span>
+    </p>
+  </header>
+
+  <div class="text">
+    <p class="line">{p.line}</p>
+    <div class="how"><Content /></div>
+    <p class="stack"><span class="visually-hidden">Built with </span>{p.stack.join(" · ")}</p>
+    <p class="code">
+      <a href={p.repo}>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
+        <span>Code<span class="visually-hidden">: {p.name} on GitHub</span></span>
+      </a>
+    </p>
+  </div>
+
+  {
+    p.figures.length > 0 && (
+      <ul role="list" class="figures">
+        {p.figures.map((f) => (
+          <li>
+            <span class="value num">{f.value}</span>
+            <span class="label">{f.label}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    p.exhibit && (
+      <figure class="exhibit">
+        <pre tabindex="0" aria-label={`${p.name} output`}><code>{p.exhibit.text}</code></pre>
+        <figcaption>{p.exhibit.caption}</figcaption>
+      </figure>
+    )
+  }
+</article>
+
+<style>
+  /* Phones: one column. Name, line, numbers, then how it works. */
+  .project {
+    display: grid;
+    grid-template-areas:
+      "head"
+      "line"
+      "figures"
+      "how"
+      "stack"
+      "code"
+      "exhibit";
+  }
+
+  .head {
+    grid-area: head;
+  }
+
+  /* The line sits in the text block on wide screens; on phones it moves up
+     so the numbers come right after it. */
+  .text {
+    display: contents;
+  }
+
+  .line {
+    grid-area: line;
+  }
+
+  .how {
+    grid-area: how;
+  }
+
+  .stack {
+    grid-area: stack;
+  }
+
+  .code {
+    grid-area: code;
+  }
+
+  h4 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);
+    line-height: 1;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  h4 a {
+    text-decoration-color: transparent;
+  }
+
+  h4 a:hover,
+  h4 a:focus-visible {
+    text-decoration-color: var(--amber);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    margin-block-start: 0.625rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .line {
+    margin-block-start: 1.25rem;
+    max-width: 34ch;
+    font-size: clamp(1.1875rem, 1.05rem + 0.45vw, 1.375rem);
+    line-height: 1.4;
+  }
+
+  .how {
+    max-width: var(--measure);
+    margin-block-start: 1.25rem;
+  }
+
+  .stack {
+    max-width: var(--measure);
+    margin-block-start: 1rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .code {
+    margin-block-start: 0.5rem;
+  }
+
+  .code a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    text-decoration: none;
+  }
+
+  .code span {
+    text-decoration-line: underline;
+    text-decoration-color: var(--amber);
+    text-decoration-thickness: inherit;
+    text-underline-offset: 0.28em;
+  }
+
+  .code svg {
+    width: 1em;
+    height: 1em;
+    fill: var(--muted);
+    transition: fill 120ms ease-out;
+  }
+
+  .code a:hover svg {
+    fill: var(--amber);
+  }
+
+  /* Numbers: large, plain, tabular. Each one is checkable in the repo. */
+  .figures {
+    grid-area: figures;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: 1.25rem 2rem;
+    margin-block-start: 1.75rem;
+  }
+
+  .figures li {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+  }
+
+  .value {
+    font-size: clamp(2.25rem, 1.8rem + 1.8vw, 3.25rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .label {
+    max-width: 24ch;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  /* The tool's own output, on the table surface. */
+  .exhibit {
+    grid-area: exhibit;
+    margin-block-start: 1.75rem;
+    min-width: 0;
+  }
+
+  .exhibit pre {
+    margin: 0;
+    padding: clamp(1rem, 0.75rem + 1.25vw, 1.75rem);
+    background: var(--surface);
+    color: var(--cream);
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    line-height: 1.7;
+    /* Terminal lines keep their shape; a narrow screen scrolls the panel,
+       never the page. */
+    white-space: pre;
+    overflow-x: auto;
+    tab-size: 2;
+    scrollbar-color: var(--wood) var(--surface);
+  }
+
+  .exhibit figcaption {
+    margin-block-start: 0.75rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  /* Wide: text left, numbers in their own column on the right, output
+     across the full width below. */
+  @media (min-width: 48rem) {
+    .project {
+      grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
+      grid-template-areas:
+        "head    figures"
+        "line    figures"
+        "how     figures"
+        "stack   figures"
+        "code    figures"
+        "exhibit exhibit";
+      column-gap: clamp(2rem, 1rem + 3vw, 4.5rem);
+      align-items: start;
+    }
+
+    .figures {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-block-start: 0.25rem;
+    }
+
+    .exhibit {
+      margin-block-start: 2rem;
+    }
+  }
+</style>

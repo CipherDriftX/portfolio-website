@@ -38,17 +38,30 @@ const work = defineCollection({
   }),
 });
 
-// Selected projects: links out to the repo, no page of their own.
+// Selected projects: links out to the repo, no page of their own. The
+// Markdown body is the short paragraph under the line.
 const projects = defineCollection({
   loader: md("projects"),
   schema: z.object({
     name: z.string(),
     repo: z.url(),
-    line: z.string(), // one line: what it is
-    why: z.string(), // one line: why it matters
+    // Which group on the home page: agents, or tools that keep agents safe.
+    lane: z.enum(["agents", "safety"]),
+    order: z.number().int(), // position inside its lane, 1 first
+    context: z.string().optional(), // where it was built, e.g. "Plarix"
+    year: z.number().int(),
+    language: z.string(), // "Python", "TypeScript"
+    line: z.string(), // one line: what it does
+    // Up to two numbers, each one checkable in the repo. Never estimate.
+    figures: z
+      .array(z.object({ value: z.string(), label: z.string() }))
+      .max(2)
+      .default([]),
+    stack: z.array(z.string()).min(1),
+    // Optional: a few lines of the tool's real output, shown as is.
+    exhibit: z.object({ text: z.string(), caption: z.string() }).optional(),
     // The day this entry was added or last changed. Feeds the sitemap lastmod.
     updated: z.coerce.date(),
-    featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });

@@ -2,20 +2,41 @@
 import { render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import ContactLinks from "../components/ContactLinks.astro";
+import Project from "../components/Project.astro";
 import { site } from "../data/site";
 import { siteContent } from "../lib/content";
 
 const { live, first, sections, studies, projects, reviews, notes, about } = await siteContent();
 const AboutBody = about ? (await render(about)).Content : null;
 
+// Work comes in two lanes: agents that do a job, and tools that keep agents
+// safe. A lane with no live projects does not show.
+const lanes = [
+  { id: "agents", title: "Agents", line: "Agents that take a whole job from start to finish." },
+  { id: "safety", title: "Agent safety", line: "Tools that test an agent before it ships and guard it while it runs." },
+]
+  .map((lane) => ({ ...lane, items: projects.filter((p) => p.data.lane === lane.id) }))
+  .filter((lane) => lane.items.length > 0);
+
 // Must match the layout switch in the styles below.
 const DESK = "(min-width: 40rem) and (min-aspect-ratio: 5/4)";
 const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/desk-${w}.${ext} ${w}w`).join(", ");
 const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/phone-${w}.${ext} ${w}w`).join(", ");
 const date = (d: Date) => d.toISOString().slice(0, 10);
+
+// Live projects for the SoftwareSourceCode schema. Drafts never reach it.
+const code = projects
+  .filter((p) => !p.data.draft)
+  .map((p) => ({
+    name: p.data.name,
+    description: p.data.line,
+    repo: p.data.repo,
+    language: p.data.language,
+    dateModified: date(p.data.updated),
+  }));
 ---
 
-<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person>
+<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person code={code}>
   <section class="hero" aria-labelledby="name">
     <div class="light" aria-hidden="true">
       <span class="bloom amber"></span>
@@ -53,23 +74,27 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     live.work && (
       <section id="work" class:list={["section frame", { peek: first === "work" }]} aria-labelledby="work-title">
         <h2 id="work-title">Work</h2>
+        {projects.length > 0 && <p class="work-lead quiet">All public code. Every number below comes from its repo.</p>}
         {projects.length === 0 && (
           <p class="quiet empty">
             Selected projects go here soon. Until then, my code is on <a href={site.links.github}>GitHub</a>.
           </p>
         )}
-        <ul role="list" class="projects">
-          {projects.map((p) => (
-            <li>
-              <h3>
-                <a href={p.data.repo}>{p.data.name}</a>
-                {p.data.draft && <span class="draft-tag">Draft</span>}
-              </h3>
-              <p>{p.data.line}</p>
-              <p class="quiet">{p.data.why}</p>
-            </li>
-          ))}
-        </ul>
+        {lanes.map((lane) => (
+          <div class="lane" aria-labelledby={`lane-${lane.id}`}>
+            <div class="lane-head">
+              <h3 id={`lane-${lane.id}`}>{lane.title}</h3>
+              <p class="quiet">{lane.line}</p>
+            </div>
+            <ol role="list" class="lane-list">
+              {lane.items.map((p) => (
+                <li>
+                  <Project project={p} />
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
       </section>
     )
   }
@@ -456,14 +481,52 @@ const date = (d: Date) => d.toISOString().slice(0, 10);
     text-decoration-color: var(--amber);
   }
 
-  .projects {
-    display: grid;
-    gap: 2.5rem 3rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    max-width: 72rem;
+  /* Work: each lane has its name on a rail at the left (wide screens) and
+     its projects stacked to the right, spaced apart, no boxes. */
+  .work-lead {
+    max-width: var(--measure);
   }
 
-  .projects p,
+  .lane {
+    display: grid;
+    gap: 2rem;
+    margin-block-start: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+
+  .lane + .lane {
+    margin-block-start: clamp(5rem, 3.5rem + 5vw, 8.5rem);
+  }
+
+  .lane-head h3 {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    line-height: 1.15;
+  }
+
+  .lane-head p {
+    margin-block-start: 0.5rem;
+    max-width: 24ch;
+    font-size: 0.9375rem;
+  }
+
+  .lane-list {
+    display: grid;
+    gap: clamp(4rem, 3rem + 3.5vw, 6.5rem);
+    margin: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .lane {
+      grid-template-columns: 13rem minmax(0, 1fr);
+      gap: clamp(2.5rem, 1rem + 3vw, 5rem);
+    }
+
+    .lane-head {
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+    }
+  }
+
   .study p {
     margin-block-start: 0.5rem;
     max-width: var(--measure);
