@@ -1,7 +1,7 @@
 ---
 # Copy this file to add a project. Set draft: false when it is real.
 # Every number in `figures` must be checkable in the repo.
-name: "[OWNER: write the repo name]"
+name: "[OWNER: write the project name, e.g. Outreach OS]"
 repo: "https://github.com/CipherDriftX"
 lane: agents # agents, or safety
 order: 9 # position inside the lane, 1 first
