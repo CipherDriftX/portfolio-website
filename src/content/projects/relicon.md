@@ -8,7 +8,7 @@ language: "Python, TypeScript"
 line: "A self-improving ad engine: it makes video ads, reads how they did, and makes the next batch better."
 figures:
   - value: "49%"
-    label: "of the best possible return after 15 rounds in a simulated market, up from 21%. A fixed template stays at 20%."
+    label: "of the best possible return after 15 rounds in its benchmark, up from 21%. A fixed template stays at 20%."
   - value: "10"
     label: "steps from sentence to finished ad, each cached and resumable"
 stack: ["FastAPI", "Next.js", "Claude", "MiniMax", "ElevenLabs", "FFmpeg", "Postgres"]
