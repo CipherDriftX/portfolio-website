@@ -1,5 +1,5 @@
 ---
-name: "wyatt"
+name: "Wyatt"
 repo: "https://github.com/plarix-ai/wyatt"
 lane: safety
 order: 2

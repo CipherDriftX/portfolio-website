@@ -12,7 +12,7 @@ const AboutBody = about ? (await render(about)).Content : null;
 // Work comes in two lanes: agents that do a job, and tools that keep agents
 // safe. A lane with no live projects does not show.
 const lanes = [
-  { id: "agents", title: "Agents", line: "Agents that take a whole job from start to finish." },
+  { id: "agents", title: "Agentic Systems", line: "Agents that take a whole job from start to finish." },
   { id: "safety", title: "Agent safety", line: "Tools that test an agent before it ships and guard it while it runs." },
 ]
   .map((lane) => ({ ...lane, items: projects.filter((p) => p.data.lane === lane.id) }))
