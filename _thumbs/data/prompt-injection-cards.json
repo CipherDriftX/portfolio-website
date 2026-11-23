@@ -1,0 +1,113 @@
+{
+ "source": "https://github.com/plarix-ai/prompt-injection-db exports/corpus_flat.json, 12 of the 82 records, read 2026-11-23",
+ "cards": [
+  {
+   "id": "7.1-002",
+   "title": "The Trojan PDF",
+   "category": "indirect-injection",
+   "delivery_vector": "document-file",
+   "target_surface": "document-processor",
+   "difficulty": "medium",
+   "stealth": "high"
+  },
+  {
+   "id": "6.3-002",
+   "title": "The Boiling Frog",
+   "category": "structural-logical-exploitation",
+   "delivery_vector": "multi-turn-conversation",
+   "target_surface": "per-turn-filter",
+   "difficulty": "medium",
+   "stealth": "high"
+  },
+  {
+   "id": "7.6-002",
+   "title": "The Sleeper Cell",
+   "category": "indirect-injection",
+   "delivery_vector": "conversation-history",
+   "target_surface": "memory-store",
+   "difficulty": "high",
+   "stealth": "high"
+  },
+  {
+   "id": "3.4-002",
+   "title": "The Long Con",
+   "category": "socio-emotional-leverage",
+   "delivery_vector": "multi-turn-conversation",
+   "target_surface": "trust-calibration",
+   "difficulty": "high",
+   "stealth": "high"
+  },
+  {
+   "id": "4.1-002",
+   "title": "The Decoder Ring",
+   "category": "obfuscation-and-misdirection",
+   "delivery_vector": "user-message",
+   "target_surface": "input-parser",
+   "difficulty": "medium",
+   "stealth": "medium"
+  },
+  {
+   "id": "7.2-002",
+   "title": "The Invisible Ink",
+   "category": "indirect-injection",
+   "delivery_vector": "web-content",
+   "target_surface": "rag-retriever",
+   "difficulty": "medium",
+   "stealth": "high"
+  },
+  {
+   "id": "3.2-002",
+   "title": "Grandma's Lullaby",
+   "category": "socio-emotional-leverage",
+   "delivery_vector": "user-message",
+   "target_surface": "empathy-response",
+   "difficulty": "low",
+   "stealth": "medium"
+  },
+  {
+   "id": "1.5-002",
+   "title": "The Impersonator",
+   "category": "authority-hijacking",
+   "delivery_vector": "inter-agent-message",
+   "target_surface": "message-authentication",
+   "difficulty": "high",
+   "stealth": "high"
+  },
+  {
+   "id": "5.2-002",
+   "title": "The Schema Trap",
+   "category": "information-extraction",
+   "delivery_vector": "user-message",
+   "target_surface": "output-formatter",
+   "difficulty": "medium",
+   "stealth": "medium"
+  },
+  {
+   "id": "6.7-002",
+   "title": "The Comment Worm",
+   "category": "structural-logical-exploitation",
+   "delivery_vector": "code-comment",
+   "target_surface": "code-reviewer",
+   "difficulty": "medium",
+   "stealth": "high"
+  },
+  {
+   "id": "2.5-002",
+   "title": "The Time Capsule",
+   "category": "context-manipulation",
+   "delivery_vector": "user-message",
+   "target_surface": "temporal-context-filter",
+   "difficulty": "low",
+   "stealth": "high"
+  },
+  {
+   "id": "7.5-002",
+   "title": "The Relay Bomb",
+   "category": "indirect-injection",
+   "delivery_vector": "pipeline-data",
+   "target_surface": "inter-agent-communication",
+   "difficulty": "high",
+   "stealth": "high"
+  }
+ ]
+}

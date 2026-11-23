@@ -1,21 +1,25 @@
-"""Draws the six Work thumbnails as SVG, from real data where the drawing
-shows data. Run from the repo root:
+"""Draws the six Work thumbnails as SVG. Run from the repo root:
 
     python3 _thumbs/make.py
 
 Writes src/components/thumbs/<project id>.svg. The page inlines them, so
-the labels use the site's own Hanken Grotesk. Colours come from DESIGN.md:
-the table surface, cream ink, ash umber, and tan from the site mark as the
-one key ink per drawing.
+the labels use the site's own Hanken Grotesk and Gloock.
 
-Data files in _thumbs/data/ name their source. Layouts that only explain an
-idea (the graph walk, the outreach flow) use a fixed random seed, so every
-run draws the same picture.
+Each drawing tells the project as numbered steps a stranger can follow
+(you put this in, it does this, you get this out), drawn with the real
+things from the repo: the template text, the code path, the test calls,
+the attack titles. Data comes from _thumbs/data, each file naming its
+source. Layouts that only explain an idea (the channel web) use a fixed
+random seed, so every run draws the same picture.
+
+Colours come from DESIGN.md: the table surface, cream ink, ash umber,
+and tan from the site mark as the one key ink per drawing.
 """
 
 import json
 import math
 import random
+from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,14 +28,16 @@ DATA = ROOT / "_thumbs/data"
 
 W, H = 1200, 520
 BG = "#211413"  # table (surface)
-PANEL = "#2c1c1a"  # a sheet on the table
+PANEL = "#2e1d1a"  # a sheet on the table
 CREAM = "#f6e9ce"
 MUTED = "#a38f7d"
 FAINT = "#5c463b"
 WOOD = "#432d26"
 TAN = "#cf9a63"  # the site mark's lit facet: the key ink
 SANS = "'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif"
+SERIF = "Gloock, 'Iowan Old Style', Georgia, serif"
 MONO = "ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+STEP_Y = 62
 
 
 def f(n):
@@ -39,13 +45,35 @@ def f(n):
     return f"{n:.1f}".rstrip("0").rstrip(".")
 
 
-def text(x, y, s, size=22, fill=MUTED, anchor="start", weight=400, minor=False, mono=False, key=False):
+def text(x, y, s, size=20, fill=MUTED, anchor="start", weight=400, minor=False, mono=False, serif=False, key=False, raw=False):
     """minor: hidden on phones. key: set larger on phones so it stays readable."""
     cls = ' class="minor"' if minor else (' class="key"' if key else "")
-    fam = f' font-family="{MONO}"' if mono else ""
+    fam = f' font-family="{MONO}"' if mono else (f' font-family="{SERIF}"' if serif else "")
     w = f' font-weight="{weight}"' if weight != 400 else ""
+    a = f' text-anchor="{anchor}"' if anchor != "start" else ""
+    body = s if raw else escape(s)
+    return f'<text x="{f(x)}" y="{f(y)}" font-size="{size}" fill="{fill}"{a}{w}{fam}{cls}>{body}</text>'
+
+
+def step(x, n, label):
+    """A numbered step heading: tan number, cream words."""
     return (
-        f'<text x="{f(x)}" y="{f(y)}" font-size="{size}" fill="{fill}" text-anchor="{anchor}"{w}{fam}{cls}>{s}</text>'
+        f'<text x="{x}" y="{STEP_Y}" font-size="25" font-weight="600" fill="{CREAM}" class="key">'
+        f'<tspan fill="{TAN}">{n}</tspan><tspan dx="12">{escape(label)}</tspan></text>'
+    )
+
+
+def rect(x, y, w, h, fill):
+    return f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" fill="{fill}"/>'
+
+
+def line(x1, y1, x2, y2, stroke=FAINT, width=2, extra=""):
+    return f'<line x1="{f(x1)}" y1="{f(y1)}" x2="{f(x2)}" y2="{f(y2)}" stroke="{stroke}" stroke-width="{width}"{extra}/>'
+
+
+def arrow(x1, x2, y, stroke=FAINT):
+    return line(x1, y, x2, y, stroke) + (
+        f'<path d="M{f(x2 - 9)} {f(y - 6)} L{f(x2)} {f(y)} L{f(x2 - 9)} {f(y + 6)}" fill="none" stroke="{stroke}" stroke-width="2"/>'
     )
 
 
@@ -54,7 +82,7 @@ def svg(pid, title, body):
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" '
         f'aria-labelledby="thumb-{pid}" font-family="{SANS}" '
         f'style="font-variant-numeric: tabular-nums lining-nums">'
-        f'<title id="thumb-{pid}">{title}</title>'
+        f"<title id=\"thumb-{pid}\">{escape(title)}</title>"
         f'<rect width="{W}" height="{H}" fill="{BG}"/>' + "".join(body) + "</svg>\n"
     )
 
@@ -64,80 +92,91 @@ def svg(pid, title, body):
 
 def graph_research():
     rnd = random.Random(11)
-    seed = (196, 262)
-    body = []
+    body = [step(48, 1, "You name a niche"), step(360, 2, "It follows the links"), step(812, 3, "You get a workbook")]
 
-    # Keyword search: the same few big channels, close to the niche.
+    # 1. The search box, with the README's own example niche.
+    body.append(rect(48, 228, 246, 60, PANEL))
+    body.append(f'<circle cx="74" cy="255" r="9" fill="none" stroke="{MUTED}" stroke-width="2.5"/>')
+    body.append(line(80.5, 261.5, 88, 269, MUTED, 2.5))
+    body.append(text(100, 265, "personal finance", 22, CREAM))
+    body.append(text(48, 320, "or any topic", 17, MUTED, minor=True))
+    body.append(arrow(302, 322, 258))
+
+    # 2. Keyword search finds a few big channels next to the niche. The
+    #    graph walk follows featured channels, recommendations and shared
+    #    commenters out to the rest.
+    seed = (398, 258)
     big = []
-    for i, r in enumerate([27, 24, 22, 20, 19, 17, 16]):
-        a = -math.pi / 2 + i * (2 * math.pi / 7) + 0.25
-        d = 86 + (i % 3) * 9
+    for i, r in enumerate([20, 18, 17, 16, 15, 14, 13]):
+        a = -math.pi / 2 + i * (2 * math.pi / 7) + 0.2
+        d = 54 + (i % 3) * 6
         big.append((seed[0] + d * math.cos(a), seed[1] + d * math.sin(a), r))
-
-    # Graph walk: bands of channels fanning out to the right, each one
-    # linked back to a channel found one step earlier. Dashed links are
-    # channels that also share commenters.
-    keep_out = [(800, 34, 1170, 122)]  # label area
-    nodes = [(x, y, r, 0, None) for x, y, r in big]
+    nodes = [(x, y, r) for x, y, r in big]
     edges, cross = [], []
     prev = list(range(len(big)))
-    for k in range(14):
-        bx = 318 + k * 60
-        half = min(205, 92 + k * 15)
-        want = min(15, 6 + k)
+    for k in range(6):
+        bx = 494 + k * 54
+        half = min(178, 74 + k * 22)
+        want = min(12, 5 + 2 * k)
         band = []
-        for _ in range(want * 12):
+        for _ in range(want * 14):
             if len(band) >= want:
                 break
-            x = bx + rnd.uniform(-20, 20)
+            x = bx + rnd.uniform(-16, 16)
             y = seed[1] + rnd.uniform(-half, half)
-            if not (48 < y < 476) or any(x0 < x < x1 and y0 < y < y1 for x0, y0, x1, y1 in keep_out):
+            if not (96 < y < 446):
                 continue
-            if any(math.dist((x, y), nodes[i][:2]) < 30 for i in band + prev):
+            if any(math.dist((x, y), nodes[i][:2]) < 27 for i in band + prev):
                 continue
-            r = max(3.2, 8.8 - k * 0.42) + rnd.uniform(-1.3, 1.3)
+            r = max(3.4, 8 - k * 0.8) + rnd.uniform(-1, 1)
             near = sorted(prev, key=lambda i: math.dist((x, y), nodes[i][:2]))
-            nodes.append((x, y, r, k + 1, near[0]))
+            nodes.append((x, y, r))
             band.append(len(nodes) - 1)
             edges.append((near[0], len(nodes) - 1))
-            if len(near) > 1 and rnd.random() < 0.38:
+            if len(near) > 1 and rnd.random() < 0.4:
                 cross.append((near[1], len(nodes) - 1))
         prev = band
 
-    def fade(x):
-        return 1.0 if x < 700 else max(0.3, 1 - (x - 700) / 600)
-
     for a_i, b_i in cross:
-        (x0, y0), (x1, y1) = nodes[a_i][:2], nodes[b_i][:2]
-        body.append(
-            f'<line x1="{f(x0)}" y1="{f(y0)}" x2="{f(x1)}" y2="{f(y1)}" stroke="{WOOD}" '
-            f'stroke-width="1.5" stroke-dasharray="3 5" opacity="{f(fade(max(x0, x1)))}"/>'
-        )
+        body.append(line(*nodes[a_i][:2], *nodes[b_i][:2], WOOD, 1.5, ' stroke-dasharray="3 5"'))
     for a_i, b_i in edges:
-        (x0, y0), (x1, y1) = nodes[a_i][:2], nodes[b_i][:2]
-        body.append(
-            f'<line x1="{f(x0)}" y1="{f(y0)}" x2="{f(x1)}" y2="{f(y1)}" stroke="{FAINT}" '
-            f'stroke-width="1.5" opacity="{f(fade(x1))}"/>'
-        )
+        body.append(line(*nodes[a_i][:2], *nodes[b_i][:2], FAINT, 1.5))
     for x, y, r in big:
-        body.append(
-            f'<line x1="{seed[0]}" y1="{seed[1]}" x2="{f(x)}" y2="{f(y)}" stroke="{MUTED}" stroke-width="1.5"/>'
-        )
-    for x, y, r, depth, _ in nodes[len(big):]:
-        body.append(f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(r)}" fill="{TAN}" opacity="{f(fade(x))}"/>')
+        body.append(line(*seed, x, y, MUTED, 1.5))
+    for x, y, r in nodes[len(big):]:
+        body.append(f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(r)}" fill="{TAN}"/>')
     for x, y, r in big:
         body.append(f'<circle cx="{f(x)}" cy="{f(y)}" r="{r}" fill="{BG}" stroke="{CREAM}" stroke-width="2.5"/>')
-    body.append(f'<circle cx="{seed[0]}" cy="{seed[1]}" r="9" fill="{CREAM}"/>')
+    body.append(f'<circle cx="{seed[0]}" cy="{seed[1]}" r="7" fill="{CREAM}"/>')
+    body.append(text(398, 372, "search finds these", 17, CREAM, "middle", minor=True))
+    body.append(text(770, 486, "the walk finds the rest", 17, TAN, "end", minor=True))
+    body.append(arrow(778, 806, 258))
 
-    body.append(text(196, 418, "Keyword search", 26, CREAM, "middle", 600, key=True))
-    body.append(text(196, 450, "the same big channels", 21, MUTED, "middle", minor=True))
-    body.append(text(1136, 74, "Graph walk", 26, TAN, "end", 600, key=True))
-    body.append(text(1136, 106, "channels search never returns", 21, MUTED, "end", minor=True))
+    # 3. The workbook: one row per channel, and which method found it.
+    wx, wy, ww, wh = 812, 100, 340, 380
+    body.append(rect(wx, wy, ww, wh, PANEL))
+    body.append(text(wx + 20, wy + 36, "Channel", 16, MUTED))
+    body.append(text(wx + 142, wy + 36, "Subscribers", 16, MUTED))
+    body.append(text(wx + 252, wy + 36, "Found by", 16, MUTED))
+    body.append(line(wx, wy + 52, wx + ww, wy + 52, WOOD, 2))
+    for i in range(9):
+        y = wy + 82 + i * 29
+        walk = i >= 2
+        body.append(rect(wx + 20, y - 7, rnd.uniform(66, 106), 7, CREAM if i < 2 else MUTED))
+        body.append(rect(wx + 142, y - 7, rnd.uniform(34, 62), 7, FAINT))
+        body.append(text(wx + 252, y, "graph walk" if walk else "search", 16, TAN if walk else MUTED))
+    body.append(line(wx, wy + 334, wx + ww, wy + 334, WOOD, 2))
+    tabs = [("Overview", 20), ("Channels", 104), ("Videos", 192), ("Niches", 260)]
+    for name, dx in tabs:
+        on = name == "Channels"
+        body.append(text(wx + dx, wy + 362, name, 15, CREAM if on else FAINT, weight=600 if on else 400))
+    body.append(rect(wx + 104, wy + 334, 70, 3, TAN))
 
     return svg(
         "graph-research",
-        "A niche at the left with seven big channels around it, the ones keyword search finds. "
-        "From them a web of links spreads right to well over a hundred smaller channels that only the graph walk reaches.",
+        "Three steps. You name a niche, such as personal finance. Keyword search finds the same few big channels, "
+        "and Graph Research follows the links between channels out to many more. You get an Excel workbook "
+        "with one row per channel, showing which method found it.",
         body,
     )
 
@@ -146,91 +185,85 @@ def graph_research():
 
 
 def outreach_os():
+    body = [step(48, 1, "Spots a buyer"), step(430, 2, "Researches the lead"), step(822, 3, "Fills your template")]
     rnd = random.Random(5)
-    body = []
+
+    # 1. Posts from the seven sources. One is someone asking for what you sell.
     sources = ["Reddit", "Hacker News", "X", "Stack Exchange", "Upwork", "GitHub", "Bluesky"]
-    lead = (624, 262)
-    x0, x1 = 252, 540
-    hits = []
+    hit = 4
     for i, name in enumerate(sources):
-        y = 112 + i * 50
-        body.append(text(226, y + 7, name, 20, MUTED, "end", minor=True))
-        x = x0 + rnd.uniform(0, 10)
-        picks = set(rnd.sample(range(14), rnd.choice([1, 1, 2])))
-        k = 0
-        while x < x1:
-            if k in picks:
-                body.append(f'<rect x="{f(x - 1.5)}" y="{y - 11}" width="3" height="22" fill="{TAN}"/>')
-                hits.append((x, y))
-            else:
-                body.append(f'<rect x="{f(x - 1)}" y="{y - 6}" width="2" height="12" fill="{FAINT}"/>')
-            x += rnd.uniform(12, 30)
-            k += 1
-    for x, y in hits:
-        c1 = (x + (lead[0] - x) * 0.55, y)
-        c2 = (lead[0] - 46, lead[1])
-        body.append(
-            f'<path d="M{f(x)} {y} C{f(c1[0])} {f(c1[1])} {f(c2[0])} {f(c2[1])} {lead[0]} {lead[1]}" '
-            f'fill="none" stroke="{TAN}" stroke-width="1.5" opacity="0.75"/>'
-        )
-    body.append(f'<circle cx="{lead[0]}" cy="{lead[1]}" r="10" fill="{CREAM}"/>')
+        y = 98 + i * 54
+        body.append(rect(48, y, 330, 46, PANEL))
+        on = i == hit
+        if on:
+            body.append(rect(48, y, 4, 46, TAN))
+        body.append(text(64, y + 20, name, 15, CREAM if on else MUTED, weight=600 if on else 400))
+        body.append(rect(64, y + 30, rnd.uniform(150, 250), 5, MUTED if on else FAINT))
+        if on:
+            body.append(text(364, y + 20, "asks for help", 15, TAN, "end", 600))
+    hy = 98 + hit * 54 + 23
+    body.append(f'<path d="M378 {hy} C404 {hy} 398 290 424 290" fill="none" stroke="{TAN}" stroke-width="2"/>')
 
-    # The dossier: facts, each with a grade. The weak one never reaches the offer.
-    dx, dy, dw, dh = 676, 120, 226, 284
-    body.append(f'<line x1="{lead[0] + 10}" y1="{lead[1]}" x2="{dx}" y2="{lead[1]}" stroke="{CREAM}" stroke-width="2"/>')
-    body.append(f'<rect x="{dx}" y="{dy}" width="{dw}" height="{dh}" fill="{PANEL}"/>')
-    body.append(f'<rect x="{dx + 22}" y="{dy + 26}" width="108" height="9" fill="{CREAM}"/>')
-    grades = [3, 3, 2, 3, 1, 2]
-    lens = [118, 92, 130, 76, 104, 88]
-    for i, (g, ln) in enumerate(zip(grades, lens)):
-        y = dy + 70 + i * 34
-        weak = g == 1
-        body.append(f'<rect x="{dx + 22}" y="{y}" width="{ln}" height="7" fill="{FAINT if weak else MUTED}"/>')
+    # 2. The dossier: every fact researched and graded. The weak one is dropped.
+    dx, dy, dw, dh = 430, 98, 334, 382
+    body.append(rect(dx, dy, dw, dh, PANEL))
+    body.append(f'<circle cx="{dx + 34}" cy="{dy + 38}" r="16" fill="{MUTED}"/>')
+    body.append(rect(dx + 60, dy + 28, 124, 9, CREAM))
+    body.append(rect(dx + 60, dy + 44, 80, 6, FAINT))
+    rows = [("Company", 3), ("Contact", 3), ("Pains", 2), ("Tech stack", 3), ("Competitors", 0)]
+    for i, (name, grade) in enumerate(rows):
+        y = dy + 104 + i * 52
+        weak = grade == 0
+        body.append(text(dx + 22, y, name, 17, FAINT if weak else MUTED))
+        body.append(rect(dx + 22, y + 12, rnd.uniform(130, 200), 6, WOOD if weak else FAINT))
         for k in range(3):
-            sx = dx + dw - 70 + k * 16
-            if k < g and not weak:
-                body.append(f'<rect x="{sx}" y="{y - 2}" width="11" height="11" fill="{TAN}"/>')
+            sx = dx + dw - 66 + k * 16
+            if k < grade:
+                body.append(rect(sx, y - 12, 11, 11, TAN))
             else:
-                body.append(
-                    f'<rect x="{sx + 0.75}" y="{y - 1.25}" width="9.5" height="9.5" fill="none" stroke="{FAINT}" stroke-width="1.5"/>'
-                )
+                body.append(f'<rect x="{sx + 0.75}" y="{y - 11.25}" width="9.5" height="9.5" fill="none" stroke="{FAINT}" stroke-width="1.5"/>')
         if weak:
-            body.append(
-                f'<line x1="{dx + 16}" y1="{y + 3.5}" x2="{dx + dw - 16}" y2="{y + 3.5}" stroke="{MUTED}" stroke-width="1.5"/>'
-            )
+            body.append(line(dx + 16, y - 5, dx + 160, y - 5, MUTED, 1.5))
+            body.append(text(dx + dw - 22, y + 18, "weak, left out", 14, MUTED, "end"))
+    body.append(text(dx + 22, dy + dh - 22, "each fact graded, with its source", 14, MUTED, minor=True))
+    body.append(arrow(770, 816, 290))
 
-    # The offer: your template, filled only with graded facts.
-    lx, ly, lw, lh = 960, 104, 176, 316
-    ax = dx + dw
-    body.append(f'<line x1="{ax}" y1="{lead[1]}" x2="{lx - 8}" y2="{lead[1]}" stroke="{CREAM}" stroke-width="2"/>')
-    body.append(f'<path d="M{lx - 16} {lead[1] - 6} L{lx - 6} {lead[1]} L{lx - 16} {lead[1] + 6}" fill="none" stroke="{CREAM}" stroke-width="2"/>')
-    body.append(f'<rect x="{lx}" y="{ly}" width="{lw}" height="{lh}" fill="{PANEL}"/>')
-    lines = [
-        [(0, 64)],
-        [(0, 40), (46, 70, "fact"), (122, 22)],
-        [(0, 132)],
-        [(0, 88), (94, 38, "fact")],
-        [(0, 120)],
-        [(0, 26), (32, 58, "fact"), (96, 36)],
-        [(0, 110)],
-        [(0, 70)],
-        [],
-        [(0, 54)],
+    # 3. The owner's real template (config/template.txt), filled only with
+    #    graded facts. The competitor line needs a fact that failed its grade.
+    lx, ly, lw, lh = 822, 98, 330, 382
+    body.append(rect(lx, ly, lw, lh, PANEL))
+
+    def tok(s):
+        return f'<tspan fill="{TAN}" font-family="{MONO}" font-size="14">{escape(s)}</tspan>'
+
+    letter = [
+        (tok("[contact_first_name]") + ",", CREAM),
+        ("", None),
+        ("I came across your", MUTED),
+        (tok("(signal_source_type)") + " on", MUTED),
+        (tok("(signal_source_name)") + "…", MUTED),
+        ("", None),
+        ("…" + tok("[pain_summary]") + " is the", MUTED),
+        ("kind of work we handle.", MUTED),
+        ("We integrate with", MUTED),
+        (tok("[tech_stack_primary_tools]") + ".", MUTED),
+        ("STRUCK", None),
+        ("Worth ten minutes this week?", MUTED),
     ]
-    for i, segs in enumerate(lines):
-        y = ly + 34 + i * 26
-        for s in segs:
-            fill = TAN if len(s) == 3 else FAINT
-            body.append(f'<rect x="{lx + 20 + s[0]}" y="{y}" width="{s[1]}" height="7" fill="{fill}"/>')
+    for i, (s, color) in enumerate(letter):
+        y = ly + 40 + i * 28
+        if s == "STRUCK":
+            body.append(text(lx + 22, y, "switch from [competitor_name]", 14, FAINT, mono=True))
+            body.append(line(lx + 18, y - 5, lx + 270, y - 5, MUTED, 1.5))
+        elif s:
+            body.append(text(lx + 22, y, s, 16, color, raw=True))
+    body.append(text(lx, 508, "No AI writes the email.", 15, MUTED, minor=True))
 
-    body.append(text(396, 486, "Signals", 24, CREAM, "middle", 600, key=True))
-    body.append(text(789, 486, "Graded facts", 24, CREAM, "middle", 600, key=True))
-    body.append(text(1040, 486, "Your offer", 24, CREAM, "middle", 600, key=True))
     return svg(
         "outreach-os",
-        "Seven sources at the left, Reddit to Bluesky, each a row of posts with a few buying signals marked. "
-        "The signals run into one lead, then a dossier of graded facts where the weak fact is struck out, "
-        "then an offer letter filled only with the strong facts.",
+        "Three steps. Outreach OS reads posts on Reddit, Hacker News, X, Stack Exchange, Upwork, GitHub and Bluesky "
+        "and finds someone asking for help. It researches the lead: company, contact, pains, tech stack and competitors, "
+        "each fact graded, the weak one left out. Then it fills your own email template with the graded facts only.",
         body,
     )
 
@@ -239,69 +272,65 @@ def outreach_os():
 
 
 def relicon():
-    body = []
-    mid = 238
-    # The brief: one sentence.
-    for i, line in enumerate(["\u201cOne sentence", "about your", "product.\u201d"]):
-        body.append(text(64, mid - 42 + i * 50, line, 41, CREAM))
-    body.append(f'<rect x="64" y="{mid + 84}" width="52" height="3" fill="{TAN}"/>')
+    body = [step(48, 1, "You write a line"), step(372, 2, "It plans scenes"), step(722, 3, "A finished ad, 4 sizes")]
+    mid = 246
 
-    def arrow(xa, xb, y):
-        return (
-            f'<line x1="{xa}" y1="{y}" x2="{xb}" y2="{y}" stroke="{FAINT}" stroke-width="2"/>'
-            f'<path d="M{xb - 9} {y - 6} L{xb} {y} L{xb - 9} {y + 6}" fill="none" stroke="{FAINT}" stroke-width="2"/>'
-        )
+    # 1. The input: one sentence, with a caret.
+    body.append(rect(48, mid - 76, 284, 152, PANEL))
+    for i, s in enumerate(["One sentence", "about your", "product."]):
+        body.append(text(70, mid - 30 + i * 36, s, 27, CREAM))
+    body.append(rect(176, mid + 20, 3, 28, TAN))
+    body.append(arrow(338, 366, mid))
 
-    body.append(arrow(316, 346, mid))
-
-    # Storyboard: hook, problem, solution, each a 9:16 frame.
-    fw, fh = 98, 174
+    # 2. Hook, problem, solution: the three scenes in the README.
+    fw, fh = 92, 164
     for i, name in enumerate(["Hook", "Problem", "Solution"]):
-        x, y = 362 + i * 112, mid - fh / 2
-        body.append(f'<rect x="{x}" y="{f(y)}" width="{fw}" height="{fh}" fill="{PANEL}"/>')
+        x, y = 372 + i * 104, mid - fh / 2
+        body.append(rect(x, y, fw, fh, PANEL))
         cx = x + fw / 2
         if i == 0:
-            body.append(f'<rect x="{x + 14}" y="{f(y + 46)}" width="64" height="11" fill="{CREAM}"/>')
-            body.append(f'<rect x="{x + 14}" y="{f(y + 63)}" width="48" height="11" fill="{CREAM}"/>')
-            body.append(f'<rect x="{x + 14}" y="{f(y + 90)}" width="34" height="5" fill="{MUTED}"/>')
+            body.append(rect(x + 14, y + 44, 64, 11, CREAM))
+            body.append(rect(x + 14, y + 61, 48, 11, CREAM))
+            body.append(rect(x + 14, y + 88, 34, 5, MUTED))
         elif i == 1:
-            body.append(f'<line x1="{x + 10}" y1="{f(y + 112)}" x2="{x + fw - 10}" y2="{f(y + 112)}" stroke="{FAINT}" stroke-width="2"/>')
-            body.append(f'<circle cx="{cx}" cy="{f(y + 62)}" r="10" fill="{MUTED}"/>')
-            body.append(f'<path d="M{cx - 16} {f(y + 112)} Q{cx} {f(y + 68)} {cx + 16} {f(y + 112)}" fill="{MUTED}"/>')
+            body.append(line(x + 10, y + 110, x + fw - 10, y + 110, FAINT, 2))
+            body.append(f'<circle cx="{cx}" cy="{f(y + 60)}" r="10" fill="{MUTED}"/>')
+            body.append(f'<path d="M{cx - 16} {f(y + 110)} Q{cx} {f(y + 66)} {cx + 16} {f(y + 110)}" fill="{MUTED}"/>')
         else:
-            body.append(f'<circle cx="{cx}" cy="{f(y + 70)}" r="23" fill="{TAN}"/>')
-            body.append(f'<rect x="{x + 18}" y="{f(y + 118)}" width="56" height="16" fill="none" stroke="{CREAM}" stroke-width="2"/>')
-        body.append(text(cx, y + fh + 34, name, 20, MUTED, "middle", minor=True))
+            body.append(f'<circle cx="{cx}" cy="{f(y + 68)}" r="23" fill="{TAN}"/>')
+            body.append(f'<rect x="{x + 18}" y="{f(y + 116)}" width="56" height="16" fill="none" stroke="{CREAM}" stroke-width="2"/>')
+        body.append(text(cx, y + fh + 32, name, 18, MUTED, "middle"))
+    body.append(arrow(686, 714, mid))
 
-    body.append(arrow(698, 724, mid))
-
-    # Exports: 9:16, 1:1, 4:5 and 16:9, all with the same short side, as the
-    # engine renders them. Captions stay inside each platform's safe zone.
-    s = 80
+    # 3. The four exports: same short side, a play mark, a progress bar,
+    #    and the caption inside each platform's safe zone.
+    s = 72
     shapes = [("9:16", s, s * 16 / 9), ("1:1", s, s), ("4:5", s, s * 5 / 4), ("16:9", s * 16 / 9, s)]
-    x = 738
-    base = mid + 80
+    x = 724
+    base = mid + 64
     for name, w, h in shapes:
         y = base - h
-        body.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" fill="{PANEL}"/>')
-        r = min(w, h) * 0.2
-        body.append(f'<circle cx="{f(x + w / 2)}" cy="{f(y + h * 0.42)}" r="{f(r)}" fill="{TAN}"/>')
+        body.append(rect(x, y, w, h, PANEL))
+        cx, cy = x + w / 2, y + h * 0.42
+        t = min(w, h) * 0.16
+        body.append(f'<path d="M{f(cx - t * 0.7)} {f(cy - t)} L{f(cx + t)} {f(cy)} L{f(cx - t * 0.7)} {f(cy + t)} Z" fill="{TAN}"/>')
         ix, iy = w * 0.1, h * 0.1
         body.append(
             f'<rect x="{f(x + ix)}" y="{f(y + iy)}" width="{f(w - 2 * ix)}" height="{f(h - 2 * iy)}" '
             f'fill="none" stroke="{FAINT}" stroke-width="1.25" stroke-dasharray="3 3"/>'
         )
         cw = (w - 2 * ix) * 0.7
-        body.append(f'<rect x="{f(x + (w - cw) / 2)}" y="{f(y + h - iy - 12)}" width="{f(cw)}" height="5" fill="{CREAM}"/>')
-        body.append(text(x + w / 2, base + 34, name, 20, MUTED, "middle", key=True))
+        body.append(rect(x + (w - cw) / 2, y + h - iy - 12, cw, 5, CREAM))
+        body.append(rect(x, y + h - 3, w, 3, FAINT))
+        body.append(rect(x, y + h - 3, w * 0.38, 3, TAN))
+        body.append(text(x + w / 2, base + 32, name, 18, MUTED, "middle"))
         x += w + 12
+    body.append(text(724, mid + 136, "with voice, music and captions", 16, MUTED, minor=True))
 
-    body.append(text(64, 474, "One sentence in", 24, CREAM, weight=600, key=True))
-    body.append(text(1136, 474, "A finished ad out, in 4 formats", 24, CREAM, "end", 600, key=True))
     return svg(
         "relicon",
-        "One sentence about a product turns into a three-frame storyboard, hook, problem and solution, "
-        "and then into four finished ads at 9:16, 1:1, 4:5 and 16:9, captions kept inside each safe zone.",
+        "Three steps. You write one sentence about your product. Relicon plans a hook, problem and solution scene. "
+        "You get a finished video ad in four sizes, 9:16, 1:1, 4:5 and 16:9, with captions inside each safe zone.",
         body,
     )
 
@@ -311,93 +340,71 @@ def relicon():
 
 def wyscan():
     rnd = random.Random(3)
-    body = []
-    cols = 6
-    cw, gap = 150, 32
-    x0, y0, step, rows = 70, 104, 14, 25
-    keep = (cw + gap) * 4 + x0 - 10, 176, 1140, 318  # label area, no code
-    special = {(0, 3): "tool", (3, 10): "fn", (3, 12): "sink", (1, 6): "tool2", (4, 19): "gated"}
-    pos = {}
-    for c in range(cols):
-        x = x0 + c * (cw + gap)
-        r = 0
-        indent = 0
-        while r < rows:
-            y = y0 + r * step
-            if not (keep[0] < x + cw and x < keep[2] and keep[1] < y < keep[3]):
-                kind = special.get((c, r))
-                if kind in ("fn",):
-                    indent = 0
-                if r == 0 or kind == "fn" or rnd.random() < 0.13:
-                    indent = 0
-                    ln = rnd.uniform(70, 120) if kind != "fn" else 112
-                else:
-                    indent = min(2, max(1, indent + rnd.choice([-1, 0, 0, 1])))
-                    ln = rnd.uniform(26, cw - indent * 16 - 6)
-                if kind == "tool":
-                    ln = 96
-                if kind == "sink":
-                    ln = 86
-                lx = x + indent * 16
-                fill = {"tool": TAN, "fn": CREAM, "sink": TAN, "tool2": MUTED, "gated": MUTED}.get(kind, FAINT)
-                if kind is None and rnd.random() < 0.12:
-                    fill = WOOD
-                if kind is None and rnd.random() < 0.08:
-                    r += 1
-                    continue
-                body.append(f'<rect x="{f(lx)}" y="{y}" width="{f(ln)}" height="5" fill="{fill}"/>')
-                if kind:
-                    pos[kind] = (lx, y + 2.5, ln)
-            r += 1
+    body = [step(48, 1, "It reads the agent's code"), step(800, 2, "It flags what can break")]
+    top, pitch = 100, 26
 
-    def arc(a, b, color, width, lift):
-        (ax, ay), (bx, by) = a, b
-        mx = (ax + bx) / 2
-        return (
-            f'<path d="M{f(ax)} {f(ay)} C{f(ax + 40)} {f(ay - lift)} {f(bx - 40)} {f(by - lift)} {f(bx)} {f(by)}" '
-            f'fill="none" stroke="{color}" stroke-width="{width}"/>'
-        )
+    def panel(x, name, lines):
+        """A code file: name, then lines. Each line is (indent, text or bar width, colour)."""
+        body.append(rect(x, top, 340, 380, PANEL))
+        body.append(text(x + 20, top + 30, name, 15, MUTED, mono=True))
+        body.append(line(x, top + 46, x + 340, top + 46, WOOD, 2))
+        ys = {}
+        for i, (ind, item, color) in enumerate(lines):
+            y = top + 80 + i * pitch
+            lx = x + 24 + ind * 20
+            if isinstance(item, str):
+                body.append(text(lx, y, item, 16, color, mono=True))
+                ys[item] = (lx, y, len(item) * 9.6)
+            elif item:
+                body.append(rect(lx, y - 7, item, 6, color))
+        return ys
 
-    # A path that is checked: it ends at a gate.
-    t2 = pos["tool2"]
-    g = pos["gated"]
-    gx = g[0] - 18
-    body.append(arc((t2[0] + t2[2], t2[1]), (gx, g[1]), MUTED, 1.75, 60))
-    body.append(f'<rect x="{f(gx)}" y="{f(g[1] - 11)}" width="3" height="22" fill="{CREAM}"/>')
-    body.append(f'<rect x="{f(gx + 6)}" y="{f(g[1] - 11)}" width="3" height="22" fill="{CREAM}"/>')
+    bar = lambda: rnd.uniform(90, 200)
+    p1 = panel(48, "tools/setup.py", [
+        (0, bar(), FAINT), (1, bar(), FAINT), (0, 0, None),
+        (0, "@tool", TAN), (0, "def setup_agent(...):", CREAM),
+        (1, bar(), FAINT), (1, bar(), FAINT), (1, "delete_workspace(...)", CREAM),
+        (1, bar(), FAINT), (0, 0, None), (0, bar(), FAINT), (1, bar(), FAINT),
+    ])
+    p2 = panel(420, "helpers/files.py", [
+        (0, bar(), FAINT), (0, 0, None),
+        (0, "def delete_workspace(...):", CREAM), (1, bar(), FAINT),
+        (1, "shutil.rmtree(...)", TAN), (0, 0, None),
+        (0, bar(), FAINT), (1, bar(), FAINT), (1, bar(), FAINT), (0, 0, None),
+        (0, bar(), FAINT), (1, bar(), FAINT),
+    ])
 
-    # The finding: tool -> delete_workspace -> shutil.rmtree, no gate.
-    t = pos["tool"]
-    fn = pos["fn"]
-    sk = pos["sink"]
-    a = (t[0] + t[2] + 6, t[1])
-    b = (fn[0] - 6, fn[1])
-    body.append(arc(a, b, TAN, 3, 90))
+    # The call path from the README's finding, drawn through the code.
+    tx, ty, _ = p1["@tool"]
+    cx, cy, cw = p1["delete_workspace(...)"]
+    dx, dy, _ = p2["def delete_workspace(...):"]
+    sx, sy, sw = p2["shutil.rmtree(...)"]
+    g1, g2 = 60, 432  # gutters
+    body.append(f'<circle cx="{g1}" cy="{ty - 5}" r="5" fill="{TAN}"/>')
     body.append(
-        f'<path d="M{f(fn[0] - 6)} {f(fn[1])} L{f(fn[0] - 6)} {f(sk[1])} L{f(sk[0] - 6)} {f(sk[1])}" fill="none" stroke="{TAN}" stroke-width="3"/>'
+        f'<path d="M{g1} {ty - 5} V{cy - 5} H{f(cx - 6)} M{f(cx + cw + 6)} {cy - 5} H404 V{dy - 5} H{f(dx - 4)} '
+        f'M{g2} {dy - 5} V{sy - 5} H{f(sx - 6)}" fill="none" stroke="{TAN}" stroke-width="2.5"/>'
     )
-    body.append(f'<circle cx="{f(a[0])}" cy="{f(a[1])}" r="6" fill="{TAN}"/>')
-    ex, ey = sk[0] + sk[2] + 16, sk[1]
-    body.append(f'<line x1="{f(sk[0] + sk[2] + 4)}" y1="{f(ey)}" x2="{f(keep[0] + 8)}" y2="{f(ey)}" stroke="{TAN}" stroke-width="2"/>')
-    body.append(f'<rect x="{f(ex - 7)}" y="{f(ey - 7)}" width="14" height="14" fill="{TAN}"/>')
+    end = sx + sw + 8
+    body.append(rect(end, sy - 11, 12, 12, TAN))
+    body.append(line(end + 12, sy - 5, 800, sy - 5, TAN, 2))
 
-    lx = keep[0] + 22
-    body.append(text(lx, 226, "shutil.rmtree", 26, CREAM, mono=True, key=True))
-    body.append(text(lx, 262, "reachable from a tool,", 21, MUTED, minor=True))
-    body.append(text(lx, 290, "no permission check", 21, TAN, weight=600, key=True))
+    # The finding, as the tool reports it.
+    fx, fy = 800, sy - 112
+    body.append(rect(fx, fy, 352, 214, PANEL))
+    body.append(rect(fx, fy, 4, 214, TAN))
+    body.append(text(fx + 28, fy + 44, "CRITICAL", 18, TAN, weight=600))
+    body.append(text(fx + 28, fy + 90, "An agent tool can", 27, CREAM))
+    body.append(text(fx + 28, fy + 124, "delete files.", 27, CREAM))
+    body.append(text(fx + 28, fy + 164, "No permission check on the way.", 17, MUTED))
+    body.append(text(fx + 28, fy + 192, "tools/setup.py → helpers/files.py", 13, MUTED, mono=True))
+    body.append(text(fx, 508, "found by reading the code; nothing runs", 15, MUTED, minor=True))
 
-    body.append(text(x0, 78, "tools/setup.py", 17, MUTED, mono=True, minor=True))
-    body.append(text(x0 + 3 * (cw + gap), 78, "helpers/files.py", 17, MUTED, mono=True, minor=True))
-    ly = 488
-    body.append('<g class="minor">')  # legend: hidden on phones
-    body.append(f'<rect x="{x0}" y="{ly - 15}" width="3" height="18" fill="{CREAM}"/>')
-    body.append(f'<rect x="{x0 + 6}" y="{ly - 15}" width="3" height="18" fill="{CREAM}"/>')
-    body.append(text(x0 + 22, ly, "a permission check: the path stops here", 20, MUTED, minor=True))
-    body.append('</g>')  # legend end
     return svg(
         "wyscan",
-        "Six files drawn as lines of code. A traced path runs from a tool in tools/setup.py into delete_workspace in helpers/files.py "
-        "and ends at shutil.rmtree, with no permission check on the way. Another path ends at a check and passes.",
+        "Two steps. WyScan reads an agent's code: a tool, setup_agent in tools/setup.py, calls delete_workspace in "
+        "helpers/files.py, which calls shutil.rmtree. It flags it as critical: an agent tool can delete files, "
+        "with no permission check on the way.",
         body,
     )
 
@@ -408,47 +415,44 @@ def wyscan():
 def wyatt():
     reqs = json.loads((DATA / "wyatt.json").read_text())["requests"]
     assert len(reqs) == 17
-    body = []
-    gates = [("Tool", 404, "tool"), ("Data", 594, "data"), ("Exec", 784, "exec"), ("Context", 974, "ctx")]
-    top, pitch = 100, 20.5
-    left, right = 112, 1112
-    for name, gx, _ in gates:
-        body.append(f'<rect x="{gx - 5}" y="78" width="10" height="{f(top + 16 * pitch + 24 - 78)}" fill="{WOOD}"/>')
-        body.append(text(gx, 62, name, 22, CREAM, "middle", 600, key=True))
-    gate_x = {k: gx for _, gx, k in gates}
-    for i, r in enumerate(reqs):
-        y = top + i * pitch
-        body.append(f'<circle cx="{left}" cy="{f(y)}" r="3.5" fill="{MUTED}"/>')
+    by_call = {r["call"]: r for r in reqs}
+    shown = [
+        "read_file app.log", "read_file /etc/shadow", "read_file ../../etc/passwd",
+        "delete_file app.yaml", "exec_command rm -rf /", "write_file backdoor.sh", "read_file secrets.env",
+    ]
+    body = [step(48, 1, "An agent asks"), step(440, 2, "Wyatt checks each call"), step(842, 3, "Only safe calls run")]
+    gx, gw = 470, 118  # the Wyatt column
+    body.append(rect(gx, 92, gw, 388, PANEL))
+    for k, name in enumerate(["tool", "data", "exec", "context"]):
+        x = gx + 18 + k * 27
+        body.append(line(x, 104, x, 468, WOOD, 3))
+    stop_x = {"tool": gx + 18, "data": gx + 45}
+    for i, call in enumerate(shown):
+        r = by_call[call]
+        y = 128 + i * 50
+        body.append(text(48, y + 6, call, 18, CREAM, mono=True))
+        body.append(line(48 + len(call) * 10.8 + 12, y, gx, y, MUTED, 2))
         if r["stop"]:
-            end = gate_x[r["stop"]] - 14
-            body.append(f'<line x1="{left}" y1="{f(y)}" x2="{end}" y2="{f(y)}" stroke="{MUTED}" stroke-width="2"/>')
-            body.append(f'<rect x="{end}" y="{f(y - 8)}" width="4" height="16" fill="{TAN}"/>')
+            sx = stop_x[r["stop"]]
+            body.append(line(gx, y, sx, y, MUTED, 2))
+            body.append(rect(sx - 2, y - 13, 6, 26, TAN))
+            body.append(text(gx + gw + 18, y + 6, f"blocked · {r['stop']} check", 17, TAN, weight=600))
         elif r.get("redact"):
-            cut = gate_x["ctx"] + 34
-            body.append(f'<line x1="{left}" y1="{f(y)}" x2="{cut}" y2="{f(y)}" stroke="{CREAM}" stroke-width="2"/>')
-            body.append(f'<rect x="{cut}" y="{f(y - 6)}" width="44" height="12" fill="{TAN}"/>')
-            body.append(f'<line x1="{cut + 44}" y1="{f(y)}" x2="{right}" y2="{f(y)}" stroke="{CREAM}" stroke-width="2"/>')
-            body.append(f'<circle cx="{right}" cy="{f(y)}" r="4.5" fill="{CREAM}"/>')
+            body.append(line(gx, y, 1004, y, CREAM, 2))
+            body.append(rect(700, y - 7, 70, 14, TAN))
+            body.append(text(1016, y + 6, "allowed,", 17, CREAM, weight=600))
+            body.append(text(1016, y + 28, "secret cut out", 15, MUTED))
         else:
-            body.append(f'<line x1="{left}" y1="{f(y)}" x2="{right}" y2="{f(y)}" stroke="{CREAM}" stroke-width="2"/>')
-            body.append(f'<circle cx="{right}" cy="{f(y)}" r="4.5" fill="{CREAM}"/>')
+            body.append(line(gx, y, 1004, y, CREAM, 2))
+            body.append(f'<circle cx="1004" cy="{y}" r="5" fill="{CREAM}"/>')
+            body.append(text(1016, y + 6, "allowed", 17, CREAM, weight=600))
+    body.append(text(48, 508, f"{len(shown)} of the {len(reqs)} test calls. All {len(reqs)} decided correctly.", 15, MUTED, minor=True))
 
-    stopped = sum(1 for r in reqs if r["stop"])
-    passed = len(reqs) - stopped
-    body.append(text(left, 62, f"{len(reqs)} requests", 22, MUTED, key=True))
-    ly = 492
-    body.append('<g class="minor">')  # legend: hidden on phones
-    body.append(f'<rect x="{left}" y="{ly - 14}" width="4" height="16" fill="{TAN}"/>')
-    body.append(text(left + 16, ly, f"{stopped} stopped at a check", 21, MUTED, minor=True))
-    body.append(f'<circle cx="{left + 272}" cy="{ly - 6}" r="4.5" fill="{CREAM}"/>')
-    body.append(text(left + 286, ly, f"{passed} allowed", 21, MUTED, minor=True))
-    body.append(f'<rect x="{left + 420}" y="{ly - 12}" width="30" height="12" fill="{TAN}"/>')
-    body.append(text(left + 462, ly, "1 secret cut from the output", 21, MUTED, minor=True))
-    body.append('</g>')  # legend end
     return svg(
         "wyatt",
-        f"{len(reqs)} requests from a test agent run left to right through four checks: tool, data, exec and context. "
-        f"{stopped} are stopped at a check, {passed} pass, and one of those has a secret cut from its output.",
+        "Three steps. An AI agent asks to run calls such as read_file /etc/shadow or exec_command rm -rf /. "
+        "Wyatt checks each call before it runs: tool, data, exec and context. Reading app.log is allowed, "
+        "the dangerous calls are blocked, and reading secrets.env is allowed with the secret cut out.",
         body,
     )
 
@@ -456,69 +460,65 @@ def wyatt():
 # ---------------------------------------------------------------- Prompt Injection Database
 
 
+FAMILY = {
+    "authority-hijacking": "Authority hijacking",
+    "context-manipulation": "Context manipulation",
+    "socio-emotional-leverage": "Emotional leverage",
+    "obfuscation-and-misdirection": "Obfuscation",
+    "information-extraction": "Information extraction",
+    "structural-logical-exploitation": "Logic exploit",
+    "indirect-injection": "Indirect injection",
+}
+
+
 def prompt_injection_db():
     recs = json.loads((DATA / "prompt-injection-db.json").read_text())["records"]
-    assert len(recs) == 82
-    fams = [
-        ("authority-hijacking", "Authority"),
-        ("context-manipulation", "Context"),
-        ("socio-emotional-leverage", "Emotion"),
-        ("obfuscation-and-misdirection", "Obfuscation"),
-        ("information-extraction", "Extraction"),
-        ("structural-logical-exploitation", "Structure"),
-        ("indirect-injection", "Indirect"),
-    ]
-    body = []
-    cell, pitch = 30, 36
-    bw = cell + pitch
-    margin = 104
-    gap = (W - 2 * margin - 7 * bw) / 6
-    base = 392
-    for i, (key, label) in enumerate(fams):
-        items = [r for r in recs if r["category"] == key]
-        bx = margin + i * (bw + gap)
-        rows = math.ceil(len(items) / 2)
-        for k, r in enumerate(items):
-            col, row = k % 2, k // 2
-            x = bx + col * pitch
-            y = base - (row + 1) * pitch + (pitch - cell)
-            if r["stealth"] == "high":
-                body.append(f'<rect x="{f(x)}" y="{f(y)}" width="{cell}" height="{cell}" fill="{CREAM}"/>')
-            elif r["stealth"] == "medium":
-                body.append(f'<rect x="{f(x)}" y="{f(y)}" width="{cell}" height="{cell}" fill="{FAINT}"/>')
-            else:
-                body.append(
-                    f'<rect x="{f(x + 1)}" y="{f(y + 1)}" width="{cell - 2}" height="{cell - 2}" fill="none" stroke="{FAINT}" stroke-width="2"/>'
-                )
-            if r["difficulty"] == "high":
-                body.append(f'<rect x="{f(x + 10)}" y="{f(y + 10)}" width="10" height="10" fill="{TAN}"/>')
-        top = base - rows * pitch + (pitch - cell)
-        cx = bx + bw / 2 - (pitch - cell) / 2
-        body.append(text(cx, top - 16, str(len(items)), 26, CREAM, "middle", 600, key=True))
-        body.append(text(cx, base + 38, label, 20, MUTED, "middle", minor=True))
+    cards = json.loads((DATA / "prompt-injection-cards.json").read_text())["cards"]
+    assert len(recs) == 82 and len(cards) == 12
+    body = [step(48, 1, f"{len(recs)} known attacks"), step(770, 2, "Each one labelled")]
 
-    hi = sum(1 for r in recs if r["stealth"] == "high")
-    hard = sum(1 for r in recs if r["difficulty"] == "high")
-    ly = 488
-    body.append('<g class="minor">')  # legend: hidden on phones
-    body.append(f'<rect x="{margin}" y="{ly - 15}" width="16" height="16" fill="{CREAM}"/>')
-    body.append(text(margin + 26, ly, f"high stealth, {hi}", 20, MUTED, minor=True))
-    mid_n = sum(1 for r in recs if r["stealth"] == "medium")
-    low_n = sum(1 for r in recs if r["stealth"] == "low")
-    body.append(f'<rect x="{margin + 200}" y="{ly - 15}" width="16" height="16" fill="{FAINT}"/>')
-    body.append(text(margin + 226, ly, f"medium, {mid_n}", 20, MUTED, minor=True))
-    body.append(f'<rect x="{margin + 361}" y="{ly - 14}" width="14" height="14" fill="none" stroke="{FAINT}" stroke-width="2"/>')
-    body.append(text(margin + 386, ly, f"low, {low_n}", 20, MUTED, minor=True))
-    body.append(f'<rect x="{margin + 500}" y="{ly - 15}" width="16" height="16" fill="{FAINT}"/>')
-    body.append(f'<rect x="{margin + 503}" y="{ly - 12}" width="10" height="10" fill="{TAN}"/>')
-    body.append(text(margin + 526, ly, f"hardest to pull off, {hard}", 20, MUTED, minor=True))
-    body.append('</g>')  # legend end
-    body.append(text(margin - 6, 70, f"{len(recs)} attacks, 7 families", 26, CREAM, weight=600, key=True))
+    # 1. A wall of real records, by title. The lit one opens on the right.
+    open_id = "7.2-002"
+    cw, ch, gx, gy = 206, 80, 14, 12
+    lit = None
+    for i, c in enumerate(cards):
+        col, row = i % 3, i // 3
+        x, y = 48 + col * (cw + gx), 98 + row * (ch + gy)
+        on = c["id"] == open_id
+        body.append(rect(x, y, cw, ch, PANEL))
+        if on:
+            body.append(f'<rect x="{x + 1}" y="{y + 1}" width="{cw - 2}" height="{ch - 2}" fill="none" stroke="{TAN}" stroke-width="2"/>')
+            lit = (x + cw, y + ch / 2)
+        body.append(text(x + 16, y + 34, c["title"], 19, CREAM if on else MUTED, serif=True))
+        body.append(text(x + 16, y + 60, FAMILY[c["category"]], 13, TAN if on else FAINT))
+    body.append(text(48, 494, f"12 of the {len(recs)}, in 7 families", 15, MUTED, minor=True))
+
+    # 2. The open record: its real labels.
+    c = next(c for c in cards if c["id"] == open_id)
+    bx, by, bw, bh = 770, 98, 382, 356
+    body.append(line(lit[0], lit[1], bx, lit[1], TAN, 2))
+    body.append(rect(bx, by, bw, bh, PANEL))
+    body.append(rect(bx, by, bw, 4, TAN))
+    body.append(text(bx + 28, by + 62, c["title"], 34, CREAM, serif=True))
+    body.append(text(bx + 28, by + 92, c["id"], 14, FAINT, mono=True))
+    fields = [
+        ("Family", FAMILY[c["category"]]),
+        ("Arrives in", c["delivery_vector"].replace("-", " ")),
+        ("Targets", c["target_surface"].replace("rag", "RAG").replace("-", " ")),
+        ("Stealth", c["stealth"]),
+        ("Difficulty", c["difficulty"]),
+    ]
+    for i, (k, v) in enumerate(fields):
+        y = by + 148 + i * 40
+        body.append(text(bx + 28, y, k, 16, MUTED))
+        body.append(text(bx + 150, y, v, 18, TAN if k == "Stealth" else CREAM, weight=600 if k == "Stealth" else 400))
+    body.append(text(bx, 494, "ready to run against your agent", 15, MUTED, minor=True))
+
     return svg(
         "prompt-injection-database",
-        f"82 squares, one per attack, stacked in seven families: authority 10, context 10, emotion 8, obfuscation 12, "
-        f"extraction 10, structure 16 and indirect 16. Light squares are the {hi} high-stealth attacks, "
-        f"and a tan centre marks the {hard} hardest.",
+        f"Two steps. A wall of {len(recs)} real prompt injection attacks, such as The Trojan PDF, The Sleeper Cell and "
+        "Grandma's Lullaby, in seven families. One record, The Invisible Ink, is open: indirect injection, "
+        "arrives in web content, targets the RAG retriever, high stealth, medium difficulty.",
         body,
     )
 
