@@ -185,7 +185,7 @@ One centered frame, max 82rem, with a fluid side gutter (1rem at 320px, 6rem at 
 
 **Reading pages and the 404**: same frame, one amber glow from the top right, content starting about 6 to 9rem down. The 404 is one line and a link home, no Contact block.
 
-**Lists**: Work comes in two lanes, Agents and Agent safety. From 64rem up each lane has a 13rem sticky rail on the left (lane name in Gloock title size, one muted line) and its projects stacked on the right, 4 to 6.5rem apart, no boxes and no rules. Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
+**Lists**: Work comes in two lanes, Agentic Systems and Agent safety. From 64rem up each lane has a 13rem sticky rail on the left (lane name in Gloock title size, one muted line) and its projects stacked on the right, 4 to 6.5rem apart, no boxes and no rules. Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
 
 Works from 320px with no sideways scroll. Every link has a 44px (2.75rem) tap height.
 
