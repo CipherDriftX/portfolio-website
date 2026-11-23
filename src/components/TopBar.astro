@@ -3,13 +3,15 @@ import Mark from "./Mark.astro";
 import { site } from "../data/site";
 
 interface Props {
-  sections: { id: string; label: string }[];
+  sections: { id: string; label: string; waiting?: boolean }[];
   onHome?: boolean;
 }
 const { sections, onHome = false } = Astro.props;
 const href = (id: string) => (onHome ? `#${id}` : `/#${id}`);
-// Phones keep the first two sections and Contact; the rest are one scroll away.
-const phoneHidden = (id: string, i: number) => id !== "contact" && i >= 2;
+// Phones keep the first two sections with entries, and Contact; the rest are
+// one scroll away.
+const ready = sections.filter((s) => s.id !== "contact" && !s.waiting).map((s) => s.id);
+const phoneHidden = (s: { id: string; waiting?: boolean }) => s.id !== "contact" && !ready.slice(0, 2).includes(s.id);
 ---
 
 <header class="bar">
@@ -20,8 +22,8 @@ const phoneHidden = (id: string, i: number) => id !== "contact" && i >= 2;
     sections.length > 0 && (
       <nav aria-label="Sections">
         <ul role="list">
-          {sections.map((s, i) => (
-            <li class:list={{ wide: phoneHidden(s.id, i) }}>
+          {sections.map((s) => (
+            <li class:list={{ wide: phoneHidden(s) }}>
               <a href={href(s.id)}>{s.label}</a>
             </li>
           ))}

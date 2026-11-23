@@ -110,16 +110,16 @@ components:
 
 The site is the room in the photo, at night. The page is a warm near-black, the colour of a table top after dark. Every colour on it was sampled from the owner's own phone photo: the table, the curtain, the bulb glass, the bulb base, the neon on his cheek, the blue chair. Light on the page comes only from where it comes from in the photo. The page never invents a new light source.
 
-It is a quiet, sparse page for a 5 to 10 second scan. One photo, one name set large in a serif, a few lines of plain grotesk text, and links that look like links. Grouping is done by space and type size, not by boxes. The photo is always the brightest thing on screen; the blooms behind it are faint enough to feel like air, not decoration.
+It is a quiet page for a 5 to 10 second scan that reads as a story when you keep going: who he is, the problem, the work that answers it, then how to start. One photo, one name set large in a serif, plain grotesk text, and links that look like links. The work sits on raised plates of the table surface, lit from above; the page around them stays dark. The photo is always the brightest thing on screen; the blooms are faint enough to feel like air, not decoration.
 
-It rejects the dark-navy developer portfolio, the centered gradient hero with a button, bento grids, glass cards, cursor glows, animated blobs and skill-logo clouds. The old paper-and-ink title card with signal orange is gone and is not a reference.
+It rejects the dark-navy developer portfolio, the centered gradient hero with a button, bento mosaics, glass cards, cursor glows, animated blobs and skill-logo clouds. The old paper-and-ink title card with signal orange is gone and is not a reference.
 
 **Key Characteristics:**
 - Dark only. `color-scheme: dark`, no light mode, no toggle.
 - One interactive accent: tungsten amber, on underlines, hover, focus and selection only.
 - Violet and blue exist only as light: soft, dithered, static blooms.
 - Gloock for the name and headings, Hanken Grotesk for everything else, tabular figures for every number.
-- Flat. No shadows, no borders as decoration, square corners.
+- Three depths: the page, raised plates, and wells cut into plates. Square corners.
 - One load fade, then stillness.
 
 ## Colors
@@ -145,7 +145,7 @@ A warm umber dark lit by tungsten, with two cold lights kept strictly as glow.
 ### Named Rules
 **The Light, Never Ink Rule.** Violet and blue appear only inside radial blooms. Never as text, icon, border, button or fill. If you can point at it and name its edge, it is ink and it is wrong.
 
-**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection. Nothing decorative is amber except the light blooms.
+**The One Accent Rule.** Amber marks what you can act on: underlines, hover, focus, selection, the plus on "How it works". Nothing decorative is amber except the light blooms. Chapter numbers use `tan`, the mark's lit facet, not amber.
 
 **The Real Source Rule.** Every bloom is tied to a light in the photo: amber from above (the bulbs), violet beside the face (the neon), blue low on the photo side (the chair). At most three per screen. No bloom without a source.
 
@@ -185,22 +185,31 @@ One centered frame, max 82rem, with a fluid side gutter (1rem at 320px, 6rem at 
 
 **Reading pages and the 404**: same frame, one amber glow from the top right, content starting about 6 to 9rem down. The 404 is one line and a link home, no Contact block.
 
-**Lists**: Work comes in two lanes, Agentic Systems and Agent safety. From 64rem up each lane has a 13rem sticky rail on the left (lane name in Gloock title size, one muted line) and its projects stacked on the right, 4 to 6.5rem apart, no boxes and no rules. Case studies, reviews and notes are single columns with 1.5 to 3rem gaps. Notes put the date in a 7rem column from 40rem up.
+**Story order**: hero, then numbered chapters: The problem, Work, Case studies, Reviews, Notes, then About and How I work side by side from 64rem (one column below). Each chapter opens on a 1px `rule` hairline with its number (two digits, Hanken 600, 1rem, `tan`) on the heading's baseline, counted by CSS so hidden sections never leave a gap. Sections still waiting for entries sit in one short unnumbered strip before About (small Gloock heading, placeholder line, hairline above).
+
+**The problem**: a large Hanken statement (max 30ch) on the page, and the answer on a raised plate beside it from 64rem: one sentence plus a link to each lane with its project count.
+
+**Lists**: Work comes in two lanes, Agentic Systems and Agent safety, each with its name and one muted line on a row above its cards. Phones: one column. From 48rem: the lane's first card runs full width, the rest sit two to a row with their parts lined up across the row (subgrid). Case studies are plates two to a row from 48rem; reviews and notes stay single columns. Notes put the date in a 7rem column from 40rem up. Every list shows its first few entries and keeps the rest behind a full-width "View N more" bar (hairline border, Hanken 600, amber on hover), done with `details` and `:has()`, no script.
 
 Works from 320px with no sideways scroll. Every link has a 44px (2.75rem) tap height.
 
 ## Elevation & Depth
 
-Flat. There are no box shadows anywhere. Depth comes from light: three large, faint radial blooms behind the first screen and one glow on reading pages, each grain-dithered inside its own gradient (an SVG noise tinted to the bloom's colour, only its alpha moves) so dark gradients do not band. There is no full-page grain. The top bar has no visible edge; a soft fade of the base (86% to 0% over 6.5rem) keeps its links readable over the photo's ceiling bulbs. The only raised surface is the flat `surface` panel.
+Three depths, all lit from the bulbs above:
+- **Page** (`base`): everything that is not a plate.
+- **Plate** (global `.plate`): `surface` with a faint amber wash over its top 9rem, a 1px cream top edge at 8%, and one short soft fall of shadow below (0 1.25rem 2.5rem -1.25rem, black at 70%). Project cards, the problem's answer, case studies and the offer.
+- **Well** (`base` inside a plate, 1px dark inner top edge): the tool output inside a card.
+
+Light: three large, faint radial blooms behind the first screen, one glow on reading pages, and one bloom behind each Work lane (bulb amber behind Agentic Systems at 0.09, neon violet behind Agent safety at 0.11), each grain-dithered inside its own gradient so dark gradients do not band. Plates sit over the lane light, so it shows around them. There is no full-page grain. The top bar has no visible edge; a soft fade of the base keeps its links readable over the photo's ceiling bulbs.
 
 ### Named Rules
 **The Photo Is Brightest Rule.** Blooms stay at or below 0.13 alpha for amber, 0.16 for violet, 0.26 for blue. If a bloom competes with the bulbs in the photo, it is too strong.
 
-**The No Shadow Rule.** No box-shadow, text-shadow or drop shadow. Separation is space, then tone.
+**The One Shadow Rule.** The plate's short fall of light is the only shadow. No text-shadow, no glow, no coloured shadow, no shadow on anything that is not a plate. Separation is space, then tone, then the plate.
 
 ## Shapes
 
-Square corners. Panels, code blocks, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code, The mark has no tile anywhere a background shows through; phone icons are full-bleed squares that the OS rounds. Borders are not used to group or decorate; the one hairline is a 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
+Square corners. Plates, wells, the skip link and the photo have no radius. The only rounding is a 2px radius on the focus ring and inline code. The mark has no tile anywhere a background shows through; phone icons are full-bleed squares that the OS rounds. Hairlines are 1px `rule` (cream at 9%): chapter openers, card footers, the lane jump list, the "View more" bar; plus the 1px `wood` rule under table rows in long-form prose. The photo never has a hard edge: every side that meets the page is masked into the base.
 
 ## Components
 
@@ -220,13 +229,13 @@ Quiet and unmistakable.
 The email address written out in full, then LinkedIn and GitHub, each with a 1em Bootstrap Icons SVG in muted that turns amber on hover. The underline sits on the text only. In a narrow container the email takes its own row; from 28.5rem of container width all three sit on one row. Used in the hero and in the Contact footer.
 
 ### Case study panel
-The one container: a flat `surface` block, no border, no radius, no shadow, fluid padding. Inside: Gloock title link, one-line summary, the eval result (large Hanken 600 figure, then metric and case count) and a muted client and year line.
+A plate, fluid padding, two to a row from 48rem. Inside: Gloock title link, one-line summary, the eval result (large Hanken 600 figure, then metric and case count) and a muted client and year line.
 
-### Project entry
-One project in Work. From 48rem: text on the left (Gloock name at 1.875 to 2.75rem, a muted line with place, year and language, the one-line lead, a short paragraph, the stack joined by middots in muted, then a "Code" link with the GitHub icon), and a right column of 11 to 15rem with up to two figures: Hanken 600 at 2.25 to 3.25rem, tabular, cream, each with a muted label of at most 24ch. On phones the figures move up under the lead, two side by side. Every figure must be checkable in the repo it links to. An optional exhibit shows a few lines of the tool's real output in a flat `surface` panel, system monospace, `white-space: pre`; a narrow screen scrolls the panel, never the page.
+### Project card
+One project in Work, on a plate. Top to bottom: the Gloock name (1.625 to 2.125rem; 2 to 2.75rem on a lane's first card) and a muted line with place, year and language; the drawing edge to edge; the one-line lead; up to two figures side by side (Hanken 600, 1.875 to 2.5rem, tabular, cream, each with a muted label); then a footer on a hairline with "How it works" (a `details` with an amber plus that turns to a minus) on the left and the "Code" link with the GitHub icon on the right. "How it works" opens the short paragraph, the stack in muted and, for some, a few lines of the tool's real output in a well (system monospace, `white-space: pre`; the well scrolls, never the page). Side padding is 4% of the card (container units), the same as the drawing's own margin, so text and drawing share one left edge. On a lane's first card from 64rem, the drawing takes 3/5 on the left and the lead and figures sit beside it. Every figure must be checkable in the repo it links to.
 
 ### Project drawing
-Under each project name sits one full-width drawing (viewBox 1200×520) that shows what the project does to someone who has never heard of it. It tells the project as two or three numbered steps (tan number, cream words, top row) using the real things from the repo: its example input, code, template text, test calls or record titles, never abstract dots alone. `_thumbs/make.py` draws them as SVG into `src/components/thumbs/<project id>.svg`; the page inlines them so labels use Hanken Grotesk. Flat plate in `surface`, marks in `cream`, `muted`, `#5c463b` and `wood`, and tan `#cf9a63` from the site mark as the one key ink: the thing to look at (the new channels, the finding, the stopped requests). Flat panels, lines, text and simple marks only: no gradients, glow, grids, blueprint lines, icons or screenshots. A drawing that shows data uses the project's real data, saved in `_thumbs/data` with its source; never draw a number the repo does not back. Labels: a few, sentence case. Step labels are marked `key` and grow to 30 units on phones; `minor` labels and legends hide under 40rem. Each SVG has `role="img"` and a `<title>` that says what it shows.
+Under each project name sits one full-width drawing (viewBox 1200×520) that shows what the project does to someone who has never heard of it. It tells the project as two or three numbered steps (tan number, cream words, top row) using the real things from the repo: its example input, code, template text, test calls or record titles, never abstract dots alone. `_thumbs/make.py` draws them as SVG into `src/components/thumbs/<project id>.svg`; the page inlines them so labels use Hanken Grotesk. Flat plate in `surface`, marks in `cream`, `muted`, `#5c463b` and `wood`, and tan `#cf9a63` from the site mark as the one key ink: the thing to look at (the new channels, the finding, the stopped requests). Flat panels, lines, text and simple marks only: no gradients, glow, grids, blueprint lines, icons or screenshots. A drawing that shows data uses the project's real data, saved in `_thumbs/data` with its source; never draw a number the repo does not back. Labels: a few, sentence case. Step labels are marked `key` and grow to 30 units when the drawing is under 40rem wide (a container query, so cards and phones both get it); `minor` labels and legends hide at the same width. The drawing's own plate rect is dropped on the page so the card's light passes behind it. Each SVG has `role="img"` and a `<title>` that says what it shows.
 
 ### Skip link
 Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.
@@ -247,7 +256,7 @@ A small muted label with a dashed muted border, shown only in `npm run dev` next
 - **Do** group by space: the `section` step between sections, 0.5rem to 2.5rem inside them.
 - **Do** mask every edge of the photo into the base.
 - **Do** keep a 44px tap height on every link and the same amber focus ring everywhere.
-- **Do** use the flat `surface` panel when content truly needs a container, with no border or shadow.
+- **Do** put work on plates (`.plate`) and keep everything else on the page; a plate inside a plate is a well, never another plate.
 - **Do** keep motion to one opacity fade on load (700ms photo, 600ms text after 80ms, cubic-bezier(0.16, 1, 0.3, 1)) and 120ms hover transitions, all off under reduced motion.
 - **Do** write the name in full, "Aryan Haghighi", in every mark, title and alt text.
 
@@ -255,7 +264,7 @@ A small muted label with a dashed muted border, shown only in `npm run dev` next
 - **Don't** use violet, blue or any other cool light from the photo (the street through the window included) as text, icons, borders, buttons or fills.
 - **Don't** add a light mode or theme toggle.
 - **Don't** add a light source that is not in the photo, or more than three blooms on one screen.
-- **Don't** use box shadows, glass, blur panels, glowing borders, bento grids, pills or chips.
+- **Don't** use glass, blur panels, glowing borders, bento mosaics, pills or chips, or any shadow other than the plate's.
 - **Don't** add small uppercase labels or eyebrows above headings.
 - **Don't** put text on the bright part of the photo; text may overlap only its dissolved dark edge.
 - **Don't** use initials "AH" or any letter in the mark or favicon.

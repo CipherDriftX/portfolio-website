@@ -22,8 +22,8 @@ The portfolio for Aryan Haghighi. In 5 to 10 seconds the first screen must answe
 
 ## Capabilities and Constraints
 
-- First screen is Persuade mode: name (the largest element), "AI Engineer", the claim, the drone line, and the contact links (email written out, LinkedIn, GitHub). The first live section peeks above the fold. Case study and note pages are Read mode.
-- Section order: Work, Case studies, How I work, Reviews, Notes, About, then Contact and footer. A section with no live entries does not render.
+- First screen is Persuade mode: name (the largest element), "AI Engineer", the claim, the drone line, and the contact links (email written out, LinkedIn, GitHub). The problem chapter peeks above the fold. Case study and note pages are Read mode.
+- The home page reads as a story, in this order: the problem (with the answer: the two lanes), Work, Case studies, Reviews, Notes, then About and How I work side by side, then Contact and footer. Chapters are numbered. Case studies and Notes with no live entries keep their placeholder line in one short strip before About; Reviews render only with a real review. Lists show a few entries (3 projects per lane, 4 case studies, 3 reviews, 5 notes) and the rest behind "View more", so the page stays short as work grows.
 - Pages: `/`, `/work/<slug>`, `/notes/<slug>`, `/404`. Sitemap with honest `lastmod`, robots.txt, canonical `https://www.aryanhaghighi.com/`, ProfilePage + Person, WebSite and Article JSON-LD linked by `@id`, `/llms.txt`, IndexNow after each production deploy. Keywords, baseline and rules in `SEO.md`.
 - Fixed copy:
   - Title tag: Aryan Haghighi, AI Engineer · production AI agents + evals

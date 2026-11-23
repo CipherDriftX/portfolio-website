@@ -28,6 +28,8 @@
   --amber: #f7bc7c; /* bulb base: the one interactive accent */
   --violet: #d273ad; /* neon on his cheek: light only */
   --blue: #3021d7; /* the chair: light only */
+  --tan: #cf9a63; /* the mark's lit facet: chapter numbers and the drawings' key ink */
+  --rule: rgb(246 233 206 / 0.09); /* hairline: chapter openers, card footers */
 
   --display: "Gloock", "Iowan Old Style", Georgia, serif;
   --text: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -187,6 +189,17 @@ a:hover {
   max-width: 82rem;
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+
+/* Three depths: the page (base), a raised plate (surface, lit from above by
+   the bulbs: a warm top edge and a soft fall of light), and a well cut into
+   a plate (base again, for code). */
+.plate {
+  background: linear-gradient(to bottom, rgb(247 188 124 / 0.045), transparent 9rem), var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgb(246 233 206 / 0.08),
+    0 1px 0 rgb(0 0 0 / 0.5),
+    0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.7);
 }
 
 /* Reading pages and the 404: one tungsten light from above. */

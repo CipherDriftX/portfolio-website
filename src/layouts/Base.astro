@@ -12,7 +12,7 @@ interface Props {
   description: string;
   /** Path of this page, for the canonical URL. */
   path: string;
-  sections?: { id: string; label: string }[];
+  sections?: { id: string; label: string; waiting?: boolean }[];
   onHome?: boolean;
   /** Add the ProfilePage + Person and WebSite schema (home page only). */
   person?: boolean;

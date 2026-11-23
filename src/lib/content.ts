@@ -40,16 +40,20 @@ export const minimum = { reviews: 1 } as const;
 export const enough = (count: number, min: number) => (showDrafts ? count > 0 : count >= min);
 
 // Everything the pages need to know about which sections are live.
-// Order here is page order.
+// The home page reads as a story: the problem, the work, deeper proof, then
+// who I am and how we start. Order here is story order.
 const labels = {
   work: "Work",
   "case-studies": "Case studies",
-  how: "How I work",
   reviews: "Reviews",
   notes: "Notes",
   about: "About",
+  how: "How I work",
 } as const;
 export type SectionId = keyof typeof labels;
+
+// How many entries each list shows before "View more".
+export const shown = { projects: 3, studies: 4, reviews: 3, notes: 5 } as const;
 
 export async function siteContent() {
   const [studies, projectList, reviewList, noteList, aboutEntry] = await Promise.all([
@@ -67,11 +71,24 @@ export async function siteContent() {
     notes: true,
     about: Boolean(aboutEntry),
   };
-  const shown = (Object.keys(labels) as SectionId[]).filter((id) => live[id]);
-  const sections = [...shown.map((id) => ({ id, label: labels[id] })), { id: "contact", label: "Contact" }];
+  // A section with no entries yet keeps its place holder line, but in a
+  // short strip near the end so it does not break the story.
+  const waiting = (id: SectionId) =>
+    (id === "case-studies" && studies.length === 0) || (id === "notes" && noteList.length === 0);
+  const ids = (Object.keys(labels) as SectionId[]).filter((id) => live[id]);
+  const closing = (id: SectionId) => id === "about" || id === "how";
+  const order = [
+    ...ids.filter((id) => !waiting(id) && !closing(id)),
+    ...ids.filter(waiting),
+    ...ids.filter(closing),
+  ];
+  const sections = [
+    ...order.map((id) => ({ id, label: labels[id], waiting: waiting(id) })),
+    { id: "contact", label: "Contact" },
+  ];
   return {
     live,
-    first: shown[0],
+    soon: ids.filter(waiting),
     sections,
     studies,
     projects: projectList,

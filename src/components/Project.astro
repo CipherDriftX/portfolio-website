@@ -1,15 +1,16 @@
 ---
-// One project on the home page: name, line, how it works, up to two real
-// numbers, the stack, a link to the code and, for some, a few lines of the
-// tool's own output.
+// One project card on the home page: name, drawing, one line and up to two
+// real numbers up front; how it works, the stack and the tool's own output
+// fold under "How it works". The first card in a lane is wide.
 // GitHub icon: Bootstrap Icons 1.11.3, (c) 2019-2024 The Bootstrap Authors, MIT License,
 // https://github.com/twbs/icons/blob/v1.11.3/LICENSE
 import { render, type CollectionEntry } from "astro:content";
 
 interface Props {
   project: CollectionEntry<"projects">;
+  wide?: boolean;
 }
-const { project } = Astro.props;
+const { project, wide = false } = Astro.props;
 const p = project.data;
 const { Content } = await render(project);
 const titleId = `project-${project.id}`;
@@ -20,7 +21,7 @@ const drawings = import.meta.glob<string>("./thumbs/*.svg", { query: "?raw", imp
 const drawing = drawings[`./thumbs/${project.id}.svg`];
 ---
 
-<article class="project" aria-labelledby={titleId}>
+<article class:list={["card plate", { wide }]} aria-labelledby={titleId}>
   <header class="head">
     <h4 id={titleId}>
       <a href={p.repo}>{p.name}</a>
@@ -35,111 +36,76 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
 
   {drawing && <figure class="thumb" set:html={drawing} />}
 
-  <div class="text">
+  <div class="sum">
     <p class="line">{p.line}</p>
-    <div class="how"><Content /></div>
-    <p class="stack"><span class="visually-hidden">Built with </span>{p.stack.join(" · ")}</p>
-    <p class="code">
-      <a href={p.repo}>
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
-        <span>Code<span class="visually-hidden">: {p.name} on GitHub</span></span>
-      </a>
-    </p>
+    {
+      p.figures.length > 0 && (
+        <ul role="list" class="figures">
+          {p.figures.map((f) => (
+            <li>
+              <span class="value num">{f.value}</span>
+              <span class="label">{f.label}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 
-  {
-    p.figures.length > 0 && (
-      <ul role="list" class="figures">
-        {p.figures.map((f) => (
-          <li>
-            <span class="value num">{f.value}</span>
-            <span class="label">{f.label}</span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
-  {
-    p.exhibit && (
-      <figure class="exhibit">
-        <pre tabindex="0" aria-label={`${p.name} output`}><code>{p.exhibit.text}</code></pre>
-        <figcaption>{p.exhibit.caption}</figcaption>
-      </figure>
-    )
-  }
+  <div class="foot">
+    <details class="more">
+      <summary>How it works</summary>
+      <div class="detail">
+        <div class="how"><Content /></div>
+        <p class="stack"><span class="visually-hidden">Built with </span>{p.stack.join(" · ")}</p>
+        {
+          p.exhibit && (
+            <figure class="exhibit">
+              <pre tabindex="0" aria-label={`${p.name} output`}><code>{p.exhibit.text}</code></pre>
+              <figcaption>{p.exhibit.caption}</figcaption>
+            </figure>
+          )
+        }
+      </div>
+    </details>
+    <a class="code" href={p.repo}>
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
+      <span>Code<span class="visually-hidden">: {p.name} on GitHub</span></span>
+    </a>
+  </div>
 </article>
 
 <style>
-  /* Phones: one column. Name, line, numbers, then how it works. */
-  .project {
+  /* A raised plate (global .plate) sitting over the lane's light. Its parts line up
+     with the card beside it (subgrid rows: name, drawing, line, numbers,
+     footer). Side padding matches the drawing's own margin (48 of 1200),
+     measured on the card grid (.cards is the container: a card that is a
+     container itself would lose its subgrid). */
+  .card {
+    --pad: max(1rem, 4cqi);
     display: grid;
-    grid-template-areas:
-      "head"
-      "thumb"
-      "line"
-      "figures"
-      "how"
-      "stack"
-      "code"
-      "exhibit";
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    height: 100%;
+  }
+
+  .head,
+  .line,
+  .figures,
+  .foot {
+    padding-inline: var(--pad);
   }
 
   .head {
-    grid-area: head;
-  }
-
-  /* The drawing: full width under the name, on the table surface. */
-  .thumb {
-    grid-area: thumb;
-    margin: clamp(1.25rem, 1rem + 1vw, 1.75rem) 0 0;
-  }
-
-  .thumb :global(svg) {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  /* On a phone the drawing is about a third of its drawn size: small notes
-     go, the step labels grow so they stay near 9px. */
-  @media (max-width: 40rem) {
-    .thumb :global(.minor) {
-      display: none;
-    }
-
-    .thumb :global(.key) {
-      font-size: 30px;
-    }
-  }
-
-  /* The line sits in the text block on wide screens; on phones it moves up
-     so the numbers come right after it. */
-  .text {
-    display: contents;
-  }
-
-  .line {
-    grid-area: line;
-  }
-
-  .how {
-    grid-area: how;
-  }
-
-  .stack {
-    grid-area: stack;
-  }
-
-  .code {
-    grid-area: code;
+    padding-block-start: clamp(1.25rem, 1rem + 1vw, 1.75rem);
   }
 
   h4 {
     margin: 0;
     font-family: var(--display);
     font-weight: 400;
-    font-size: clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);
+    font-size: clamp(1.625rem, 1.35rem + 0.9vw, 2.125rem);
     line-height: 1;
     letter-spacing: -0.005em;
     text-wrap: balance;
@@ -158,40 +124,154 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
   .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 1rem;
-    margin-block-start: 0.625rem;
+    gap: 0 0.875rem;
+    margin-block-start: 0.5rem;
     color: var(--muted);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
+  }
+
+  /* The drawing runs edge to edge; its own plate colour drops so the
+     card's light passes behind it. */
+  .thumb {
+    container-type: inline-size;
+    margin: 0.5rem 0 0;
+  }
+
+  .thumb :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .thumb :global(svg > rect:first-of-type) {
+    fill: none;
+  }
+
+  /* A small drawing loses its notes and grows its step labels so they
+     stay near 9 to 14px. */
+  @container (max-width: 40rem) {
+    .thumb :global(.minor) {
+      display: none;
+    }
+
+    .thumb :global(.key) {
+      font-size: 30px;
+    }
+  }
+
+  .sum {
+    display: contents;
   }
 
   .line {
+    padding-block-start: 0.75rem;
+    max-width: 40ch;
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: 1.45;
+  }
+
+  /* Numbers: large, plain, tabular. Each one is checkable in the repo. */
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+    align-content: start;
+    gap: 1.25rem 1.5rem;
+    padding-block: 1.5rem 0.25rem;
+  }
+
+  .figures li {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+  }
+
+  .value {
+    font-size: clamp(1.875rem, 1.6rem + 1vw, 2.5rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .label {
+    max-width: 26ch;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  /* Footer: "How it works" opens below; the Code link sits on the same
+     row at the right. */
+  .foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-self: end;
     margin-block-start: 1.25rem;
-    max-width: 34ch;
-    font-size: clamp(1.1875rem, 1.05rem + 0.45vw, 1.375rem);
-    line-height: 1.4;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .more {
+    grid-area: 1 / 1 / 2 / -1;
+    min-width: 0;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: fit-content;
+    min-height: 3rem;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: color 120ms ease-out;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* A plus that turns into a minus. */
+  summary::after {
+    content: "";
+    width: 0.625rem;
+    height: 0.625rem;
+    background:
+      linear-gradient(var(--amber), var(--amber)) center / 100% 1.5px no-repeat,
+      linear-gradient(var(--amber), var(--amber)) center / 1.5px 100% no-repeat;
+  }
+
+  .more[open] summary::after {
+    background: linear-gradient(var(--amber), var(--amber)) center / 100% 1.5px no-repeat;
+  }
+
+  summary:hover {
+    color: var(--amber);
+  }
+
+  .detail {
+    padding-block: 0.25rem 1.25rem;
   }
 
   .how {
     max-width: var(--measure);
-    margin-block-start: 1.25rem;
   }
 
   .stack {
-    max-width: var(--measure);
-    margin-block-start: 1rem;
+    margin-block-start: 0.875rem;
     color: var(--muted);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 
   .code {
-    margin-block-start: 0.5rem;
-  }
-
-  .code a {
+    grid-area: 1 / 2;
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 2.75rem;
+    min-height: 3rem;
+    font-size: 0.9375rem;
     text-decoration: none;
   }
 
@@ -209,93 +289,95 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     transition: fill 120ms ease-out;
   }
 
-  .code a:hover svg {
+  .code:hover svg {
     fill: var(--amber);
   }
 
-  /* Numbers: large, plain, tabular. Each one is checkable in the repo. */
-  .figures {
-    grid-area: figures;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
-    gap: 1.25rem 2rem;
-    margin-block-start: 1.75rem;
-  }
-
-  .figures li {
-    display: grid;
-    align-content: start;
-    gap: 0.5rem;
-  }
-
-  .value {
-    font-size: clamp(2.25rem, 1.8rem + 1.8vw, 3.25rem);
-    font-weight: 600;
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-  }
-
-  .label {
-    max-width: 24ch;
-    color: var(--muted);
-    font-size: 0.9375rem;
-    line-height: 1.45;
-  }
-
-  /* The tool's own output, on the table surface. */
+  /* The tool's own output sits in a well cut into the card. */
   .exhibit {
-    grid-area: exhibit;
-    margin-block-start: 1.75rem;
+    margin-block-start: 1.25rem;
     min-width: 0;
   }
 
   .exhibit pre {
     margin: 0;
-    padding: clamp(1rem, 0.75rem + 1.25vw, 1.75rem);
-    background: var(--surface);
+    padding: 1rem 1.125rem;
+    background: var(--base);
+    box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.6);
     color: var(--cream);
     font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
-    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    font-size: 0.75rem;
     line-height: 1.7;
-    /* Terminal lines keep their shape; a narrow screen scrolls the panel,
-       never the page. */
+    /* Terminal lines keep their shape; the well scrolls, never the page. */
     white-space: pre;
     overflow-x: auto;
     tab-size: 2;
-    scrollbar-color: var(--wood) var(--surface);
+    scrollbar-color: var(--wood) var(--base);
   }
 
   .exhibit figcaption {
-    margin-block-start: 0.75rem;
+    margin-block-start: 0.625rem;
     color: var(--muted);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 
-  /* Wide: text left, numbers in their own column on the right, output
-     across the full width below. */
+  /* Two to a row: each card is half the grid. */
   @media (min-width: 48rem) {
-    .project {
-      grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
+    .card:not(.wide) {
+      --pad: max(1rem, 2cqi);
+    }
+  }
+
+  /* The lead card of a lane: its own grid, not tied to a neighbour. Wide
+     screens put the drawing left and the line and numbers right. */
+  .wide {
+    grid-row: auto;
+    grid-template-rows: none;
+  }
+
+  @media (min-width: 64rem) {
+    .wide {
+      /* The drawing column is 3/5 of the card, so its margin is 2.4% */
+      --pad: max(1rem, 2.4cqi);
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
       grid-template-areas:
-        "head    head"
-        "thumb   thumb"
-        "line    figures"
-        "how     figures"
-        "stack   figures"
-        "code    figures"
-        "exhibit exhibit";
-      column-gap: clamp(2rem, 1rem + 3vw, 4.5rem);
-      align-items: start;
+        "head  head"
+        "thumb sum"
+        "foot  foot";
     }
 
-    .figures {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-block-start: 1.5rem;
+    .wide .head {
+      grid-area: head;
     }
 
-    .exhibit {
-      margin-block-start: 2rem;
+    .wide .thumb {
+      grid-area: thumb;
+      margin-block: 0.75rem 0;
+    }
+
+    .wide .sum {
+      grid-area: sum;
+      display: block;
+      align-self: center;
+      padding-inline-end: var(--pad);
+    }
+
+    .wide .line,
+    .wide .figures {
+      padding-inline: 0;
+    }
+
+    .wide .line {
+      font-size: clamp(1.1875rem, 1rem + 0.45vw, 1.375rem);
+      line-height: 1.4;
+    }
+
+    .wide h4 {
+      font-size: clamp(2rem, 1.4rem + 1.6vw, 2.75rem);
+    }
+
+    .wide .foot {
+      grid-area: foot;
     }
   }
 </style>
