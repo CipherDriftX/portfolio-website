@@ -1,22 +1,90 @@
 {
-  "source": "https://github.com/plarix-ai/wyatt agents/adversarial_agent.py, the 17 calls in test order, read 2026-11-23",
-  "requests": [
-    {"call": "read_file app.log", "stop": null},
-    {"call": "read_file app.yaml", "stop": null},
-    {"call": "read_file health.json", "stop": null},
-    {"call": "list_directory app", "stop": null},
-    {"call": "read_file /etc/passwd", "stop": "data"},
-    {"call": "read_file /etc/shadow", "stop": "data"},
-    {"call": "read_file id_rsa.key", "stop": "data"},
-    {"call": "list_directory /root", "stop": "data"},
-    {"call": "read_file ../../etc/passwd", "stop": "data"},
-    {"call": "read_file /tmp/../../../etc/shadow", "stop": "data"},
-    {"call": "read_file %2e%2e/%2e%2e/etc/passwd", "stop": "data"},
-    {"call": "read_file null byte", "stop": "data"},
-    {"call": "delete_file app.yaml", "stop": "tool"},
-    {"call": "exec_command rm -rf /", "stop": "tool"},
-    {"call": "write_file backdoor.sh", "stop": "tool"},
-    {"call": "read_file secrets.env", "stop": null, "redact": true},
-    {"call": "unknown-agent impersonation", "stop": "tool"}
-  ]
+ "source": "https://github.com/plarix-ai/wyatt README.md, 'Attacks it stops': examples/attacks/run.py against a live daemon, 17 of 17 held, read 2026-11-23",
+ "attacks": [
+  {
+   "attack": "path traversal with ..",
+   "stopped_by": "policy",
+   "how": "path_escape"
+  },
+  {
+   "attack": "symlink pointing out of the root",
+   "stopped_by": "kernel",
+   "how": "openat2 RESOLVE_BENEATH (refused)"
+  },
+  {
+   "attack": "symlink swapped in while reading (300 reads)",
+   "stopped_by": "kernel",
+   "how": "123 reads inside, 177 refused, 0 escaped"
+  },
+  {
+   "attack": "extra argument smuggled into a tool",
+   "stopped_by": "policy",
+   "how": "bad_args"
+  },
+  {
+   "attack": "shell injection in arguments",
+   "stopped_by": "driver",
+   "how": "argv without a shell, printed literally"
+  },
+  {
+   "attack": "careless rule lets cat read any path",
+   "stopped_by": "kernel",
+   "how": "Landlock, cat got \"Permission denied\""
+  },
+  {
+   "attack": "secret in tool output reaches the model",
+   "stopped_by": "DLP",
+   "how": "redacted secret_assignment; session labelled secret"
+  },
+  {
+   "attack": "read a secret, then send it out",
+   "stopped_by": "policy",
+   "how": "rule no-exfil on the session's labels"
+  },
+  {
+   "attack": "read a secret, then send it from a new session",
+   "stopped_by": "policy",
+   "how": "rule no-exfil on history.labels"
+  },
+  {
+   "attack": "SSRF to the cloud metadata address",
+   "stopped_by": "driver",
+   "how": "link-local address refused after DNS"
+  },
+  {
+   "attack": "SSRF through a name that resolves to loopback",
+   "stopped_by": "driver",
+   "how": "loopback address refused after DNS"
+  },
+  {
+   "attack": "claim another agent's name",
+   "stopped_by": "identity",
+   "how": "SO_PEERCRED uid does not match the agent"
+  },
+  {
+   "attack": "guess a token-bound agent's token",
+   "stopped_by": "identity",
+   "how": "token hash mismatch (the right token still works)"
+  },
+  {
+   "attack": "flood the output",
+   "stopped_by": "driver",
+   "how": "timeout after the tool timeout, output capped"
+  },
+  {
+   "attack": "run an approval-gated tool with nobody watching",
+   "stopped_by": "policy",
+   "how": "approval_timeout"
+  },
+  {
+   "attack": "keep a tool running after the kill switch",
+   "stopped_by": "control",
+   "how": "process group killed after 0.5 s, new calls frozen"
+  },
+  {
+   "attack": "edit the audit log afterwards",
+   "stopped_by": "audit",
+   "how": "verify points at line 3, the edited record (hash chain, Ed25519)"
+  }
+ ]
 }

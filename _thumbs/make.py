@@ -424,46 +424,51 @@ def wyscan():
 
 
 def wyatt():
-    reqs = json.loads((DATA / "wyatt.json").read_text())["requests"]
-    assert len(reqs) == 17
-    by_call = {r["call"]: r for r in reqs}
+    attacks = json.loads((DATA / "wyatt.json").read_text())["attacks"]
+    assert len(attacks) == 17
+    by_name = {r["attack"]: r for r in attacks}
+    # (what the drawing says, the suite's row). The first one is let through
+    # with the secret cut out; the rest are stopped.
     shown = [
-        "read_file app.log", "read_file /etc/shadow", "read_file ../../etc/passwd",
-        "delete_file app.yaml", "exec_command rm -rf /", "write_file backdoor.sh", "read_file secrets.env",
+        ("read a file that holds a key", "secret in tool output reaches the model"),
+        ("path traversal with ..", "path traversal with .."),
+        ("symlink swapped in mid-read", "symlink swapped in while reading (300 reads)"),
+        ("shell injection in arguments", "shell injection in arguments"),
+        ("read a secret, then send it out", "read a secret, then send it out"),
+        ("SSRF to the cloud metadata address", "SSRF to the cloud metadata address"),
+        ("claim another agent's name", "claim another agent's name"),
+        ("keep running after the kill switch", "keep a tool running after the kill switch"),
     ]
-    body = [step(48, 1, "An agent asks"), step(440, 2, "Wyatt checks each call"), step(842, 3, "Only safe calls run")]
+    body = [step(48, 1, "An agent tries"), step(440, 2, "Wyatt checks it"), step(842, 3, "Only safe calls run")]
     gx, gw = 470, 118  # the Wyatt column
-    body.append(rect(gx, 92, gw, 388, PANEL))
-    for k, name in enumerate(["tool", "data", "exec", "context"]):
-        x = gx + 18 + k * 27
-        body.append(line(x, 104, x, 468, WOOD, 3))
-    stop_x = {"tool": gx + 18, "data": gx + 45}
-    for i, call in enumerate(shown):
-        r = by_call[call]
-        y = 128 + i * 50
-        body.append(text(48, y + 6, call, 18, CREAM, mono=True))
-        body.append(line(48 + len(call) * 10.8 + 12, y, gx, y, MUTED, 2))
-        if r["stop"]:
-            sx = stop_x[r["stop"]]
-            body.append(line(gx, y, sx, y, MUTED, 2))
-            body.append(rect(sx - 2, y - 13, 6, 26, TAN))
-            body.append(text(gx + gw + 18, y + 6, f"blocked · {r['stop']} check", 17, TAN, weight=600))
-        elif r.get("redact"):
+    layers = ["identity", "policy", "kernel", "driver", "control"]
+    body.append(rect(gx, 92, gw, 384, PANEL))
+    lx = {name: gx + 15 + k * 22 for k, name in enumerate(layers)}
+    for x in lx.values():
+        body.append(line(x, 104, x, 464, WOOD, 3))
+    for i, (label, key) in enumerate(shown):
+        r = by_name[key]
+        y = 120 + i * 46
+        body.append(text(48, y + 6, label, 18, CREAM))
+        body.append(line(48 + len(label) * 8.4 + 14, y, gx, y, MUTED, 2))
+        if r["stopped_by"] == "DLP":
             body.append(line(gx, y, 1004, y, CREAM, 2))
             body.append(rect(700, y - 7, 70, 14, TAN))
             body.append(text(1016, y + 6, "allowed,", 17, CREAM, weight=600))
-            body.append(text(1016, y + 28, "secret cut out", 15, MUTED))
+            body.append(text(1016, y + 27, "key cut out", 15, MUTED))
         else:
-            body.append(line(gx, y, 1004, y, CREAM, 2))
-            body.append(f'<circle cx="1004" cy="{y}" r="5" fill="{CREAM}"/>')
-            body.append(text(1016, y + 6, "allowed", 17, CREAM, weight=600))
-    body.append(text(48, 508, f"{len(shown)} of the {len(reqs)} test calls. All {len(reqs)} decided correctly.", 15, MUTED, minor=True))
+            sx = lx[r["stopped_by"]]
+            body.append(line(gx, y, sx, y, MUTED, 2))
+            body.append(rect(sx - 3, y - 13, 6, 26, TAN))
+            body.append(text(gx + gw + 18, y + 6, f"stopped \u00b7 {r['stopped_by']}", 17, TAN, weight=600))
+    body.append(text(48, 508, f"{len(shown)} of the {len(attacks)} attacks in the suite. All {len(attacks)} held.", 15, MUTED, minor=True))
 
     return svg(
         "wyatt",
-        "Three steps. An AI agent asks to run calls such as read_file /etc/shadow or exec_command rm -rf /. "
-        "Wyatt checks each call before it runs: tool, data, exec and context. Reading app.log is allowed, "
-        "the dangerous calls are blocked, and reading secrets.env is allowed with the secret cut out.",
+        "Three steps. An AI agent tries calls such as path traversal, a symlink swapped in mid-read, SSRF to the "
+        "cloud metadata address or sending a secret out. Wyatt checks each one before it runs, and each attack is "
+        "stopped by its policy, the kernel, the tool driver, the agent's identity or the kill switch. A file read "
+        "that holds a key is allowed with the key cut out.",
         body,
     )
 
