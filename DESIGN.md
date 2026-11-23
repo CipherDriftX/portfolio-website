@@ -225,6 +225,9 @@ The one container: a flat `surface` block, no border, no radius, no shadow, flui
 ### Project entry
 One project in Work. From 48rem: text on the left (Gloock name at 1.875 to 2.75rem, a muted line with place, year and language, the one-line lead, a short paragraph, the stack joined by middots in muted, then a "Code" link with the GitHub icon), and a right column of 11 to 15rem with up to two figures: Hanken 600 at 2.25 to 3.25rem, tabular, cream, each with a muted label of at most 24ch. On phones the figures move up under the lead, two side by side. Every figure must be checkable in the repo it links to. An optional exhibit shows a few lines of the tool's real output in a flat `surface` panel, system monospace, `white-space: pre`; a narrow screen scrolls the panel, never the page.
 
+### Project drawing
+Each project entry opens with one full-width drawing (viewBox 1200×520) that shows what the project does to someone who has never heard of it. `_thumbs/make.py` draws them as SVG into `src/components/thumbs/<project id>.svg`; the page inlines them so labels use Hanken Grotesk. Flat plate in `surface`, marks in `cream`, `muted`, `#5c463b` and `wood`, and tan `#cf9a63` from the site mark as the one key ink: the thing to look at (the new channels, the finding, the stopped requests). Squares, lines and dots only: no gradients, glow, grids, blueprint lines, icons or screenshots. A drawing that shows data uses the project's real data, saved in `_thumbs/data` with its source; never draw a number the repo does not back. Labels: a few, sentence case. Labels marked `key` grow to 36 units on phones; `minor` labels and legends hide under 40rem. Each SVG has `role="img"` and a `<title>` that says what it shows.
+
 ### Skip link
 Amber block with base text, Hanken 600, hidden above the viewport until focused, then a cream focus ring.
 
