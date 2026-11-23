@@ -21,7 +21,6 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
 ---
 
 <article class="project" aria-labelledby={titleId}>
-  {drawing && <figure class="thumb" set:html={drawing} />}
   <header class="head">
     <h4 id={titleId}>
       <a href={p.repo}>{p.name}</a>
@@ -33,6 +32,8 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
       <span>{p.language}</span>
     </p>
   </header>
+
+  {drawing && <figure class="thumb" set:html={drawing} />}
 
   <div class="text">
     <p class="line">{p.line}</p>
@@ -74,8 +75,8 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
   .project {
     display: grid;
     grid-template-areas:
-      "thumb"
       "head"
+      "thumb"
       "line"
       "figures"
       "how"
@@ -88,10 +89,10 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     grid-area: head;
   }
 
-  /* The drawing: full width above the name, on the table surface. */
+  /* The drawing: full width under the name, on the table surface. */
   .thumb {
     grid-area: thumb;
-    margin: 0 0 clamp(1.75rem, 1.25rem + 1.5vw, 2.75rem);
+    margin: clamp(1.25rem, 1rem + 1vw, 1.75rem) 0 0;
   }
 
   .thumb :global(svg) {
@@ -100,15 +101,15 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     height: auto;
   }
 
-  /* On a phone the drawing is about a third of its drawn size: small labels
-     go, the main ones grow so they stay near 11px. */
+  /* On a phone the drawing is about a third of its drawn size: small notes
+     go, the step labels grow so they stay near 9px. */
   @media (max-width: 40rem) {
     .thumb :global(.minor) {
       display: none;
     }
 
     .thumb :global(.key) {
-      font-size: 36px;
+      font-size: 30px;
     }
   }
 
@@ -276,8 +277,8 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     .project {
       grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
       grid-template-areas:
+        "head    head"
         "thumb   thumb"
-        "head    figures"
         "line    figures"
         "how     figures"
         "stack   figures"
@@ -290,7 +291,7 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     .figures {
       grid-template-columns: 1fr;
       gap: 2rem;
-      margin-block-start: 0.25rem;
+      margin-block-start: 1.5rem;
     }
 
     .exhibit {
