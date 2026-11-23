@@ -273,7 +273,7 @@ def outreach_os():
 
 def relicon():
     body = [step(48, 1, "You write a line"), step(372, 2, "It plans scenes"), step(722, 3, "A finished ad, 4 sizes")]
-    mid = 246
+    mid = 226
 
     # 1. The input: one sentence, with a caret.
     body.append(rect(48, mid - 76, 284, 152, PANEL))
@@ -325,12 +325,23 @@ def relicon():
         body.append(rect(x, y + h - 3, w * 0.38, 3, TAN))
         body.append(text(x + w / 2, base + 32, name, 18, MUTED, "middle"))
         x += w + 12
-    body.append(text(724, mid + 136, "with voice, music and captions", 16, MUTED, minor=True))
+
+    # 4. The loop: results from the ads go back into the next plan.
+    body.append(
+        f'<path d="M940 {mid + 106} V{mid + 168} H526 V{mid + 132}" fill="none" stroke="{TAN}" stroke-width="2.5"/>'
+        f'<path d="M519 {mid + 142} L526 {mid + 130} L533 {mid + 142}" fill="none" stroke="{TAN}" stroke-width="2.5"/>'
+    )
+    body.append(
+        f'<text x="560" y="{mid + 206}" font-size="25" font-weight="600" fill="{CREAM}" class="key">'
+        f'<tspan fill="{TAN}">4</tspan><tspan dx="12">It learns from the results</tspan></text>'
+    )
+    body.append(text(560, mid + 236, "hook rate, clicks and return on spend steer the next batch", 16, MUTED, minor=True))
 
     return svg(
         "relicon",
-        "Three steps. You write one sentence about your product. Relicon plans a hook, problem and solution scene. "
-        "You get a finished video ad in four sizes, 9:16, 1:1, 4:5 and 16:9, with captions inside each safe zone.",
+        "Four steps in a loop. You write one sentence about your product. Relicon plans a hook, problem and solution scene. "
+        "You get a finished video ad in four sizes, 9:16, 1:1, 4:5 and 16:9. Then it reads how the ads did and uses "
+        "the results to plan the next batch.",
         body,
     )
 
