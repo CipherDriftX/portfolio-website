@@ -54,6 +54,16 @@ The owner picks which topics to write about. These are the phrases people actual
 - ai engineer portfolio
 - ai engineer vs ml engineer / ai engineer vs forward deployed engineer / ai engineer vs applied ai engineer
 
+**Agent safety (added 2026-11-24, Google autocomplete, US English)**
+- ai agent policy enforcement / ai agent policy engine / ai agent policy as code
+- how to secure ai agents / how to build secure ai agents (crowded: Okta, Gartner)
+- ai agent security tools / ai agent security best practices / ai agent security risks
+- ai agent sandbox / ai agent sandbox open source / ai agent sandbox escape
+- mcp security best practices / mcp security gateway / mcp security risks
+- prevent prompt injection attacks / prompt injection prevention tools
+- ai agent audit log / ai agent audit trail
+- Pick the narrow phrases first (policy enforcement, policy engine, mcp security gateway): a new domain can win those, not "ai agent security".
+
 **Autonomous drones (research lane, long term)**
 - autonomous drone navigation in gps denied environments / without gps
 - autonomous drone navigation using reinforcement learning / computer vision
