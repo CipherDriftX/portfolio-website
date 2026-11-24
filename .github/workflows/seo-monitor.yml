@@ -42,6 +42,15 @@ jobs:
       - name: Check the live site
         run: node scripts/seo-check.mjs --lighthouse lh-mobile.json,lh-desktop.json --out report.md
 
+      - name: Keep the Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: lighthouse-${{ github.run_id }}
+          path: lh-*.json
+          retention-days: 90
+          if-no-files-found: ignore
+
       - name: Post the weekly report
         if: always() && github.event_name != 'status' && hashFiles('report.md') != ''
         env:

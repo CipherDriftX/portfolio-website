@@ -183,6 +183,28 @@ for (const bot of ["Googlebot/2.1", "bingbot/2.0", "GPTBot/1.1", "OAI-SearchBot/
   if (res.status !== 200 || !res.body.includes(NAME)) err(bot, `home answers ${res.status} to this crawler`);
 }
 
+// schema.org's own validator reads the live page the way Google's parser
+// does (same engine family). It only sees public URLs.
+if (LIVE) {
+  for (const { url } of pages) {
+    const res = await get("https://validator.schema.org/validate", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ url }),
+    });
+    let report;
+    try {
+      report = JSON.parse(res.body.replace(/^\)\]\}'\n?/, ""));
+    } catch {
+      warn(short(url), `schema.org validator did not answer (status ${res.status})`);
+      continue;
+    }
+    if (report.totalNumErrors) err(short(url), `schema.org validator: ${report.totalNumErrors} errors`);
+    if (report.totalNumWarnings) warn(short(url), `schema.org validator: ${report.totalNumWarnings} warnings`);
+    facts.push(`\`${short(url)}\`: validator found ${report.numObjects} top-level objects, ${report.totalNumErrors} errors`);
+  }
+}
+
 // ---------------------------------------------------------------- Lighthouse
 
 const lighthouse = [];
