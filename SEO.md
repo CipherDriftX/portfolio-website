@@ -91,7 +91,7 @@ Monday and hand runs also post the report as a comment on the **SEO monitor** is
 
 What it checks, on every page in the sitemap: status 200, title and description length, canonical, a single h1, `lang`, alt text, Open Graph tags, the preview image answering as an image, JSON-LD that parses and has its required fields, and schema.org's own validator. It also checks every internal link, `llms.txt`, `llms-full.txt`, `rss.xml`, the IndexNow key, the web manifest, robots.txt, sitemap dates, the 404 page, the apex and http redirects, and that Googlebot, bingbot, GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot and Applebot all get the page.
 
-Errors fail the run: anything broken, SEO or accessibility under 100 or 95, CLS over 0.1. Warnings do not: performance under 90, since GitHub's machines are slower than a phone and score mobile 10 to 15 points lower than this laptop.
+Errors fail the run: anything broken, SEO or accessibility under 100 or 95, CLS over 0.1. Warnings do not: performance under 90. GitHub's machines vary from run to run (mobile scored 86, 80 and 84 on the same page on 2026-11-24), so mobile runs three times and the report uses the median run, with the spread next to it.
 
 Run it locally: `node scripts/seo-check.mjs` (live) or `node scripts/seo-check.mjs --site http://localhost:4321`.
 
@@ -114,6 +114,7 @@ What it cannot see: whether the pages are indexed and what people search to find
 | Lighthouse 13.6.0, this laptop, live home, mobile | Performance 100: FCP 1.2 s, LCP 1.5 s, TBT 10 ms, CLS 0 |
 | Lighthouse 13.6.0, GitHub runner | Mobile 86 / 100 / 100 / 100 (performance, accessibility, best practices, SEO), LCP 1.67 s. Desktop 100 on all four, LCP 0.35 s |
 | Pages in the sitemap | 1 (the home page). Notes and case studies add pages as they go live |
+| Main thread at load | Traces put most of the mobile blocking time in style and layout, and most of that in the ~140 text labels of the six project drawings. Fix (4e1092a): drawings keep their 1200 by 520 box and skip layout until they near the screen. Layout objects at load 1,097 to 650; at 4x CPU slowdown the largest layout went 104 to 34 ms and the longest task 165 to 116 ms |
 
 ## Baseline, 2026-11-22
 

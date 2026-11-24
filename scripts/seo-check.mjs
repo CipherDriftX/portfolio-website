@@ -4,7 +4,7 @@
 //
 //   node scripts/seo-check.mjs                    check the live site
 //   node scripts/seo-check.mjs --site http://localhost:4321
-//   node scripts/seo-check.mjs --lighthouse lh-mobile.json,lh-desktop.json
+//   node scripts/seo-check.mjs --lighthouse lh-mobile-1.json,lh-mobile-2.json,lh-desktop.json
 //   add --out report.md to save the report as well as print it
 //
 // Errors fail the run (GitHub then emails the owner). Warnings do not.
@@ -207,7 +207,11 @@ if (LIVE) {
 
 // ---------------------------------------------------------------- Lighthouse
 
+// Several runs per form factor are allowed (lh-mobile-1.json, -2, -3):
+// shared CI machines swing 10 points between runs, so the report uses the
+// run with the median performance score.
 const lighthouse = [];
+const runs = {};
 for (const file of (opt("lighthouse") ?? "").split(",").filter(Boolean)) {
   let lh;
   try {
@@ -218,21 +222,27 @@ for (const file of (opt("lighthouse") ?? "").split(",").filter(Boolean)) {
   }
   const form = lh.configSettings?.formFactor ?? file;
   const score = (id) => Math.round((lh.categories?.[id]?.score ?? 0) * 100);
-  const row = {
+  (runs[form] ??= []).push({
     form,
     performance: score("performance"),
     accessibility: score("accessibility"),
     bestPractices: score("best-practices"),
     seo: score("seo"),
     lcp: lh.audits?.["largest-contentful-paint"]?.numericValue,
+    tbt: lh.audits?.["total-blocking-time"]?.numericValue,
     cls: lh.audits?.["cumulative-layout-shift"]?.numericValue,
-  };
+  });
+}
+for (const list of Object.values(runs)) {
+  list.sort((a, b) => a.performance - b.performance);
+  const row = { ...list[Math.floor(list.length / 2)], n: list.length, spread: `${list[0].performance} to ${list.at(-1).performance}` };
   lighthouse.push(row);
+  const form = row.form;
   if (row.seo < 100) err(`lighthouse ${form}`, `SEO ${row.seo}`);
   if (row.accessibility < 95) err(`lighthouse ${form}`, `accessibility ${row.accessibility}`);
   if (row.bestPractices < 95) warn(`lighthouse ${form}`, `best practices ${row.bestPractices}`);
   // Shared CI machines are slower than a phone on a good day; warn, do not fail.
-  if (row.performance < 90) warn(`lighthouse ${form}`, `performance ${row.performance}`);
+  if (row.performance < 90) warn(`lighthouse ${form}`, `performance ${row.performance} (median of ${row.n})`);
   if (row.cls > 0.1) err(`lighthouse ${form}`, `CLS ${row.cls.toFixed(3)}`);
 }
 
@@ -248,9 +258,11 @@ const lines = [
   "",
 ];
 if (lighthouse.length) {
-  lines.push("| Lighthouse | Performance | Accessibility | Best practices | SEO | LCP | CLS |", "|---|---|---|---|---|---|---|");
+  lines.push("| Lighthouse | Runs | Performance | Accessibility | Best practices | SEO | LCP | TBT | CLS |", "|---|---|---|---|---|---|---|---|---|");
   for (const r of lighthouse)
-    lines.push(`| ${r.form} | ${r.performance} | ${r.accessibility} | ${r.bestPractices} | ${r.seo} | ${((r.lcp ?? 0) / 1000).toFixed(2)} s | ${(r.cls ?? 0).toFixed(3)} |`);
+    lines.push(
+      `| ${r.form} | ${r.n} (${r.spread}) | ${r.performance} | ${r.accessibility} | ${r.bestPractices} | ${r.seo} | ${((r.lcp ?? 0) / 1000).toFixed(2)} s | ${Math.round(r.tbt ?? 0)} ms | ${(r.cls ?? 0).toFixed(3)} |`,
+    );
   lines.push("");
 }
 if (errors.length) lines.push("### Errors", "", ...errors.map((e) => `- ${e}`), "");

@@ -32,15 +32,19 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Lighthouse, mobile and desktop
+      # Mobile three times: runner speed swings the score by about 10
+      # points, so the check reports the median run.
+      - name: Lighthouse, mobile x3 and desktop
         continue-on-error: true
         run: |
           flags="--quiet --only-categories=performance,accessibility,best-practices,seo --chrome-flags=--headless=new"
-          npx -y lighthouse@13.6.0 https://www.aryanhaghighi.com/ $flags --output=json --output-path=lh-mobile.json
+          for i in 1 2 3; do
+            npx -y lighthouse@13.6.0 https://www.aryanhaghighi.com/ $flags --output=json --output-path=lh-mobile-$i.json
+          done
           npx -y lighthouse@13.6.0 https://www.aryanhaghighi.com/ $flags --preset=desktop --output=json --output-path=lh-desktop.json
 
       - name: Check the live site
-        run: node scripts/seo-check.mjs --lighthouse lh-mobile.json,lh-desktop.json --out report.md
+        run: node scripts/seo-check.mjs --lighthouse "$(ls lh-*.json | paste -sd,)" --out report.md
 
       - name: Keep the Lighthouse reports
         if: always()
