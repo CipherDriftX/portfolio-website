@@ -22,6 +22,9 @@ export const site = {
   // The public handle (GitHub, commits). Person alternateName, which Google's
   // profile page markup reads as the social media handle.
   handle: "CipherDriftX",
+  // The name in Persian script, as the owner writes it (آریان, with alef).
+  // People searching from Iran type it this way.
+  nameFa: "آریان حقیقی",
   // Facts that tell this Aryan Haghighi apart from others with the name.
   // Same facts as the About text and the GitHub profile README; Person schema.
   bio: {
