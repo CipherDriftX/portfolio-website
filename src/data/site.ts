@@ -17,6 +17,11 @@ export const site = {
   // when you change them. It feeds the sitemap and the home page schema.
   // Notes, case studies, projects and reviews move the date on their own.
   updated: "2026-11-22",
+  // The day the site first went up. ProfilePage dateCreated.
+  launched: "2026-11-21",
+  // The public handle (GitHub, commits). Person alternateName, which Google's
+  // profile page markup reads as the social media handle.
+  handle: "CipherDriftX",
   pageTitle: "Aryan Haghighi, AI Engineer · production AI agents + evals",
   url: "https://www.aryanhaghighi.com",
   email: "aryan@aryanhaghighi.com",
