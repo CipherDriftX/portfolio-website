@@ -73,6 +73,11 @@ const personSchema = {
 };
 
 // Home: a profile page about one person (schema.org ProfilePage).
+// Google's profile page markup wants full ISO 8601 date-times, not bare
+// dates ("Invalid datetime value" in Search Console). The day is real; the
+// time is set to midnight UTC.
+const dateTime = (d: string) => (d.includes("T") ? d : `${d}T00:00:00+00:00`);
+
 const profileSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
@@ -80,8 +85,8 @@ const profileSchema = {
   url: `${site.url}/`,
   name: title,
   inLanguage: "en",
-  dateCreated: site.launched,
-  dateModified: homeLastmod(),
+  dateCreated: dateTime(site.launched),
+  dateModified: dateTime(homeLastmod()),
   isPartOf: { "@id": websiteId },
   mainEntity: personSchema,
 };

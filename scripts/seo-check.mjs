@@ -132,6 +132,10 @@ for (const { url } of pages) {
       if (!type) continue;
       types.push(type);
       for (const field of requiredFor[type] ?? []) if (node[field] === undefined) err(where, `${type} has no ${field}`);
+      // Google reads ProfilePage dates as DateTime: a bare date is invalid.
+      if (type === "ProfilePage")
+        for (const field of ["dateCreated", "dateModified"])
+          if (node[field] !== undefined && !/T\d\d:\d\d/.test(node[field])) err(where, `ProfilePage ${field} "${node[field]}" needs a time and zone`);
     }
   }
   if (types.length === 0) err(where, "no structured data");
