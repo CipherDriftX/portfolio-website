@@ -4,6 +4,10 @@ export const site = {
   name: "Aryan Haghighi",
   title: "AI Engineer",
   claim: "I ship AI agents into production, with evals that prove they work.",
+  // The home page's meta description: the name first, so a search for it
+  // and an AI answer about it both read who this is in one sentence.
+  description:
+    "Aryan Haghighi is an AI engineer who ships AI agents into production, with evals that prove they work, and builds the tools that keep agents safe.",
   drone: "Building autonomous drones.",
   offer:
     "I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month.",

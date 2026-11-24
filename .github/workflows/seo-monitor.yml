@@ -1,0 +1,54 @@
+# Checks the live site as search engines and AI crawlers see it: every page
+# in the sitemap, the structured data, the files for machines, the crawlers'
+# access, and Lighthouse on mobile and desktop.
+#
+# Runs after each production deploy of main (a failure emails the owner) and
+# every Monday, when it also posts the report to the "SEO monitor" issue so
+# the history stays in one place.
+name: SEO monitor
+
+on:
+  status:
+  schedule:
+    - cron: "23 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    # Same rule as indexnow.yml: only the production deploy of main's head.
+    if: >-
+      github.event_name != 'status' ||
+      (github.event.context == 'Vercel' &&
+       github.event.state == 'success' &&
+       github.event.sha == github.sha)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Lighthouse, mobile and desktop
+        continue-on-error: true
+        run: |
+          flags="--quiet --only-categories=performance,accessibility,best-practices,seo --chrome-flags=--headless=new"
+          npx -y lighthouse@13.6.0 https://www.aryanhaghighi.com/ $flags --output=json --output-path=lh-mobile.json
+          npx -y lighthouse@13.6.0 https://www.aryanhaghighi.com/ $flags --preset=desktop --output=json --output-path=lh-desktop.json
+
+      - name: Check the live site
+        run: node scripts/seo-check.mjs --lighthouse lh-mobile.json,lh-desktop.json --out report.md
+
+      - name: Post the weekly report
+        if: always() && github.event_name != 'status' && hashFiles('report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          issue=$(gh issue list --state open --search '"SEO monitor" in:title' --json number --jq '.[0].number')
+          if [ -z "$issue" ]; then
+            issue=$(gh issue create --title "SEO monitor" --body "Weekly report from .github/workflows/seo-monitor.yml. Each comment is one run." | grep -o '[0-9]*$')
+          fi
+          gh issue comment "$issue" --body-file report.md

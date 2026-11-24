@@ -3,7 +3,7 @@ import Mark from "./Mark.astro";
 import { site } from "../data/site";
 
 interface Props {
-  sections: { id: string; label: string; waiting?: boolean }[];
+  sections: { id: string; label: string; waiting?: boolean; href?: string }[];
   onHome?: boolean;
 }
 const { sections, onHome = false } = Astro.props;
@@ -24,7 +24,7 @@ const phoneHidden = (s: { id: string; waiting?: boolean }) => s.id !== "contact"
         <ul role="list">
           {sections.map((s) => (
             <li class:list={{ wide: phoneHidden(s) }}>
-              <a href={href(s.id)}>{s.label}</a>
+              <a href={s.href ?? href(s.id)}>{s.label}</a>
             </li>
           ))}
         </ul>

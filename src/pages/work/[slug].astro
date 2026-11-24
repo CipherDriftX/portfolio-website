@@ -27,6 +27,11 @@ const d = entry.data;
     keywords: d.stack.join(", "),
     ...(d.links.code && { isBasedOn: d.links.code }),
   }}
+  image={{ path: `/og/work/${entry.id}.png`, alt: `${d.title}, a case study by ${site.name}` }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: d.title, path: `/work/${entry.id}/` },
+  ]}
   back={{ href: "/#case-studies", label: "All case studies" }}
   draft={d.draft}
 >

@@ -12,7 +12,7 @@ interface Props {
   description: string;
   /** Path of this page, for the canonical URL. */
   path: string;
-  sections?: { id: string; label: string; waiting?: boolean }[];
+  sections?: { id: string; label: string; waiting?: boolean; href?: string }[];
   onHome?: boolean;
   /** Add the ProfilePage + Person and WebSite schema (home page only). */
   person?: boolean;
@@ -22,6 +22,10 @@ interface Props {
   contact?: boolean;
   /** schema.org fields for this page, e.g. an Article on case studies and notes. */
   schema?: Record<string, unknown>;
+  /** This page's own link preview; the site photo card when left out. */
+  image?: { path: string; alt: string };
+  /** Where this page sits, home first, as a schema.org BreadcrumbList. */
+  breadcrumbs?: { name: string; path: string }[];
   /** Code projects on this page, as schema.org SoftwareSourceCode by the Person. */
   code?: { name: string; description: string; repo: string; language: string; dateModified: string }[];
 }
@@ -37,12 +41,17 @@ const {
   ogType = "website",
   contact = true,
   schema,
+  image,
+  breadcrumbs,
   code = [],
 } = Astro.props;
 
 const canonical = new URL(path, site.url + "/").href;
-const ogImage = `${site.url}/og.jpg`;
-const ogAlt = `${site.name} at a table by a window at night, next to the words: ${site.name}, ${site.title}. ${site.claim}`;
+const ogImage = image ? new URL(image.path, site.url).href : `${site.url}/og.jpg`;
+const ogMime = image ? "image/png" : "image/jpeg";
+const ogAlt = image
+  ? image.alt
+  : `${site.name} at a table by a window at night, next to the words: ${site.name}, ${site.title}. ${site.claim}`;
 
 // One id per thing, so search engines and AI answers read the site, its
 // pages and the person as one connected record.
@@ -107,6 +116,18 @@ const codeSchema = code.length > 0 && {
   })),
 };
 
+// Where the page sits in the site, for search results that show a path.
+const crumbSchema = breadcrumbs && {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbs.map((b, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: b.name,
+    item: new URL(b.path, site.url + "/").href,
+  })),
+};
+
 // Case studies and notes: the page's own Article, written by the Person.
 const pageSchema = schema && {
   "@context": "https://schema.org",
@@ -114,7 +135,9 @@ const pageSchema = schema && {
   inLanguage: "en",
   ...schema,
   url: canonical,
-  isPartOf: { "@id": websiteId },
+  mainEntityOfPage: canonical,
+  isPartOf: schema.isPartOf ?? { "@id": websiteId },
+  publisher: { "@id": personId },
   author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
 };
 ---
@@ -130,6 +153,10 @@ const pageSchema = schema && {
     <meta name="theme-color" content="#0b0807" />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
+    <meta name="author" content={site.name} />
+    <link rel="me" href={site.links.github} />
+    <link rel="me" href={site.links.linkedin} />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name}: Notes`} href={`${site.url}/rss.xml`} />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -145,7 +172,7 @@ const pageSchema = schema && {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:type" content={ogMime} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogAlt} />
@@ -160,6 +187,7 @@ const pageSchema = schema && {
     {person && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />}
     {codeSchema && <script type="application/ld+json" set:html={JSON.stringify(codeSchema)} />}
     {pageSchema && <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />}
+    {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema)} />}
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

@@ -2,7 +2,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import ownerCheck from "./integrations/owner-check.mjs";
-import { lastmodFor } from "./src/lib/lastmod.ts";
+import { lastmodFor, notesLastmod } from "./src/lib/lastmod.ts";
 
 export default defineConfig({
   site: "https://www.aryanhaghighi.com",
@@ -12,6 +12,8 @@ export default defineConfig({
   build: { inlineStylesheets: "always" },
   integrations: [
     sitemap({
+      // The notes list is noindex until the first note is live; keep it out.
+      filter: (page) => new URL(page).pathname !== "/notes/" || Boolean(notesLastmod()),
       // Bing and Google trust lastmod only when it is honest: real dates only.
       serialize(item) {
         const lastmod = lastmodFor(new URL(item.url).pathname);

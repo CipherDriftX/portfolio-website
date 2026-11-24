@@ -37,7 +37,7 @@ const code = projects
   }));
 ---
 
-<Base title={site.pageTitle} description={site.claim} path="/" sections={sections} onHome person code={code}>
+<Base title={site.pageTitle} description={site.description} path="/" sections={sections} onHome person code={code}>
   <section class="hero" aria-labelledby="name">
     <div class="light" aria-hidden="true">
       <span class="bloom amber"></span>
@@ -219,8 +219,8 @@ const code = projects
       <section id="notes" class="section chapter frame" aria-labelledby="notes-title">
         <h2 id="notes-title">Notes</h2>
         <ul role="list" class="notes">
-          {notes.map((n, i) => (
-            <li class:list={{ extra: i >= shown.notes }}>
+          {notes.slice(0, shown.notes).map((n) => (
+            <li>
               <time datetime={date(n.data.date)}>{date(n.data.date)}</time>
               <div>
                 <h3>
@@ -232,16 +232,11 @@ const code = projects
             </li>
           ))}
         </ul>
-        {notes.length > shown.notes && (
-          <details class="view-more">
-            <summary>
-              <span class="closed">
-                View all <span class="num">{notes.length}</span>
-              </span>
-              <span class="opened">Show fewer</span>
-            </summary>
-          </details>
-        )}
+        <p class="all">
+          <a href="/notes/">
+            All notes{notes.length > shown.notes && <span class="num"> ({notes.length})</span>}
+          </a>
+        </p>
       </section>
     )
   }
@@ -834,6 +829,17 @@ const code = projects
     color: var(--muted);
     font-size: 0.9375rem;
     padding-block-start: 0.3rem;
+  }
+
+  .all {
+    margin-block-start: 1.5rem;
+  }
+
+  .all a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
   }
 
   @media (min-width: 40rem) {

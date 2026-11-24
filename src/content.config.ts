@@ -92,7 +92,12 @@ const notes = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    // Set when the note changes after it went live. Feeds dateModified and
+    // the sitemap lastmod; leave it out otherwise.
+    updated: z.coerce.date().optional(),
     summary: z.string(),
+    // A few plain topic words, e.g. ["evals", "agent safety"]. Optional.
+    tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
 });

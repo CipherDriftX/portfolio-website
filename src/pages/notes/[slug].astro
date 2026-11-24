@@ -13,19 +13,43 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
 const iso = d.date.toISOString().slice(0, 10);
+const updated = d.updated && d.updated > d.date ? d.updated.toISOString().slice(0, 10) : undefined;
+const words = (entry.body ?? "").split(/\s+/).filter(Boolean).length;
 ---
 
 <Article
   title={`${d.title} · ${site.name}`}
   description={d.summary}
   path={`/notes/${entry.id}/`}
-  schema={{ "@type": "Article", headline: d.title, description: d.summary, datePublished: iso }}
-  back={{ href: "/#notes", label: "All notes" }}
+  schema={{
+    "@type": "BlogPosting",
+    headline: d.title,
+    description: d.summary,
+    datePublished: iso,
+    dateModified: updated ?? iso,
+    wordCount: words,
+    ...(d.tags.length > 0 && { keywords: d.tags.join(", ") }),
+    isPartOf: { "@id": `${site.url}/notes/#blog` },
+  }}
+  image={{ path: `/og/notes/${entry.id}.png`, alt: `${d.title}, a note by ${site.name}` }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: "Notes", path: "/notes/" },
+    { name: d.title, path: `/notes/${entry.id}/` },
+  ]}
+  back={{ href: "/notes/", label: "All notes" }}
   draft={d.draft}
 >
   <header slot="header" class="head">
     <h1>{d.title}</h1>
-    <p class="meta"><time datetime={iso}>{iso}</time></p>
+    <p class="meta">
+      <time datetime={iso}>{iso}</time>
+      {updated && (
+        <span>
+          , updated <time datetime={updated}>{updated}</time>
+        </span>
+      )}
+    </p>
     <p class="lead">{d.summary}</p>
   </header>
 

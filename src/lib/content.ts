@@ -83,7 +83,13 @@ export async function siteContent() {
     ...ids.filter(closing),
   ];
   const sections = [
-    ...order.map((id) => ({ id, label: labels[id], waiting: waiting(id) })),
+    ...order.map((id) => ({
+      id,
+      label: labels[id],
+      waiting: waiting(id),
+      // Once notes exist, the nav goes to their own page.
+      ...(id === "notes" && !waiting(id) && { href: "/notes/" }),
+    })),
     { id: "contact", label: "Contact" },
   ];
   return {
