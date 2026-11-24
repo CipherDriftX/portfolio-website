@@ -9,12 +9,17 @@ The mark (SHIP below): j, a hypersonic jet seen from above, nose up, its
 leading edge one blended curve, two flat facets lit from the right.
   j-favicon.svg  favicon.svg, transparent: cream/tan on dark tabs, near-black
                  on light tabs (prefers-color-scheme inside the SVG)
-  j.svg          16/32/48 px ICO frames, transparent, copper (PNG frames
-                 cannot switch colour; copper holds about 3:1 on both tabs)
+  j.svg          16/32/48 px ICO frames and favicon-192.png, transparent,
+                 copper (PNG frames cannot switch colour; copper holds about
+                 3:1 on both tabs and on Google's light and dark results)
   j-touch.svg    180/192/512 px, flat dark tile (iOS fills transparency black)
 
-Writes to public/: favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png,
-icon-192.png, icon-512.png. Writes the comparison sheet to _icons/sheet.png.
+Writes to public/: favicon.svg, favicon.ico (16/32/48), favicon-192.png,
+apple-touch-icon.png, icon-192.png, icon-512.png.
+
+favicon-192.png is the icon for search results. Google reads BMP, GIF, ICO,
+PNG, JPEG, PPM and TIFF, not SVG, and asks for more than 48x48 (Search
+Central, "Favicon in search results", updated 2026-10-27). Writes the comparison sheet to _icons/sheet.png.
 """
 import pathlib
 import shutil
@@ -85,6 +90,8 @@ def render(name, out):
     for size in (32, 48):
         files[size] = out / f"{name}-{size}.png"
         png(ICONS / f"{name}.svg", size, files[size], f"_icons/{name}.svg")
+    files["search"] = out / f"{name}-192-transparent.png"
+    png(ICONS / f"{name}.svg", 192, files["search"], f"_icons/{name}.svg")
     for size in (180, 192, 512):
         files[size] = out / f"{name}-{size}.png"
         png(ICONS / f"{name}-touch.svg", size, files[size], f"_icons/{name}-touch.svg")
@@ -135,11 +142,12 @@ def main():
         ship = all_files[SHIP]
         shutil.copyfile(ICONS / f"{SHIP}-favicon.svg", PUBLIC / "favicon.svg")
         ico([(s, ship[s]) for s in (16, 32, 48)], PUBLIC / "favicon.ico")
+        shutil.copyfile(ship["search"], PUBLIC / "favicon-192.png")
         shutil.copyfile(ship[180], PUBLIC / "apple-touch-icon.png")
         shutil.copyfile(ship[192], PUBLIC / "icon-192.png")
         shutil.copyfile(ship[512], PUBLIC / "icon-512.png")
         sheet(all_files, tmp)
-    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
+    for f in ("favicon.svg", "favicon.ico", "favicon-192.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
         print(f"public/{f}  {(PUBLIC / f).stat().st_size} B")
 
 

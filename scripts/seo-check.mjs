@@ -166,6 +166,28 @@ for (const [path, type, text] of files) {
 }
 
 // vercel.json adds the trailing slash first (308), so ask for the final form.
+// Favicon for search results: Google reads the home page's rel=icon links,
+// skips SVG and wants one over 48 px. Its favicon service answers 404 until
+// it has stored an icon for the hostname, so the report shows when it lands.
+{
+  const home = (await get(`${SITE}/`)).body;
+  const icons = [...home.matchAll(/<link[^>]+rel="(?:shortcut )?icon"[^>]*>/gi)].map((m) => ({
+    href: m[0].match(/href="([^"]+)"/)?.[1],
+    sizes: m[0].match(/sizes="([^"]+)"/)?.[1] ?? "",
+    type: m[0].match(/type="([^"]+)"/)?.[1] ?? "",
+  }));
+  if (!icons.some((i) => !/svg/.test(i.type) && !/\.svg$/.test(i.href) && /\d+x\d+/.test(i.sizes) && parseInt(i.sizes) > 48))
+    err("/", "no PNG or ICO favicon over 48 px declared: Google does not read SVG favicons");
+  for (const i of icons) {
+    const res = await get(new URL(i.href, SITE + "/").href, { method: "HEAD" });
+    if (res.status !== 200 || !res.type.startsWith("image/")) err(i.href, `favicon answers ${res.status} ${res.type}`);
+  }
+  if (LIVE) {
+    const stored = await get("https://www.google.com/s2/favicons?domain=www.aryanhaghighi.com&sz=64", { method: "HEAD" });
+    facts.push(`Google favicon for www: ${stored.status === 200 ? "stored" : "not stored yet (Google shows a globe)"}`);
+  }
+}
+
 const missing = await get(`${SITE}/this-page-does-not-exist-${Date.now()}/`);
 if (missing.status !== 404) err("/404", `a missing page answers ${missing.status}, not 404`);
 
