@@ -44,7 +44,8 @@ export const site = {
   },
   photo: {
     alt: "Aryan Haghighi sitting at a table by a window at night.",
-    // Used by the Person schema and as a fallback share image.
-    schema: "/photo/phone-960.jpg",
+    // The Person schema image: Google's profile page markup wants square,
+    // 4:3 and 16:9 versions (_photo/build.py cuts them).
+    schema: ["/photo/aryan-haghighi-1x1.jpg", "/photo/aryan-haghighi-4x3.jpg", "/photo/aryan-haghighi-16x9.jpg"],
   },
 } as const;

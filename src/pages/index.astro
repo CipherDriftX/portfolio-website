@@ -21,8 +21,8 @@ const lanes = [
 
 // Must match the layout switch in the styles below.
 const DESK = "(min-width: 40rem) and (min-aspect-ratio: 5/4)";
-const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/desk-${w}.${ext} ${w}w`).join(", ");
-const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/phone-${w}.${ext} ${w}w`).join(", ");
+const desk = (ext: string) => [640, 960, 1280, 1600].map((w) => `/photo/aryan-haghighi-desk-${w}.${ext} ${w}w`).join(", ");
+const phone = (ext: string) => [480, 720, 960].map((w) => `/photo/aryan-haghighi-phone-${w}.${ext} ${w}w`).join(", ");
 const date = (d: Date) => d.toISOString().slice(0, 10);
 
 // Live projects for the SoftwareSourceCode schema. Drafts never reach it.
@@ -52,7 +52,7 @@ const code = projects
       <source type="image/avif" srcset={phone("avif")} sizes="100vw" />
       <source type="image/webp" srcset={phone("webp")} sizes="100vw" />
       <img
-        src="/photo/phone-720.jpg"
+        src="/photo/aryan-haghighi-phone-720.jpg"
         srcset={phone("jpg")}
         sizes="100vw"
         width="960"

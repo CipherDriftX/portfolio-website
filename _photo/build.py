@@ -5,8 +5,11 @@ Run from the repo root:
 
 Needs magick (ImageMagick 7 with AVIF and WebP support).
 
-Writes public/photo/{desk,phone}-<width>.{avif,webp,jpg}. The link preview
-(_og/build.py) is cut from desk-1600.jpg.
+Writes public/photo/aryan-haghighi-{desk,phone}-<width>.{avif,webp,jpg}, and
+aryan-haghighi-{1x1,4x3,16x9}.jpg (1200 wide) for Google's profile page image,
+which wants square, 4:3 and 16:9 versions. The name in the file name helps
+image search for the name. The link preview (_og/build.py) is cut from
+aryan-haghighi-desk-1600.jpg.
 Every output is stripped of metadata (EXIF, GPS, XMP, ICC comments), then
 gets one origin note (Impeccable provenance): a JPEG comment, or a
 <file>.json sidecar for WebP and AVIF, which have no comment field.
@@ -33,6 +36,17 @@ OUT = ROOT / "public" / "photo"
 # edge at 0.893, so the desk box stops at 0.882).
 DESK = (0.0, 0.0, 0.882, 0.893)    # window, street, bulbs, arms and watch
 PHONE = (0.200, 0.185, 0.86667, 0.810)  # head with headroom, shoulders, arms (4:5)
+
+# Profile page image crops. Face centre sits near x 0.49, y 0.43; the head
+# top at y 0.29. All three stop left of the background person (x 0.893)
+# and above the glass and ashtray.
+SCHEMA = {
+    "1x1": (0.19, 0.20, 0.79, 0.6498),   # 1814 x 1814: head and shoulders
+    "4x3": (0.06, 0.20, 0.88, 0.661),    # 2480 x 1859
+    "16x9": (0.0, 0.24, 0.88, 0.611),    # 2661 x 1496
+}
+SCHEMA_WIDTH = 1200
+PREFIX = "aryan-haghighi"
 
 DESK_WIDTHS = (640, 960, 1280, 1600)
 PHONE_WIDTHS = (480, 720, 960)
@@ -87,10 +101,20 @@ def export(master, name, widths, max_width):
             print(f"skip {name}-{width}: source crop is only {max_width}px wide")
             continue
         for ext, q in QUALITY.items():
-            dst = OUT / f"{name}-{width}.{ext}"
+            dst = OUT / f"{PREFIX}-{name}-{width}.{ext}"
             extra = ["-interlace", "Plane", "-sampling-factor", "4:2:0"] if ext == "jpg" else []
             run("magick", master, "-resize", f"{width}x", "-strip", *extra, "-quality", q, dst)
             stamp(dst, ORIGIN.format(name=name))
+
+
+def schema_crops(src, tmp):
+    for name, box in SCHEMA.items():
+        master = tmp / f"{name}.png"
+        cut(src, box, master)
+        dst = OUT / f"{PREFIX}-{name}.jpg"
+        run("magick", master, "-resize", f"{SCHEMA_WIDTH}x", "-strip", "-interlace", "Plane",
+            "-sampling-factor", "4:2:0", "-quality", QUALITY["jpg"], dst)
+        stamp(dst, ORIGIN.format(name=name))
 
 
 def main():
@@ -104,6 +128,7 @@ def main():
         phone_w = cut(src, PHONE, phone)
         export(desk, "desk", DESK_WIDTHS, desk_w)
         export(phone, "phone", PHONE_WIDTHS, phone_w)
+        schema_crops(src, pathlib.Path(tmp))
     for f in sorted(OUT.glob("*-*.[aw]*")) + sorted(OUT.glob("*.jpg")):
         print(f"{f.relative_to(ROOT)}  {f.stat().st_size // 1024} KB")
 

@@ -66,7 +66,7 @@ const personSchema = {
   jobTitle: site.title,
   description: site.claim,
   url: `${site.url}/`,
-  image: `${site.url}${site.photo.schema}`,
+  image: site.photo.schema.map((p) => `${site.url}${p}`),
   email: `mailto:${site.email}`,
   sameAs: [site.links.linkedin, site.links.github, site.links.x],
   affiliation: {
