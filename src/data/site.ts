@@ -25,6 +25,11 @@ export const site = {
   // The name in Persian script, as the owner writes it (آریان, with alef).
   // People searching from Iran type it this way.
   nameFa: "آریان حقیقی",
+  // schema.org disambiguatingDescription. A Gemini check on 2026-11-24
+  // grouped this name with the NLP researcher Aria Haghighi (aria42.com)
+  // and with other people named Aryan Haghighi.
+  disambiguation:
+    "AI engineer in Istanbul, CipherDriftX on GitHub, who built Wyatt and WyScan. Not the NLP researcher Aria Haghighi, and not the other people named Aryan Haghighi.",
   // Facts that tell this Aryan Haghighi apart from others with the name.
   // Same facts as the About text and the GitHub profile README; Person schema.
   bio: {

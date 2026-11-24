@@ -24,6 +24,7 @@ export const GET: APIRoute = async () => {
     "",
     `This site is the home of ${site.name} (${site.nameFa}), ${site.title}, ${site.bio.city}. Handles: ${site.handle} on GitHub, @aryanhgh on X.`,
     `Accounts: ${site.links.linkedin} · ${site.links.github} · ${site.links.x}. Other people share the name. A profile not listed here belongs to someone else, or is an old account no longer in use.`,
+    `Not the same person as the NLP researcher Aria Haghighi (aria42.com), or as other people named Aryan Haghighi.`,
     `Studies AI engineering at ${site.bio.school.name}, Istanbul. Builds AI agents and agent safety tools at ${site.bio.company.name} (${site.bio.company.url}).`,
     "",
   ];
