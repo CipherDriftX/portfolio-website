@@ -1,6 +1,7 @@
 # Checks the live site as search engines and AI crawlers see it: every page
 # in the sitemap, the structured data, the files for machines, the crawlers'
-# access, and Lighthouse on mobile and desktop.
+# access, Lighthouse on mobile and desktop, and (once the secrets exist) what
+# people searched on Google and Bing to find it.
 #
 # Runs after each production deploy of main (a failure emails the owner) and
 # every Monday, when it also posts the report to the "SEO monitor" issue so
@@ -45,6 +46,15 @@ jobs:
 
       - name: Check the live site
         run: node scripts/seo-check.mjs --lighthouse "$(ls lh-*.json | paste -sd,)" --out report.md
+
+      # What people searched to find the site. Each source stays off until
+      # its secret exists (setup in SEO.md); a source error never fails the run.
+      - name: Search data, Google and Bing
+        if: always()
+        env:
+          GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+        run: node scripts/search-data.mjs --out report.md
 
       - name: Keep the Lighthouse reports
         if: always()

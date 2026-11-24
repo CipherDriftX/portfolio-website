@@ -102,6 +102,10 @@ What it cannot see: whether the pages are indexed and what people search to find
 1. **Google Search Console** at search.google.com/search-console, signed in with the Google account that runs the aryanhaghighi.com email. Add a **Domain** property for `aryanhaghighi.com`. DNS already has a `google-site-verification` TXT record from the email setup, so it should verify at once with no DNS change. If Google asks for a new TXT record, the record was made by another Google account: sign in with that one instead. Then Sitemaps: submit `https://www.aryanhaghighi.com/sitemap-index.xml`. Then URL Inspection on `https://www.aryanhaghighi.com/` and "Request indexing".
 2. **Bing Webmaster Tools** at bing.com/webmasters: "Import from Google Search Console". That copies the site and its sitemap. Bing's index feeds ChatGPT search, Copilot and DuckDuckGo.
 3. **LinkedIn**: website field `https://www.aryanhaghighi.com`, headline "AI Engineer · production AI agents + evals".
+4. **Search data in the weekly report** (optional, about 15 minutes). `scripts/search-data.mjs` adds the real Google and Bing queries to each Monday report once these two repo secrets exist (Settings > Secrets and variables > Actions):
+   - `GSC_SERVICE_ACCOUNT`: at console.cloud.google.com make a project, enable the "Google Search Console API", then IAM > Service accounts > create one (no roles) > Keys > Add key > JSON. Paste the whole JSON file as the secret. In Search Console > Settings > Users and permissions, add the service account's email as a **Restricted** user on the `aryanhaghighi.com` property (if the report says HTTP 403, make it Full). The script asks only for the read-only scope.
+   - `BING_API_KEY`: Bing Webmaster Tools > Settings > API access > generate the key.
+   The same Google key also works for a Search Console MCP server, so Claude can read the queries in a session (`AminForou/mcp-gsc`, MIT, 2.3k stars, read-only by default: env `GSC_CREDENTIALS_PATH` = the JSON file kept outside the repo, `GSC_SKIP_OAUTH=true`).
 
 ## Baseline, 2026-11-24
 
