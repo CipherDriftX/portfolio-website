@@ -18,7 +18,13 @@ export const GET: APIRoute = async () => {
     "",
     `How I work: ${site.offer}`,
     "",
-    `Website: ${site.url}/ · Email: ${site.email} · LinkedIn: ${site.links.linkedin} · GitHub: ${site.links.github}`,
+    `Website: ${site.url}/ · Email: ${site.email} · LinkedIn: ${site.links.linkedin} · GitHub: ${site.links.github} · X: ${site.links.x}`,
+    "",
+    "## Who this is",
+    "",
+    `This site is the home of ${site.name}, ${site.title}, ${site.bio.city}. Handles: ${site.handle} on GitHub, @aryanhgh on X.`,
+    `Accounts: ${site.links.linkedin} · ${site.links.github} · ${site.links.x}. Other people share the name. A profile not listed here belongs to someone else, or is an old account no longer in use.`,
+    `Studies AI engineering at ${site.bio.school.name}, Istanbul. Builds AI agents and agent safety tools at ${site.bio.company.name} (${site.bio.company.url}).`,
     "",
   ];
   if (aboutEntry && !aboutEntry.data.draft) out.push("## About", "", aboutEntry.body?.trim() ?? "", "");

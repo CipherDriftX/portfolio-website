@@ -62,13 +62,27 @@ const personSchema = {
   "@type": "Person",
   "@id": personId,
   name: site.name,
-  alternateName: site.handle,
+  alternateName: [site.handle, "aryanhgh"],
   jobTitle: site.title,
   description: site.claim,
   url: `${site.url}/`,
   image: `${site.url}${site.photo.schema}`,
   email: `mailto:${site.email}`,
-  sameAs: [site.links.linkedin, site.links.github],
+  sameAs: [site.links.linkedin, site.links.github, site.links.x],
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: site.bio.school.name,
+    url: site.bio.school.url,
+    sameAs: site.bio.school.wikipedia,
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: site.bio.company.name,
+    url: site.bio.company.url,
+    sameAs: site.bio.company.github,
+  },
+  homeLocation: { "@type": "Place", name: site.bio.city },
+  award: site.bio.awards,
   knowsAbout: site.topics,
 };
 
@@ -163,6 +177,7 @@ const pageSchema = schema && {
     <meta name="author" content={site.name} />
     <link rel="me" href={site.links.github} />
     <link rel="me" href={site.links.linkedin} />
+    <link rel="me" href={site.links.x} />
     <link rel="alternate" type="application/rss+xml" title={`${site.name}: Notes`} href={`${site.url}/rss.xml`} />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
