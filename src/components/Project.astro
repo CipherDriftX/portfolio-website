@@ -131,10 +131,15 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
   }
 
   /* The drawing runs edge to edge; its own plate colour drops so the
-     card's light passes behind it. */
+     card's light passes behind it. Every drawing is 1200 by 520, so the
+     box keeps its exact size while the browser skips laying out its ~25
+     text labels until it comes near the screen (most of the page's
+     layout time at load, measured 2026-11-24). */
   .thumb {
     container-type: inline-size;
     margin: 0.5rem 0 0;
+    aspect-ratio: 1200 / 520;
+    content-visibility: auto;
   }
 
   .thumb :global(svg) {
