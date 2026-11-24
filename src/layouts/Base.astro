@@ -6,6 +6,7 @@ import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { site } from "../data/site";
 import { homeLastmod } from "../lib/lastmod";
+import { personId, personSchema, websiteId } from "../lib/schema";
 
 interface Props {
   title: string;
@@ -13,13 +14,14 @@ interface Props {
   /** Path of this page, for the canonical URL. */
   path: string;
   sections?: { id: string; label: string; waiting?: boolean; href?: string }[];
-  onHome?: boolean;
   /** Add the ProfilePage + Person and WebSite schema (home page only). */
   person?: boolean;
   noindex?: boolean;
   ogType?: "website" | "article";
   /** The Contact block and footer. Off on the 404, which is one line and a link home. */
   contact?: boolean;
+  /** The Contact heading and links above the footer. Off on /contact/, which is that page. */
+  contactLinks?: boolean;
   /** schema.org fields for this page, e.g. an Article on case studies and notes. */
   schema?: Record<string, unknown>;
   /** This page's own link preview; the site photo card when left out. */
@@ -27,7 +29,7 @@ interface Props {
   /** Where this page sits, home first, as a schema.org BreadcrumbList. */
   breadcrumbs?: { name: string; path: string }[];
   /** Code projects on this page, as schema.org SoftwareSourceCode by the Person. */
-  code?: { name: string; description: string; repo: string; language: string; dateModified: string }[];
+  code?: { name: string; description: string; repo: string; path: string; language: string; dateModified: string }[];
 }
 
 const {
@@ -35,11 +37,11 @@ const {
   description,
   path,
   sections = [],
-  onHome = false,
   person = false,
   noindex = false,
   ogType = "website",
   contact = true,
+  contactLinks = true,
   schema,
   image,
   breadcrumbs,
@@ -52,40 +54,6 @@ const ogMime = image ? "image/png" : "image/jpeg";
 const ogAlt = image
   ? image.alt
   : `${site.name} at a table by a window at night, next to the words: ${site.name}, ${site.title}. ${site.claim}`;
-
-// One id per thing, so search engines and AI answers read the site, its
-// pages and the person as one connected record.
-const personId = `${site.url}/#person`;
-const websiteId = `${site.url}/#website`;
-
-const personSchema = {
-  "@type": "Person",
-  "@id": personId,
-  name: site.name,
-  alternateName: [site.nameFa, site.handle, "aryanhgh"],
-  disambiguatingDescription: site.disambiguation,
-  jobTitle: site.title,
-  description: site.claim,
-  url: `${site.url}/`,
-  image: site.photo.schema.map((p) => `${site.url}${p}`),
-  email: `mailto:${site.email}`,
-  sameAs: [site.links.linkedin, site.links.github, site.links.x],
-  affiliation: {
-    "@type": "CollegeOrUniversity",
-    name: site.bio.school.name,
-    url: site.bio.school.url,
-    sameAs: site.bio.school.wikipedia,
-  },
-  worksFor: {
-    "@type": "Organization",
-    name: site.bio.company.name,
-    url: site.bio.company.url,
-    sameAs: site.bio.company.github,
-  },
-  homeLocation: { "@type": "Place", name: site.bio.city },
-  award: site.bio.awards,
-  knowsAbout: site.topics,
-};
 
 // Home: a profile page about one person (schema.org ProfilePage).
 // Google's profile page markup wants full ISO 8601 date-times, not bare
@@ -116,7 +84,8 @@ const websiteSchema = {
   publisher: { "@id": personId },
 };
 
-// Home: the projects in Work, each one public code written by the Person.
+// Home and /work/: the projects, each one public code written by the Person,
+// with its own page on this site.
 const codeSchema = code.length > 0 && {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -130,7 +99,7 @@ const codeSchema = code.length > 0 && {
       name: c.name,
       description: c.description,
       codeRepository: c.repo,
-      url: c.repo,
+      url: new URL(c.path, site.url + "/").href,
       programmingLanguage: c.language,
       dateModified: c.dateModified,
       author: { "@id": personId },
@@ -150,18 +119,34 @@ const crumbSchema = breadcrumbs && {
   })),
 };
 
-// Case studies and notes: the page's own Article, written by the Person.
-const pageSchema = schema && {
-  "@context": "https://schema.org",
-  image: ogImage,
-  inLanguage: "en",
-  ...schema,
-  url: canonical,
-  mainEntityOfPage: canonical,
-  isPartOf: schema.isPartOf ?? { "@id": websiteId },
-  publisher: { "@id": personId },
-  author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
-};
+// The page's own record. A work on the page (an Article, a BlogPosting, a
+// SoftwareSourceCode) gets its author; a page type (AboutPage, ContactPage,
+// CollectionPage) is the page itself.
+const isPageType = typeof schema?.["@type"] === "string" && /Page$/.test(schema["@type"] as string);
+const pageSchema =
+  schema &&
+  (isPageType
+    ? {
+        "@context": "https://schema.org",
+        "@id": `${canonical}#page`,
+        name: title,
+        description,
+        inLanguage: "en",
+        ...schema,
+        url: canonical,
+        isPartOf: { "@id": websiteId },
+      }
+    : {
+        "@context": "https://schema.org",
+        image: ogImage,
+        inLanguage: "en",
+        ...schema,
+        url: canonical,
+        mainEntityOfPage: canonical,
+        isPartOf: schema.isPartOf ?? { "@id": websiteId },
+        publisher: { "@id": personId },
+        author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
+      });
 ---
 
 <!doctype html>
@@ -216,11 +201,11 @@ const pageSchema = schema && {
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <TopBar sections={sections} onHome={onHome} />
+    <TopBar sections={sections} path={path} />
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    {contact && <Contact />}
+    {contact && <Contact sections={sections} links={contactLinks} />}
     <!-- Vercel Web Analytics: cookieless page views, about 1 KB, deferred. -->
     <Analytics />
     <!-- Vercel Speed Insights: real-visitor Core Web Vitals, deferred. -->

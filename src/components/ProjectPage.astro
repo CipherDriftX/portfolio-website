@@ -1,0 +1,359 @@
+---
+// One project's own page at /work/<file name>/: the name, the one line, the
+// drawing at full size, the numbers, how it works with the tool's real
+// output, then the rest of the work. Everything comes from the project's
+// Markdown file; nothing here is written for the page alone.
+// GitHub icon: Bootstrap Icons 1.11.3, (c) 2019-2024 The Bootstrap Authors, MIT License,
+// https://github.com/twbs/icons/blob/v1.11.3/LICENSE
+import { render, type CollectionEntry } from "astro:content";
+import Page from "../layouts/Page.astro";
+import { site } from "../data/site";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+  /** Every project, for "More work". */
+  all: CollectionEntry<"projects">[];
+}
+const { entry, all } = Astro.props;
+const p = entry.data;
+const { Content } = await render(entry);
+const path = `/work/${entry.id}/`;
+
+const drawings = import.meta.glob<string>("./thumbs/*.svg", { query: "?raw", import: "default", eager: true });
+const drawing = drawings[`./thumbs/${entry.id}.svg`];
+const repoLabel = p.repo.replace(/^https?:\/\/(www\.)?/, "");
+
+// The same lane first, then the other one, each in its home page order.
+const others = all.filter((o) => o.id !== entry.id);
+const more = [...others.filter((o) => o.data.lane === p.lane), ...others.filter((o) => o.data.lane !== p.lane)];
+
+const company = p.context === site.bio.company.name ? site.bio.company : undefined;
+---
+
+<Page
+  title={`${p.name} · ${site.name}`}
+  description={p.line}
+  path={path}
+  back={{ href: "/work/", label: "All work" }}
+  draft={p.draft}
+  schema={{
+    "@type": "SoftwareSourceCode",
+    name: p.name,
+    description: p.line,
+    codeRepository: p.repo,
+    programmingLanguage: p.language,
+    dateModified: p.updated.toISOString().slice(0, 10),
+    keywords: p.stack.join(", "),
+    ...(p.context && {
+      sourceOrganization: { "@type": "Organization", name: p.context, ...(company && { url: company.url }) },
+    }),
+  }}
+  image={{ path: `/og/work/${entry.id}.png`, alt: `${p.name}: ${p.line}` }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: "Work", path: "/work/" },
+    { name: p.name, path },
+  ]}
+>
+  <article class="project" aria-labelledby="project-title">
+    <header class="head">
+      <h1 id="project-title" class="page-title">{p.name}</h1>
+      <p class="meta">
+        {p.context && <span>{p.context}</span>}
+        <span class="num">{p.year}</span>
+        <span>{p.language}</span>
+      </p>
+      <p class="page-lead">{p.line}</p>
+      <a class="repo" href={p.repo}>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
+        <span><span class="visually-hidden">Code on </span>{repoLabel}</span>
+      </a>
+    </header>
+
+    {drawing && <figure class="drawing plate" set:html={drawing} />}
+
+    {
+      p.figures.length > 0 && (
+        <ul role="list" class="figures">
+          {p.figures.map((f) => (
+            <li>
+              <span class="value num">{f.value}</span>
+              <span class="label">{f.label}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <section class="part" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <div class="body">
+        <div class="prose"><Content /></div>
+        <p class="stack"><span class="visually-hidden">Built with </span>{p.stack.join(" · ")}</p>
+      </div>
+      {
+        p.exhibit && (
+          <figure class="exhibit plate">
+            <pre tabindex="0" aria-label={`${p.name} output`}><code>{p.exhibit.text}</code></pre>
+            <figcaption>{p.exhibit.caption}</figcaption>
+          </figure>
+        )
+      }
+    </section>
+
+    {
+      more.length > 0 && (
+        <nav class="part" aria-labelledby="more-title">
+          <h2 id="more-title">More work</h2>
+          <div class="body">
+            <ul role="list" class="others">
+              {more.map((o) => (
+                <li>
+                  <a class="other" href={`/work/${o.id}/`}>
+                    {o.data.name}
+                  </a>
+                  {o.data.draft && <span class="draft-tag">Draft</span>}
+                  <p>{o.data.line}</p>
+                </li>
+              ))}
+            </ul>
+            <p class="all">
+              <a href="/work/">All work</a>
+            </p>
+          </div>
+        </nav>
+      )
+    }
+  </article>
+</Page>
+
+<style>
+  /* ---------- Head: name, where and when, the one line, the code ---------- */
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.875rem;
+    margin-block-start: 0.875rem;
+    color: var(--muted);
+  }
+
+  .repo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    margin-block-start: 1.25rem;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .repo span {
+    text-decoration-line: underline;
+    text-decoration-color: var(--amber);
+    text-decoration-thickness: inherit;
+    text-underline-offset: 0.28em;
+  }
+
+  .repo svg {
+    flex: none;
+    width: 1em;
+    height: 1em;
+    fill: var(--muted);
+    transition: fill 120ms ease-out;
+  }
+
+  .repo:hover svg {
+    fill: var(--amber);
+  }
+
+  /* ---------- The drawing, at full size on its own plate ---------- */
+
+  .drawing {
+    container-type: inline-size;
+    margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0 0;
+    aspect-ratio: 1200 / 520;
+  }
+
+  .drawing :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* The drawing's own plate colour drops so the plate's light shows. */
+  .drawing :global(svg > rect:first-of-type) {
+    fill: none;
+  }
+
+  /* A small drawing loses its notes and grows its step labels. */
+  @container (max-width: 40rem) {
+    .drawing :global(.minor) {
+      display: none;
+    }
+
+    .drawing :global(.key) {
+      font-size: 30px;
+    }
+  }
+
+  /* ---------- The numbers: large, plain, each checkable in the repo ---------- */
+
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: 1.5rem clamp(2rem, 1rem + 3vw, 4rem);
+    margin-block-start: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  /* Wide screens: the same two columns as the parts below, so the second
+     number starts where the text does. */
+  @media (min-width: 64rem) {
+    .figures {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 1.5rem clamp(2rem, 1rem + 3vw, 5rem);
+    }
+  }
+
+  .figures li {
+    display: grid;
+    align-content: start;
+    gap: 0.625rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .value {
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3.5rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .label {
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  /* ---------- Parts: the heading on the left, the text on the right ---------- */
+
+  .part {
+    display: grid;
+    gap: 1rem;
+    margin-block-start: clamp(4rem, 3rem + 4vw, 7rem);
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .part > h2 {
+    font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2rem);
+  }
+
+  @media (min-width: 64rem) {
+    .part {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 1rem clamp(2rem, 1rem + 3vw, 5rem);
+    }
+
+    /* Terminal lines are long: the output takes the full width, so it
+       shows whole instead of scrolling. */
+    .exhibit {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .body {
+    min-width: 0;
+  }
+
+  .prose {
+    max-width: var(--measure);
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+
+  .prose :global(p + p) {
+    margin-block-start: 1.1em;
+  }
+
+  .stack {
+    max-width: var(--measure);
+    margin-block-start: 1.25rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  /* The tool's own output, in a well cut into a plate. */
+  .exhibit {
+    margin-block-start: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
+    padding: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+    min-width: 0;
+  }
+
+  .exhibit pre {
+    margin: 0;
+    padding: 1.125rem 1.25rem;
+    background: var(--base);
+    box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.6);
+    color: var(--cream);
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    /* Terminal lines keep their shape; the well scrolls, never the page. */
+    white-space: pre;
+    overflow-x: auto;
+    tab-size: 2;
+    scrollbar-color: var(--wood) var(--base);
+  }
+
+  .exhibit figcaption {
+    margin-block-start: 0.75rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  /* ---------- More work ---------- */
+
+  .others {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: 1.75rem clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+
+  .other {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-family: var(--display);
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    line-height: 1.15;
+    text-decoration-color: transparent;
+  }
+
+  .other:hover,
+  .other:focus-visible {
+    text-decoration-color: var(--amber);
+  }
+
+  .others p {
+    max-width: 40ch;
+    margin-block-start: 0.125rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .all {
+    margin-block-start: 2rem;
+  }
+
+  .all a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
+  }
+</style>

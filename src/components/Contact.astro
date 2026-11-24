@@ -1,20 +1,52 @@
 ---
+// The end of every page: Contact with its links (left out on /contact/,
+// which is that page), the drone line, then the year and every page of the
+// site, so the last screen of a long page still leads somewhere.
 import ContactLinks from "./ContactLinks.astro";
 import { site } from "../data/site";
 
+interface Props {
+  sections: { id: string; label: string; href: string }[];
+  links?: boolean;
+}
+const { sections, links = true } = Astro.props;
 const year = new Date().getFullYear();
+const pages = [{ id: "home", label: "Home", href: "/" }, ...sections.filter((s) => !s.href.includes("#"))];
 ---
 
-<footer class="contact frame" id="contact" aria-labelledby="contact-title">
-  <h2 id="contact-title">Contact</h2>
-  <ContactLinks label="Contact" class="contact-row" />
+<footer class:list={["contact frame", { bare: !links }]} id="contact" aria-labelledby={links ? "contact-title" : undefined}>
+  {
+    links && (
+      <>
+        <h2 id="contact-title">Contact</h2>
+        <ContactLinks label="Contact" class="contact-row" />
+      </>
+    )
+  }
   <p class="drone">{site.drone}</p>
-  <p class="year"><span class="num">© {year}</span> {site.name}</p>
+  <div class="end">
+    <p class="year"><span class="num">© {year}</span> {site.name}</p>
+    <nav aria-label="Pages">
+      <ul role="list">
+        {
+          pages.map((p) => (
+            <li>
+              <a href={p.href}>{p.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
 </footer>
 
 <style>
   .contact {
-    padding-block: var(--step-section) clamp(2.5rem, 2rem + 2vw, 4rem);
+    padding-block: var(--step-section) clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+
+  .bare {
+    padding-block-start: clamp(4rem, 3rem + 4vw, 7rem);
   }
 
   h2 {
@@ -27,9 +59,45 @@ const year = new Date().getFullYear();
     color: var(--muted);
   }
 
+  .bare .drone {
+    margin-block-start: 0;
+  }
+
+  /* One quiet row on a hairline: the year left, the pages right. */
+  .end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-block-start: 1.25rem;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
   .year {
-    margin-block-start: 0.5rem;
     color: var(--muted);
     font-size: 0.9375rem;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.5rem;
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-decoration-color: transparent;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    color: var(--amber);
+    text-decoration-color: var(--amber);
   }
 </style>

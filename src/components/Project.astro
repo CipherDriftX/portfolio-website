@@ -1,7 +1,8 @@
 ---
-// One project card on the home page: name, drawing, one line and up to two
-// real numbers up front; how it works, the stack and the tool's own output
-// fold under "How it works". The first card in a lane is wide.
+// One project card (home page and /work/): name, drawing, one line and up to
+// two real numbers up front; how it works, the stack and the tool's own
+// output fold under "How it works". The name opens the project's own page at
+// /work/<file name>/. The first card in a lane is wide.
 // GitHub icon: Bootstrap Icons 1.11.3, (c) 2019-2024 The Bootstrap Authors, MIT License,
 // https://github.com/twbs/icons/blob/v1.11.3/LICENSE
 import { render, type CollectionEntry } from "astro:content";
@@ -9,8 +10,11 @@ import { render, type CollectionEntry } from "astro:content";
 interface Props {
   project: CollectionEntry<"projects">;
   wide?: boolean;
+  /** The name's heading level: h4 under a lane's h3 on the home page, h3 on /work/. */
+  level?: "h3" | "h4";
 }
-const { project, wide = false } = Astro.props;
+const { project, wide = false, level = "h4" } = Astro.props;
+const Name = level;
 const p = project.data;
 const { Content } = await render(project);
 const titleId = `project-${project.id}`;
@@ -23,10 +27,10 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
 
 <article class:list={["card plate", { wide }]} aria-labelledby={titleId}>
   <header class="head">
-    <h4 id={titleId}>
-      <a href={p.repo}>{p.name}</a>
+    <Name id={titleId} class="name">
+      <a href={`/work/${project.id}/`}>{p.name}</a>
       {p.draft && <span class="draft-tag">Draft</span>}
-    </h4>
+    </Name>
     <p class="meta">
       {p.context && <span>{p.context}</span>}
       <span class="num">{p.year}</span>
@@ -101,7 +105,7 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     padding-block-start: clamp(1.25rem, 1rem + 1vw, 1.75rem);
   }
 
-  h4 {
+  .name {
     margin: 0;
     font-family: var(--display);
     font-weight: 400;
@@ -112,12 +116,12 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
     overflow-wrap: anywhere;
   }
 
-  h4 a {
+  .name a {
     text-decoration-color: transparent;
   }
 
-  h4 a:hover,
-  h4 a:focus-visible {
+  .name a:hover,
+  .name a:focus-visible {
     text-decoration-color: var(--amber);
   }
 
@@ -377,7 +381,7 @@ const drawing = drawings[`./thumbs/${project.id}.svg`];
       line-height: 1.4;
     }
 
-    .wide h4 {
+    .wide .name {
       font-size: clamp(2rem, 1.4rem + 1.6vw, 2.75rem);
     }
 

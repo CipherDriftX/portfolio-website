@@ -3,15 +3,16 @@ import Mark from "./Mark.astro";
 import { site } from "../data/site";
 
 interface Props {
-  sections: { id: string; label: string; waiting?: boolean; href?: string }[];
-  onHome?: boolean;
+  sections: { id: string; label: string; href: string }[];
+  /** This page's path, to mark its own link. */
+  path: string;
 }
-const { sections, onHome = false } = Astro.props;
-const href = (id: string) => (onHome ? `#${id}` : `/#${id}`);
-// Phones keep the first two sections with entries, and Contact; the rest are
-// one scroll away.
-const ready = sections.filter((s) => s.id !== "contact" && !s.waiting).map((s) => s.id);
-const phoneHidden = (s: { id: string; waiting?: boolean }) => s.id !== "contact" && !ready.slice(0, 2).includes(s.id);
+const { sections, path } = Astro.props;
+// The link for the page you are on, or the section it sits in (/work/wyatt/
+// is in Work).
+const here = (href: string) => !href.includes("#") && (path === href || path.startsWith(href));
+// Phones keep the first two pages and Contact; the rest are in the footer.
+const phoneHidden = (s: { id: string }, i: number) => s.id !== "contact" && i >= 2;
 ---
 
 <header class="bar">
@@ -22,9 +23,11 @@ const phoneHidden = (s: { id: string; waiting?: boolean }) => s.id !== "contact"
     sections.length > 0 && (
       <nav aria-label="Sections">
         <ul role="list">
-          {sections.map((s) => (
-            <li class:list={{ wide: phoneHidden(s) }}>
-              <a href={s.href ?? href(s.id)}>{s.label}</a>
+          {sections.map((s, i) => (
+            <li class:list={{ wide: phoneHidden(s, i) }}>
+              <a href={s.href} aria-current={here(s.href) ? "page" : undefined}>
+                {s.label}
+              </a>
             </li>
           ))}
         </ul>
@@ -103,6 +106,16 @@ const phoneHidden = (s: { id: string; waiting?: boolean }) => s.id !== "contact"
   }
 
   nav a:hover {
+    text-decoration-color: var(--amber);
+  }
+
+  /* The page you are on: a steady underline in the mark's tan, which is not
+     the accent, so it reads as "here" and not as something to press. */
+  nav a[aria-current="page"] {
+    text-decoration-color: var(--tan);
+  }
+
+  nav a[aria-current="page"]:hover {
     text-decoration-color: var(--amber);
   }
 </style>

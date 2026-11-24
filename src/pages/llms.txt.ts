@@ -26,6 +26,9 @@ export const GET: APIRoute = async () => {
     "## Pages",
     "",
     `- [Home](${site.url}/): who I am, my work, how I work, how to reach me`,
+    `- [About](${site.url}/about/): who I am, where I study and work, and my profiles`,
+    `- [Work](${site.url}/work/): every project, each with its own page`,
+    `- [Contact](${site.url}/contact/): how to reach me, and how a first project starts`,
     ...(live(noteList).length ? [`- [Notes](${site.url}/notes/): everything I have written, newest first ([RSS](${site.url}/rss.xml))`] : []),
     `- [Full text](${site.url}/llms-full.txt): this whole site as one Markdown file`,
     ...live(studies).map((s) => `- [Case study: ${s.data.title}](${site.url}/work/${s.id}/): ${s.data.summary}`),
@@ -39,7 +42,7 @@ export const GET: APIRoute = async () => {
           "",
           ...live(repos).map((p) => {
             const figures = p.data.figures.map((f) => `${f.value} ${f.label}`).join("; ");
-            return `- [${p.data.name}](${p.data.repo}): ${p.data.line}${figures ? ` (${figures})` : ""} Built with ${p.data.stack.join(", ")}.`;
+            return `- [${p.data.name}](${site.url}/work/${p.id}/): ${p.data.line}${figures ? ` (${figures})` : ""} Built with ${p.data.stack.join(", ")}. Code: ${p.data.repo}`;
           }),
           "",
         ]

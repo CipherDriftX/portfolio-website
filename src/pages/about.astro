@@ -1,0 +1,222 @@
+---
+// /about/: the About text, the photo, and the facts that tell this Aryan
+// Haghighi apart from others with the name. Every fact comes from
+// src/data/site.ts (the same facts as the Person schema, which this page
+// carries in full) or from the About text.
+import { render } from "astro:content";
+import Page from "../layouts/Page.astro";
+import { site } from "../data/site";
+import { about } from "../lib/content";
+import { personSchema } from "../lib/schema";
+
+const entry = await about();
+const AboutBody = entry ? (await render(entry)).Content : null;
+const description = `${site.name} (${site.handle} on GitHub) is an AI engineer in Istanbul. He studies at ${site.bio.school.name} and builds AI agents and agent safety tools at ${site.bio.company.name}.`;
+const crop = (ext: string) => [480, 720, 960].map((w) => `/photo/aryan-haghighi-phone-${w}.${ext} ${w}w`).join(", ");
+const sizes = "(min-width: 64rem) min(34vw, 30rem), 100vw";
+const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").replace(/\/$/, "");
+---
+
+<Page
+  title={`About · ${site.name}`}
+  description={description}
+  path="/about/"
+  draft={entry?.data.draft}
+  schema={{ "@type": "AboutPage", mainEntity: personSchema }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: "About", path: "/about/" },
+  ]}
+>
+  <div class="about">
+    <picture class="photo">
+      <source type="image/avif" srcset={crop("avif")} sizes={sizes} />
+      <source type="image/webp" srcset={crop("webp")} sizes={sizes} />
+      <img
+        src="/photo/aryan-haghighi-phone-720.jpg"
+        srcset={crop("jpg")}
+        sizes={sizes}
+        width="960"
+        height="1200"
+        alt={site.photo.alt}
+        fetchpriority="high"
+      />
+    </picture>
+
+    <div class="text">
+      <h1 class="page-title">About</h1>
+      {AboutBody && (
+        <div class="body">
+          <AboutBody />
+        </div>
+      )}
+
+      <dl class="facts">
+        <div>
+          <dt>Based in</dt>
+          <dd>{site.bio.city}</dd>
+        </div>
+        <div>
+          <dt>Studies</dt>
+          <dd>
+            AI engineering at <a href={site.bio.school.url}>{site.bio.school.name}</a>
+          </dd>
+        </div>
+        <div>
+          <dt>Company</dt>
+          <dd>
+            <a href={site.bio.company.url}>{site.bio.company.name}</a>
+          </dd>
+        </div>
+        {site.bio.awards.map((award) => (
+          <div>
+            <dt>Won</dt>
+            <dd>{award}</dd>
+          </div>
+        ))}
+        <div>
+          <dt>GitHub</dt>
+          <dd>
+            <a href={site.links.github} rel="me">{handle(site.links.github)}</a>
+          </dd>
+        </div>
+        <div>
+          <dt>X</dt>
+          <dd>
+            <a href={site.links.x} rel="me">@{handle(site.links.x)}</a>
+          </dd>
+        </div>
+        <div>
+          <dt>In Persian</dt>
+          <dd class="fa"><span lang="fa" dir="rtl">{site.nameFa}</span></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</Page>
+
+<style>
+  /* Phones: the photo first, its bottom melting into the page, then the
+     text. From 64rem: the text left, the photo right, every edge masked. */
+  .about {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    margin-block-start: 1rem;
+  }
+
+  .photo {
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 4 / 5;
+    max-height: 52svh;
+    overflow: hidden;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%;
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, rgb(0 0 0 / 0.6) 6%, #000 16%, #000 62%, rgb(0 0 0 / 0.4) 84%, transparent 100%);
+    mask-composite: intersect;
+    animation: fade 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .text {
+    min-width: 0;
+  }
+
+  .text .page-title {
+    margin-block-start: 0;
+  }
+
+  .body {
+    max-width: var(--measure);
+    margin-block-start: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  /* The first paragraph says who this is: it reads as the lead. */
+  .body :global(p:first-child) {
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.5rem);
+    line-height: 1.45;
+  }
+
+  .body :global(p + p) {
+    margin-block-start: 1em;
+  }
+
+  /* Facts: a label column and a value column, one hairline per row. */
+  .facts {
+    max-width: var(--measure);
+    margin-block-start: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .facts > div {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0 1rem;
+    align-items: baseline;
+    padding-block: 0.75rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .facts > div:last-child {
+    border-block-end: 1px solid var(--rule);
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  dd {
+    min-width: 0;
+  }
+
+  dd a {
+    display: inline-block;
+    padding-block: 0.6rem;
+    margin-block: -0.6rem;
+  }
+
+  .fa {
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 64rem) {
+    .about {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-areas: "text photo";
+      align-items: start;
+      gap: clamp(3rem, 2rem + 3vw, 6rem);
+      margin-block-start: 1.5rem;
+    }
+
+    .text {
+      grid-area: text;
+    }
+
+    .photo {
+      grid-area: photo;
+      justify-self: end;
+      max-height: min(82svh, 46rem);
+    }
+
+    .photo img {
+      mask-image:
+        linear-gradient(to right, transparent 0%, rgb(0 0 0 / 0.6) 10%, #000 22%, #000 90%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, #000 12%, #000 66%, rgb(0 0 0 / 0.4) 86%, transparent 100%);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+</style>

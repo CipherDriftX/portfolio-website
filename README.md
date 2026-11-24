@@ -19,12 +19,12 @@ The production build stops with an error if any live entry still has `[OWNER: ..
 | Path | What it is |
 |---|---|
 | `src/data/site.ts` | Name, title, claim, drone line, offer, email, LinkedIn, GitHub, photo alt text |
-| `src/content/projects/` | Repos for the Work section, one Markdown file each |
+| `src/content/projects/` | Projects for Work, one Markdown file each, each gets a page at `/work/<file name>` |
 | `src/content/work/` | Case studies, one file each, each gets a page at `/work/<file name>` |
 | `src/content/reviews/` | Reviews, one file each, only with the person's permission |
 | `src/content/notes/` | Notes, one file each, each gets a page at `/notes/<file name>` |
 | `src/content/about/about.md` | The About text |
-| `src/pages/` | Home, case study page, note page, 404, and `llms.txt.ts` (a plain-text map of the site for AI answer engines, built from the same content) |
+| `src/pages/` | Home, `/work/` and its project and case study pages, `/about/`, `/contact/`, notes, 404, and `llms.txt.ts` (a plain-text map of the site for AI answer engines, built from the same content) |
 | `src/styles/global.css` | Colours, fonts, links, focus |
 | `public/photo/` | The photo, cut by `_photo/build.py` |
 | `public/fonts/` | Gloock (headings) and Hanken Grotesk (text), both SIL Open Font License 1.1 |

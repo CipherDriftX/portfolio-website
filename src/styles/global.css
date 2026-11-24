@@ -216,6 +216,42 @@ a:hover {
   mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
 }
 
+/* View more: extra entries in a list wait until asked for. A list hides its
+   .extra items while the "View more" right after it is closed. */
+.view-more {
+  margin-block-start: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+}
+
+.view-more summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 3rem;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition:
+    color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.view-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.view-more summary:hover {
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+.view-more[open] .closed,
+.view-more:not([open]) .opened {
+  display: none;
+}
+
 /* Dev-only marker on draft entries. Never ships. */
 .draft-tag {
   display: inline-block;

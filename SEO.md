@@ -117,7 +117,7 @@ What it cannot see: whether the pages are indexed and what people search to find
 | seo-check on live | 0 errors, 0 warnings |
 | Lighthouse 13.6.0, this laptop, live home, mobile | Performance 100: FCP 1.2 s, LCP 1.5 s, TBT 10 ms, CLS 0 |
 | Lighthouse 13.6.0, GitHub runner | Mobile 86 / 100 / 100 / 100 (performance, accessibility, best practices, SEO), LCP 1.67 s. Desktop 100 on all four, LCP 0.35 s |
-| Pages in the sitemap | 1 (the home page). Notes and case studies add pages as they go live |
+| Pages in the sitemap | 10 since 2026-11-24: home, `/work/`, one page per project (6), `/about/`, `/contact/`. Notes and case studies add pages as they go live. Separate pages give Google something to show as sitelinks under the home page for a name search |
 | Main thread at load | Traces put most of the mobile blocking time in style and layout, and most of that in the ~140 text labels of the six project drawings. Fix (4e1092a): drawings keep their 1200 by 520 box and skip layout until they near the screen. Layout objects at load 1,097 to 650; at 4x CPU slowdown the largest layout went 104 to 34 ms and the longest task 165 to 116 ms |
 
 ## Baseline, 2026-11-22

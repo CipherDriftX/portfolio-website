@@ -2,20 +2,15 @@
 import { render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import ContactLinks from "../components/ContactLinks.astro";
-import Project from "../components/Project.astro";
+import Lanes from "../components/Lanes.astro";
 import { site } from "../data/site";
-import { shown, siteContent } from "../lib/content";
+import { lanes as laneList, shown, siteContent } from "../lib/content";
 
 const { live, soon, sections, studies, projects, reviews, notes, about } = await siteContent();
 const AboutBody = about ? (await render(about)).Content : null;
 
-// Work comes in two lanes: agents that do a job, and tools that keep agents
-// safe. A lane with no live projects does not show. Each lane shows its first
-// few cards; the rest wait behind "View more".
-const lanes = [
-  { id: "agents", title: "Agentic Systems", line: "Agents that take a whole job from start to finish." },
-  { id: "safety", title: "Agent safety", line: "Tools that test an agent before it ships and guard it while it runs." },
-]
+// The two lanes of Work, with their counts, for the jump list in The problem.
+const lanes = laneList
   .map((lane) => ({ ...lane, items: projects.filter((p) => p.data.lane === lane.id) }))
   .filter((lane) => lane.items.length > 0);
 
@@ -32,12 +27,13 @@ const code = projects
     name: p.data.name,
     description: p.data.line,
     repo: p.data.repo,
+    path: `/work/${p.id}/`,
     language: p.data.language,
     dateModified: date(p.data.updated),
   }));
 ---
 
-<Base title={site.pageTitle} description={site.description} path="/" sections={sections} onHome person code={code}>
+<Base title={site.pageTitle} description={site.description} path="/" sections={sections} person code={code}>
   <section class="hero" aria-labelledby="name">
     <div class="light" aria-hidden="true">
       <span class="bloom amber"></span>
@@ -111,31 +107,7 @@ const code = projects
             Selected projects go here soon. Until then, my code is on <a href={site.links.github}>GitHub</a>.
           </p>
         )}
-        {lanes.map((lane) => (
-          <div class:list={["lane", lane.id]} id={lane.id}>
-            <div class="lane-head">
-              <h3>{lane.title}</h3>
-              <p class="quiet">{lane.line}</p>
-            </div>
-            <ol role="list" class="cards">
-              {lane.items.map((p, i) => (
-                <li class:list={{ first: i === 0, extra: i >= shown.projects }}>
-                  <Project project={p} wide={i === 0} />
-                </li>
-              ))}
-            </ol>
-            {lane.items.length > shown.projects && (
-              <details class="view-more">
-                <summary>
-                  <span class="closed">
-                    View <span class="num">{lane.items.length - shown.projects}</span> more
-                  </span>
-                  <span class="opened">Show fewer</span>
-                </summary>
-              </details>
-            )}
-          </div>
-        ))}
+        <Lanes projects={projects} limit={shown.projects} />
       </section>
     )
   }
@@ -265,6 +237,9 @@ const code = projects
           <div class="about">
             <AboutBody />
           </div>
+          <p class="more">
+            <a href="/about/">More about {site.name}</a>
+          </p>
         </section>
       )
     }
@@ -634,127 +609,15 @@ const code = projects
     }
   }
 
-  /* ---------- Work: two lanes of cards, each lit by its own light ---------- */
+  /* ---------- Work: the lanes and cards live in Lanes.astro ---------- */
 
   .work-lead {
     max-width: var(--measure);
   }
 
-  .lane {
-    position: relative;
-    isolation: isolate;
-    margin-block-start: clamp(2.5rem, 2rem + 2vw, 3.5rem);
-    scroll-margin-block-start: 1.5rem;
-  }
+  /* ---------- View more (styles in global.css) ---------- */
 
-  .lane + .lane {
-    margin-block-start: clamp(4rem, 3rem + 3vw, 6rem);
-  }
-
-  /* The light behind the cards: bulb amber over the agents, the neon's
-     violet over the safety tools. Faint, dithered, never ink. */
-  .lane::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: -5rem 0 -3rem;
-    pointer-events: none;
-    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
-  }
-
-  .lane.agents::before {
-    background:
-      var(--grain-amber),
-      radial-gradient(closest-side, rgb(247 188 124 / 0.09), rgb(247 188 124 / 0.03) 55%, transparent);
-  }
-
-  .lane.safety::before {
-    background:
-      var(--grain-violet),
-      radial-gradient(closest-side, rgb(210 115 173 / 0.11), rgb(210 115 173 / 0.035) 55%, transparent);
-  }
-
-  .lane-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem 1.25rem;
-    margin-block-end: 1.25rem;
-  }
-
-  .lane-head p {
-    font-size: 0.9375rem;
-  }
-
-  /* Phones: one column. From 48rem: the lane's first card runs full width,
-     the rest sit two to a row with their parts lined up. */
-  .cards {
-    container-type: inline-size;
-    display: grid;
-    gap: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-    margin: 0;
-  }
-
-  .cards > li {
-    display: grid;
-    grid-row: span 5;
-    grid-template-rows: subgrid;
-    row-gap: 0;
-    min-width: 0;
-  }
-
-  .cards > li.first {
-    display: block;
-    grid-row: auto;
-  }
-
-  @media (min-width: 48rem) {
-    .cards {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cards > li.first {
-      grid-column: 1 / -1;
-    }
-  }
-
-  /* ---------- View more: extra entries wait until asked for ---------- */
-
-  :is(.cards, .studies, .reviews, .notes):has(+ .view-more:not([open])) > .extra {
-    display: none;
-  }
-
-  .view-more {
-    margin-block-start: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  .view-more summary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.625rem;
-    min-height: 3rem;
-    border: 1px solid var(--rule);
-    cursor: pointer;
-    list-style: none;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    transition:
-      color 120ms ease-out,
-      border-color 120ms ease-out;
-  }
-
-  .view-more summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .view-more summary:hover {
-    color: var(--amber);
-    border-color: var(--amber);
-  }
-
-  .view-more[open] .closed,
-  .view-more:not([open]) .opened {
+  :is(.studies, .reviews, .notes):has(+ .view-more:not([open])) > .extra {
     display: none;
   }
 
@@ -893,6 +756,17 @@ const code = projects
 
   .about :global(p + p) {
     margin-block-start: 1em;
+  }
+
+  .more {
+    margin-block-start: 1.25rem;
+  }
+
+  .more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
   }
 
   .offer {

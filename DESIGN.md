@@ -185,6 +185,12 @@ One centered frame, max 82rem, with a fluid side gutter (1rem at 320px, 6rem at 
 
 **Reading pages and the 404**: same frame, one amber glow from the top right, content starting about 6 to 9rem down. The 404 is one line and a link home, no Contact block.
 
+**Site pages** (`src/layouts/Page.astro`: `/work/`, `/work/<project>/`, `/about/`, `/contact/`): the reading-page room, a muted back link, then a Gloock page title (clamp(2.75rem, 1.9rem + 3.75vw, 5rem)) and a lead (max 34ch).
+- **/work/**: the same two lanes and cards as the home page, every card shown, lane titles as h2.
+- **Project page**: title, a muted line with place, year and language, the project's one line as the lead, the repo link with the GitHub icon (text `github.com/owner/repo`). Then the drawing at full frame width on its own plate, the figures on hairlines, and two parts, How it works and More work, each a hairline with the Gloock heading left (1fr) and the text right (2fr) from 64rem. From 64rem the figures use the same two columns, so the second number starts where the text does, and the tool's output takes the full width of its part so terminal lines show whole. More work lists the other projects (same lane first) as Gloock title links with their line, then All work.
+- **/about/**: phones put the photo first (4:5, every edge masked, at most 52svh) and the text below. From 64rem the text sits left (7fr) and the photo right (5fr). The About text's first paragraph is set as the lead. Below it, a facts list (label column 7.5rem in muted, value in cream, one hairline per row): based in, studies, company, won, GitHub, X and the name in Persian (`lang="fa"`, starting at the value column like the rest).
+- **/contact/**: the email on its own row at lead size in Hanken 600, LinkedIn, GitHub and X together below it, then How I work with the offer on a plate (two columns from 64rem). The footer leaves out its own Contact block here.
+
 **Story order**: hero, then numbered chapters: The problem, Work, Case studies, Reviews, Notes, then About and How I work side by side from 64rem (one column below). Each chapter opens on a 1px `rule` hairline with its number (two digits, Hanken 600, 1rem, `tan`) on the heading's baseline, counted by CSS so hidden sections never leave a gap. Sections still waiting for entries sit in one short unnumbered strip before About (small Gloock heading, placeholder line, hairline above).
 
 **The problem**: a large Hanken statement (max 30ch) on the page, and the answer on a raised plate beside it from 64rem: one sentence plus a link to each lane with its project count.
@@ -221,9 +227,10 @@ Quiet and unmistakable.
 - **Title links** (entry headings): no underline at rest; the amber underline appears on hover and focus.
 
 ### Navigation
-- **Top bar:** absolute over the first screen, no background edge, just the base fade. The site mark on the left in a 44px hit area; section links on the right in `label` size, no underline at rest, amber underline on hover.
-- **Live sections only:** it links only to sections that render in production, plus Contact.
-- **Phones:** the first two sections and Contact; the rest appear from 48rem up.
+- **Top bar:** absolute over the first screen, no background edge, just the base fade. The site mark on the left in a 44px hit area; page links on the right in `label` size, no underline at rest, amber underline on hover. The link for the page you are on (or the section it sits in: a project page is in Work) keeps a steady `tan` underline, since `tan` is not the accent.
+- **Pages, not anchors:** Work (`/work/`), Notes (`/notes/`, once a note is live), About (`/about/`), Contact (`/contact/`). Reviews, when live, links to its home section.
+- **Phones:** the first two links and Contact; the rest appear from 48rem up and are always in the footer.
+- **Footer row:** under the drone line, on a hairline: the year left, every page (Home first) right, muted `label` links, amber on hover.
 
 ### Contact links
 The email address written out in full, then LinkedIn and GitHub, each with a 1em Bootstrap Icons SVG in muted that turns amber on hover. The underline sits on the text only. In a narrow container the email takes its own row; from 28.5rem of container width all three sit on one row. Used in the hero and in the Contact footer.

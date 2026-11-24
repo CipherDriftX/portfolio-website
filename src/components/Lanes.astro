@@ -1,0 +1,146 @@
+---
+// Work in two lanes: agents that do a job, and tools that keep agents safe.
+// Used on the home page (under the Work heading, a few cards per lane, the
+// rest behind "View more") and on /work/ (every card). A lane with no live
+// projects does not show.
+import type { CollectionEntry } from "astro:content";
+import Project from "./Project.astro";
+import { lanes } from "../lib/content";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+  /** The lane heading level: h3 under the home page's Work, h2 on /work/. */
+  level?: "h2" | "h3";
+  /** Cards shown per lane before "View more"; leave out to show all. */
+  limit?: number;
+}
+const { projects, level = "h3", limit } = Astro.props;
+const Heading = level;
+const cardLevel = level === "h2" ? "h3" : "h4";
+
+const filled = lanes
+  .map((lane) => ({ ...lane, items: projects.filter((p) => p.data.lane === lane.id) }))
+  .filter((lane) => lane.items.length > 0);
+const cut = limit ?? Infinity;
+---
+
+{
+  filled.map((lane) => (
+    <div class:list={["lane", lane.id]} id={lane.id}>
+      <div class="lane-head">
+        <Heading class="lane-title">{lane.title}</Heading>
+        <p class="quiet">{lane.line}</p>
+      </div>
+      <ol role="list" class="cards">
+        {lane.items.map((p, i) => (
+          <li class:list={{ first: i === 0, extra: i >= cut }}>
+            <Project project={p} wide={i === 0} level={cardLevel} />
+          </li>
+        ))}
+      </ol>
+      {lane.items.length > cut && (
+        <details class="view-more">
+          <summary>
+            <span class="closed">
+              View <span class="num">{lane.items.length - cut}</span> more
+            </span>
+            <span class="opened">Show fewer</span>
+          </summary>
+        </details>
+      )}
+    </div>
+  ))
+}
+
+<style>
+  .lane {
+    position: relative;
+    isolation: isolate;
+    margin-block-start: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    scroll-margin-block-start: 1.5rem;
+  }
+
+  .lane + .lane {
+    margin-block-start: clamp(4rem, 3rem + 3vw, 6rem);
+  }
+
+  /* The light behind the cards: bulb amber over the agents, the neon's
+     violet over the safety tools. Faint, dithered, never ink. */
+  .lane::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -5rem 0 -3rem;
+    pointer-events: none;
+    mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+  }
+
+  .lane.agents::before {
+    background:
+      var(--grain-amber),
+      radial-gradient(closest-side, rgb(247 188 124 / 0.09), rgb(247 188 124 / 0.03) 55%, transparent);
+  }
+
+  .lane.safety::before {
+    background:
+      var(--grain-violet),
+      radial-gradient(closest-side, rgb(210 115 173 / 0.11), rgb(210 115 173 / 0.035) 55%, transparent);
+  }
+
+  .lane-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1.25rem;
+    margin-block-end: 1.25rem;
+  }
+
+  .lane-title {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    line-height: 1.15;
+  }
+
+  .lane-head p {
+    font-size: 0.9375rem;
+  }
+
+  .quiet {
+    color: var(--muted);
+  }
+
+  /* Phones: one column. From 48rem: the lane's first card runs full width,
+     the rest sit two to a row with their parts lined up. */
+  .cards {
+    container-type: inline-size;
+    display: grid;
+    gap: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    margin: 0;
+  }
+
+  .cards > li {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    min-width: 0;
+  }
+
+  .cards > li.first {
+    display: block;
+    grid-row: auto;
+  }
+
+  @media (min-width: 48rem) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards > li.first {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .cards:has(+ .view-more:not([open])) > .extra {
+    display: none;
+  }
+</style>

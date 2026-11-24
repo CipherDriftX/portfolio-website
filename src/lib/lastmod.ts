@@ -43,8 +43,17 @@ export function homeLastmod(): string {
 
 /** Sitemap lastmod for a page path, or undefined when no honest date exists. */
 export function lastmodFor(path: string): string | undefined {
-  if (path === "/") return homeLastmod();
-  if (path === "/notes/" || path === "/notes") return notesLastmod();
-  const page = path.match(/^\/(work|notes)\/([^/]+)\/?$/);
-  return page ? liveDates(page[1] as Collection)[page[2]] : undefined;
+  const p = path.endsWith("/") ? path : `${path}/`;
+  if (p === "/") return homeLastmod();
+  if (p === "/notes/") return notesLastmod();
+  // /work/ lists every project and case study.
+  if (p === "/work/") return [...Object.values(liveDates("work")), ...Object.values(liveDates("projects"))].sort().at(-1);
+  // The About text and the contact details live in site.ts and about.md,
+  // which move site.updated.
+  if (p === "/about/" || p === "/contact/") return site.updated;
+  const page = p.match(/^\/(work|notes)\/([^/]+)\/$/);
+  if (!page) return undefined;
+  if (page[1] === "notes") return liveDates("notes")[page[2]];
+  // /work/<name>/ is a case study or a project.
+  return liveDates("work")[page[2]] ?? liveDates("projects")[page[2]];
 }

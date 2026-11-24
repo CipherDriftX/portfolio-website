@@ -34,7 +34,7 @@ export const GET: APIRoute = async () => {
     for (const p of live(repos)) {
       const d = p.data;
       out.push(`### ${d.name}`, "", `${d.line}`, "");
-      out.push(`- Code: ${d.repo}`, `- Year: ${d.year}${d.context ? `, built at ${d.context}` : ""}`, `- Language: ${d.language}`);
+      out.push(`- Page: ${site.url}/work/${p.id}/`, `- Code: ${d.repo}`, `- Year: ${d.year}${d.context ? `, built at ${d.context}` : ""}`, `- Language: ${d.language}`);
       out.push(`- Built with: ${d.stack.join(", ")}`);
       for (const f of d.figures) out.push(`- ${f.value}: ${f.label}`);
       out.push("", p.body?.trim() ?? "", "");

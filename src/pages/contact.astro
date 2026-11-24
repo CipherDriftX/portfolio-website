@@ -1,0 +1,77 @@
+---
+// /contact/: how to reach me, and how a first project starts. The footer
+// below leaves out its own Contact block here, since this page is it.
+import Page from "../layouts/Page.astro";
+import ContactLinks from "../components/ContactLinks.astro";
+import { site } from "../data/site";
+import { personId } from "../lib/schema";
+
+const description = `How to reach ${site.name}, AI engineer: email ${site.email}, LinkedIn, GitHub or X, and how a first project starts.`;
+---
+
+<Page
+  title={`Contact · ${site.name}`}
+  description={description}
+  path="/contact/"
+  contactLinks={false}
+  schema={{ "@type": "ContactPage", mainEntity: { "@id": personId } }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: "Contact", path: "/contact/" },
+  ]}
+>
+  <h1 class="page-title">Contact</h1>
+  <div class="grid">
+    <ContactLinks label="Contact" class="reach" />
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title">How I work</h2>
+      <p class="offer plate">{site.offer}</p>
+    </section>
+  </div>
+</Page>
+
+<style>
+  .grid {
+    display: grid;
+    gap: clamp(3rem, 2rem + 3vw, 5rem);
+    margin-block-start: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  /* The links at reading size: the email is the way in. */
+  .grid :global(.reach) {
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  }
+
+  .grid :global(.reach ul) {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    gap: 0.5rem 2rem;
+  }
+
+  .grid :global(.reach li:first-child) {
+    grid-column: 1 / -1;
+    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  h2 {
+    font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2rem);
+    margin-block-end: 1.25rem;
+  }
+
+  .offer {
+    max-width: 40rem;
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
+    line-height: 1.4;
+  }
+
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+      gap: clamp(3rem, 2rem + 3vw, 6rem);
+    }
+  }
+</style>
