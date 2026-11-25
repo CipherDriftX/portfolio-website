@@ -74,6 +74,12 @@ const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").r
             <dd>{award}</dd>
           </div>
         ))}
+        {site.bio.competed.map((event) => (
+          <div>
+            <dt>Competed in</dt>
+            <dd>{event}</dd>
+          </div>
+        ))}
         <div>
           <dt>GitHub</dt>
           <dd>
@@ -85,10 +91,6 @@ const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").r
           <dd>
             <a href={site.links.x} rel="me">@{handle(site.links.x)}</a>
           </dd>
-        </div>
-        <div>
-          <dt>In Persian</dt>
-          <dd class="fa"><span lang="fa" dir="rtl">{site.nameFa}</span></dd>
         </div>
       </dl>
     </div>
@@ -182,10 +184,6 @@ const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").r
     display: inline-block;
     padding-block: 0.6rem;
     margin-block: -0.6rem;
-  }
-
-  .fa {
-    font-size: 1.125rem;
   }
 
   @media (min-width: 64rem) {

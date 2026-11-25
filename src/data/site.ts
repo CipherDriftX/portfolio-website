@@ -36,8 +36,10 @@ export const site = {
     school: { name: "Bahçeşehir University", url: "https://bau.edu.tr", wikipedia: "https://en.wikipedia.org/wiki/Bah%C3%A7e%C5%9Fehir_University" },
     city: "Istanbul, Türkiye",
     company: { name: "Plarix", url: "https://plarix.dev", github: "https://github.com/plarix-ai" },
-    // schema.org award = won. RoboCup IranOpen was competed in, so it stays in the About text only.
+    // schema.org award = won. RoboCup IranOpen was competed in, not won, so it
+    // sits apart: shown on /about/, never in the Person award list.
     awards: ["FarzCup, inter-school robotics competition run by SAMPAD (team win)"],
+    competed: ["RoboCup IranOpen"],
   },
   pageTitle: "Aryan Haghighi, AI Engineer · production AI agents + evals",
   url: "https://www.aryanhaghighi.com",
