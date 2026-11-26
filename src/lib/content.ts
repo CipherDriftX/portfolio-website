@@ -100,6 +100,7 @@ export async function siteContent() {
     ...(live.reviews ? [{ id: "reviews", label: "Reviews", href: "/#reviews" }] : []),
     ...(!waiting("notes") ? [{ id: "notes", label: "Notes", href: "/notes/" }] : []),
     ...(live.about ? [{ id: "about", label: "About", href: "/about/" }] : []),
+    { id: "cv", label: "CV", href: "/cv/" },
     { id: "contact", label: "Contact", href: "/contact/" },
   ];
   return {

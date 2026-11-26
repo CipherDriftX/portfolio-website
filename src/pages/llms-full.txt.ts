@@ -4,6 +4,8 @@
 import type { APIRoute } from "astro";
 import { site } from "../data/site";
 import { about, caseStudies, notes, projects } from "../lib/content";
+import { cv, type CvItem } from "../data/cv";
+import { plain } from "../lib/cv-text";
 
 export const GET: APIRoute = async () => {
   const [aboutEntry, studies, noteList, repos] = await Promise.all([about(), caseStudies(), notes(), projects()]);
@@ -29,6 +31,40 @@ export const GET: APIRoute = async () => {
     "",
   ];
   if (aboutEntry && !aboutEntry.data.draft) out.push("## About", "", aboutEntry.body?.trim() ?? "", "");
+  // The CV, the same words as /cv/ and the PDFs.
+  const items = (list: CvItem[]) =>
+    list.flatMap((it) => [
+      `- ${plain(it.title)}, ${plain(it.org)} (${it.when})${it.blurb ? `. ${plain(it.blurb)}` : ""}${it.stack ? `. Built with ${it.stack}` : ""}`,
+      ...it.bullets.map((b) => `  - ${plain(b)}`),
+    ]);
+  out.push(
+    "## CV",
+    "",
+    `${site.url}/cv/ · PDF: ${site.url}/cv.pdf (US Letter) and ${site.url}/cv-a4.pdf (A4) · Updated ${cv.updated}`,
+    "",
+    plain(cv.summary),
+    "",
+    "### Experience",
+    "",
+    ...items(cv.experience),
+    "",
+    "### Open source",
+    "",
+    ...items(cv.projects),
+    "",
+    "### Education",
+    "",
+    ...items(cv.education),
+    "",
+    "### Robotics honors",
+    "",
+    ...cv.honors.map((h) => `- ${plain(h)}`),
+    "",
+    "### Skills",
+    "",
+    ...cv.skills.map(([label, value]) => `- ${label}: ${value}`),
+    "",
+  );
   if (live(repos).length) {
     out.push("## Work", "", "All public code. Every number comes from the repo it links to.", "");
     for (const p of live(repos)) {

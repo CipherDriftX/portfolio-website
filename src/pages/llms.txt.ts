@@ -28,6 +28,7 @@ export const GET: APIRoute = async () => {
     `- [Home](${site.url}/): who I am, my work, how I work, how to reach me`,
     `- [About](${site.url}/about/): who I am, where I study and work, and my profiles`,
     `- [Work](${site.url}/work/): every project, each with its own page`,
+    `- [CV](${site.url}/cv/): experience, open-source work, education and skills; PDF in US Letter (${site.url}/cv.pdf) and A4 (${site.url}/cv-a4.pdf)`,
     `- [Contact](${site.url}/contact/): how to reach me, and how a first project starts`,
     ...(live(noteList).length ? [`- [Notes](${site.url}/notes/): everything I have written, newest first ([RSS](${site.url}/rss.xml))`] : []),
     `- [Full text](${site.url}/llms-full.txt): this whole site as one Markdown file`,

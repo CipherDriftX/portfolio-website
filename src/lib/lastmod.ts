@@ -4,6 +4,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { site } from "../data/site";
+import { cv } from "../data/cv";
 
 // The front matter fields that hold each collection's dates; the newest one
 // counts. The About text has none: change `updated` in src/data/site.ts when
@@ -51,6 +52,7 @@ export function lastmodFor(path: string): string | undefined {
   // The About text and the contact details live in site.ts and about.md,
   // which move site.updated.
   if (p === "/about/" || p === "/contact/") return site.updated;
+  if (p === "/cv/") return cv.updated;
   const page = p.match(/^\/(work|notes)\/([^/]+)\/$/);
   if (!page) return undefined;
   if (page[1] === "notes") return liveDates("notes")[page[2]];
