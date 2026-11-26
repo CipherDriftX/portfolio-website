@@ -10,6 +10,7 @@ Needs Node 26.
 npm ci          # once
 npm run dev     # http://localhost:4321, shows drafts
 npm run build   # production build into dist/, drafts left out
+npm run cv      # print the CV PDFs from src/data/cv.ts (see Update the CV)
 ```
 
 The production build stops with an error if any live entry still has `[OWNER: ...]` text in it.
@@ -79,6 +80,13 @@ When you edit a live case study, project or review later, set its `updated` to t
 1. Edit the line in `src/data/site.ts`, and set `updated` to today's date.
 2. If you changed the name, title or claim, edit `_og/card.html` too and run `python3 _og/build.py`.
 3. `npm run build`, then push.
+
+**Update the CV**
+
+1. Edit `src/data/cv.ts`. The /cv/ page, both PDFs, `/llms-full.txt` and the Person data all read it. Set `updated` to today's date.
+2. Run `npm run cv` (needs Chromium). It prints `public/cv.pdf` (US Letter, no photo) and `public/cv-a4.pdf` (A4, with photo), checks each fits on one page, and writes `src/data/cv.stamp.json`. If a PDF runs to two pages, cut words.
+3. Look at both PDFs, then commit them with `cv.ts` and the stamp. The build stops if the PDFs and `cv.ts` disagree.
+4. `npm run cv -- --desktop` also copies them to `~/Desktop`. With `CV_PHONE` set, those copies carry the phone number; it never goes in this repo.
 
 **Swap the photo**
 
