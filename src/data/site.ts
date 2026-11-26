@@ -45,7 +45,7 @@ export const site = {
   url: "https://www.aryanhaghighi.com",
   email: "aryan@aryanhaghighi.com",
   links: {
-    linkedin: "https://www.linkedin.com/in/aryan-haghighi-24b779304/",
+    linkedin: "https://www.linkedin.com/in/aryan-haghighi/",
     github: "https://github.com/CipherDriftX",
     x: "https://x.com/aryanhgh",
   },

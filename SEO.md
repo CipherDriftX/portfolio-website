@@ -136,6 +136,8 @@ Re-check monthly with the same queries, and add a dated row.
 
 **Open question for the owner:** are x.com/aryanhgh, tr.linkedin.com/in/aryan-haghighi and the two Facebook pages yours? If yes, link them to the site and add them to `sameAs`. If a second LinkedIn is an old account of yours, close it: two profiles split the signal. If they are someone else, that person shares your name in Turkey, and consistent headlines and the same photo everywhere are how engines tell you apart.
 
+**Answered 2026-11-26 (LinkedIn):** linkedin.com/in/aryan-haghighi is the owner's profile; the address with `-24b779304` is no longer used. `site.ts`, the CV and `sameAs` use the short one.
+
 ### Owner checklist (by hand, monthly)
 
 1. Google, logged out or in a private window: `"Aryan Haghighi"`. Note the positions of the site, LinkedIn and GitHub in the top 10.

@@ -30,7 +30,7 @@ The portfolio for Aryan Haghighi. In 5 to 10 seconds the first screen must answe
   - Claim: I ship AI agents into production, with evals that prove they work.
   - Drone line: Building autonomous drones.
   - How I work: I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month. (No price.)
-  - Links: aryan@aryanhaghighi.com, https://www.linkedin.com/in/aryan-haghighi-24b779304/, https://github.com/CipherDriftX
+  - Links: aryan@aryanhaghighi.com, https://www.linkedin.com/in/aryan-haghighi/, https://github.com/CipherDriftX
 - Photo: the owner's own phone photo, cropped and lightly graded, never AI edited, upscaled or smoothed. The beer glass, the ashtray and cigarette, and the woman in red stay out of every crop, the link preview included.
 - Banned words and marks: passionate, leverage, cutting-edge, seamless, "let's build something amazing", emojis, exclamation marks, em dashes. Section labels are plain nouns.
 - Works from 320 px wide with no horizontal scroll and tap targets of 44 px or more.
