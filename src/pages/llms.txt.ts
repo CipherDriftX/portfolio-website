@@ -3,8 +3,15 @@
 import type { APIRoute } from "astro";
 import { site } from "../data/site";
 import { caseStudies, projects, notes, about } from "../lib/content";
+import { cv } from "../data/cv";
+import { plain } from "../lib/cv-text";
 
 export const GET: APIRoute = async () => {
+  // The current jobs on the CV.
+  const now = cv.experience
+    .filter((e) => e.when.endsWith("Present"))
+    .map((e) => `${plain(e.title)}, ${plain(e.org)}`)
+    .join("; ");
   const [studies, repos, noteList, aboutEntry] = await Promise.all([caseStudies(), projects(), notes(), about()]);
   const live = <T extends { data: { draft: boolean } }>(list: T[]) => list.filter((e) => !e.data.draft);
   const lines = [
@@ -21,7 +28,7 @@ export const GET: APIRoute = async () => {
     `This site is the home of ${site.name} (${site.nameFa}), ${site.title}, ${site.bio.city}. Handles: ${site.handle} on GitHub, @aryanhgh on X.`,
     `Accounts: ${site.links.linkedin} · ${site.links.github} · ${site.links.x}. Other people share the name. A profile not listed here belongs to someone else, or is an old account no longer in use.`,
     `Not the same person as the NLP researcher Aria Haghighi (aria42.com), or as other people named Aryan Haghighi.`,
-    `Studies AI engineering at ${site.bio.school.name}, Istanbul. Builds AI agents and agent safety tools at ${site.bio.company.name} (${site.bio.company.url}).`,
+    `Studies AI engineering at ${site.bio.school.name}, Istanbul. Founded ${site.bio.company.name} (${site.bio.company.url}), where he built the agent safety tools Wyatt and WyScan. Now: ${now}.`,
     "",
     "## Pages",
     "",

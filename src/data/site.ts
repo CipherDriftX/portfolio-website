@@ -3,7 +3,7 @@
 export const site = {
   name: "Aryan Haghighi",
   title: "AI Engineer",
-  claim: "I ship AI agents into production, with evals that prove they work.",
+  claim: "I ship agentic systems into production, with evals that prove they work.",
   // The home page's meta description: the name first, so a search for it
   // and an AI answer about it both read who this is in one sentence.
   description:
@@ -12,11 +12,11 @@ export const site = {
   offer:
     "I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month.",
   // What search engines and AI answers should link to the name (Person knowsAbout).
-  topics: ["AI agents", "LLM evaluation", "AI agent safety", "Large language models", "Autonomous drones"],
+  topics: ["AI agents", "Agentic systems", "LLM evaluation", "AI agent safety", "Large language models", "Autonomous drones"],
   // The day the facts in this file or the About text last changed. Bump it
   // when you change them. It feeds the sitemap and the home page schema.
   // Notes, case studies, projects and reviews move the date on their own.
-  updated: "2026-11-24",
+  updated: "2026-11-26",
   // The day the site first went up. ProfilePage dateCreated.
   launched: "2026-11-21",
   // The public handle (GitHub, commits). Person alternateName, which Google's

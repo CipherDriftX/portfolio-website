@@ -11,7 +11,7 @@ import { personSchema } from "../lib/schema";
 
 const entry = await about();
 const AboutBody = entry ? (await render(entry)).Content : null;
-const description = `${site.name} (${site.handle} on GitHub) is an AI engineer in Istanbul. He studies at ${site.bio.school.name} and builds AI agents and agent safety tools at ${site.bio.company.name}.`;
+const description = `${site.name} (${site.handle} on GitHub) is an AI engineer in Istanbul. He studies at ${site.bio.school.name}, builds AI agents and evals, and founded ${site.bio.company.name}, where he built agent safety tools.`;
 const crop = (ext: string) => [480, 720, 960].map((w) => `/photo/aryan-haghighi-phone-${w}.${ext} ${w}w`).join(", ");
 const sizes = "(min-width: 64rem) min(34vw, 30rem), 100vw";
 const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").replace(/\/$/, "");
@@ -63,7 +63,7 @@ const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+\//, "").r
           </dd>
         </div>
         <div>
-          <dt>Company</dt>
+          <dt>Founded</dt>
           <dd>
             <a href={site.bio.company.url}>{site.bio.company.name}</a>
           </dd>
