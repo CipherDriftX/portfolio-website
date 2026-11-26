@@ -221,6 +221,18 @@ const description = `CV of ${site.name}, AI engineer in Istanbul: production age
     color: var(--cream);
   }
 
+  /* Links inside the text: a 44px tap height without moving the lines.
+     The hit area grows above and below the words; the focus ring stays on them. */
+  .body :global(a) {
+    position: relative;
+  }
+
+  .body :global(a)::after {
+    content: "";
+    position: absolute;
+    inset: -0.75rem 0;
+  }
+
   /* Small square markers in the muted ink: amber is only for links. */
   .bullets {
     display: grid;
