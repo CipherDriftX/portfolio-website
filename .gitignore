@@ -5,3 +5,5 @@ _photo/*
 node_modules/
 dist/
 .astro/
+# Scratch page while npm run cv prints the PDFs.
+cv/.build/

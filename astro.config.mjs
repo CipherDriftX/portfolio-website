@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import ownerCheck from "./integrations/owner-check.mjs";
+import cvCheck from "./integrations/cv-check.mjs";
 import { lastmodFor, notesLastmod } from "./src/lib/lastmod.ts";
 
 export default defineConfig({
@@ -22,5 +23,6 @@ export default defineConfig({
       },
     }),
     ownerCheck(),
+    cvCheck(),
   ],
 });

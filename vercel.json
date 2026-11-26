@@ -13,6 +13,22 @@
     {
       "source": "/photo/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/cv.pdf",
+      "headers": [
+        { "key": "Content-Disposition", "value": "inline; filename=\"Aryan-Haghighi-Resume.pdf\"" },
+        { "key": "Link", "value": "<https://www.aryanhaghighi.com/cv/>; rel=\"canonical\"" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/cv-a4.pdf",
+      "headers": [
+        { "key": "Content-Disposition", "value": "inline; filename=\"Aryan-Haghighi-CV.pdf\"" },
+        { "key": "Link", "value": "<https://www.aryanhaghighi.com/cv/>; rel=\"canonical\"" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
     }
   ]
 }

@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "cv": "node scripts/cv.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",
