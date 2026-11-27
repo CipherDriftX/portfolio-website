@@ -1,10 +1,12 @@
 // /llms.txt: a plain-text map of the site for AI answer engines, built from
 // the same content as the pages so it never goes stale.
 import type { APIRoute } from "astro";
-import { site } from "../data/site";
+import { site, launch } from "../data/site";
 import { caseStudies, projects, notes, about } from "../lib/content";
 import { cv } from "../data/cv";
 import { plain } from "../lib/cv-text";
+import { getEntry } from "astro:content";
+import { llmsLines } from "../lib/mcp";
 
 export const GET: APIRoute = async () => {
   // The current jobs on the CV.
@@ -14,6 +16,7 @@ export const GET: APIRoute = async () => {
     .join("; ");
   const [studies, repos, noteList, aboutEntry] = await Promise.all([caseStudies(), projects(), notes(), about()]);
   const live = <T extends { data: { draft: boolean } }>(list: T[]) => list.filter((e) => !e.data.draft);
+  const mcpHub = launch.mcpServers ? await getEntry("hubs", "mcp-servers") : undefined;
   const lines = [
     `# ${site.name}`,
     "",
@@ -37,6 +40,7 @@ export const GET: APIRoute = async () => {
     `- [Work](${site.url}/work/): every project, each with its own page`,
     `- [CV](${site.url}/cv/): experience, open-source work, education and skills; PDF in US Letter (${site.url}/cv.pdf) and A4 (${site.url}/cv-a4.pdf)`,
     `- [Contact](${site.url}/contact/): how to reach me, and how a first project starts`,
+    ...(mcpHub ? [`- [MCP servers](${site.url}/mcp-servers/): scorecards for popular MCP servers, and how I build and test them`] : []),
     ...(live(noteList).length ? [`- [Notes](${site.url}/notes/): everything I have written, newest first ([RSS](${site.url}/rss.xml))`] : []),
     `- [Full text](${site.url}/llms-full.txt): this whole site as one Markdown file`,
     ...live(studies).map((s) => `- [Case study: ${s.data.title}](${site.url}/work/${s.id}/): ${s.data.summary}`),
@@ -55,6 +59,7 @@ export const GET: APIRoute = async () => {
           "",
         ]
       : []),
+    ...(mcpHub ? llmsLines(mcpHub.data, site.url, false) : []),
     ...(aboutEntry && !aboutEntry.data.draft ? ["## About", "", aboutEntry.body?.trim() ?? "", ""] : []),
     "## Contact",
     "",

@@ -1,0 +1,32 @@
+---
+// /mcp-servers/ (the hub), /mcp-servers/method/ and one scorecard per server.
+// Nothing here is built until launch.mcpServers is on (src/data/site.ts),
+// and then only the servers in mcpCards get a page. In dev all of it shows.
+import { getEntry } from "astro:content";
+import { launch } from "../../data/site";
+import { servers, hasPage } from "../../lib/mcp";
+import Hub from "../../components/mcp/Hub.astro";
+import Card from "../../components/mcp/Card.astro";
+import Method from "../../components/mcp/Method.astro";
+
+export async function getStaticPaths() {
+  if (!launch.mcpServers && !import.meta.env.DEV) return [];
+  const hub = await getEntry("hubs", "mcp-servers");
+  if (!hub) throw new Error("src/content/hubs/mcp-servers.md is missing.");
+  if (launch.mcpServers && hub.data.draft) {
+    throw new Error("launch.mcpServers is on, but src/content/hubs/mcp-servers.md is still a draft. Read it, then set draft: false.");
+  }
+  return [
+    { params: { path: undefined }, props: { view: "hub" as const } },
+    { params: { path: "method" }, props: { view: "method" as const } },
+    ...servers.filter((s) => hasPage(s.id)).map((s) => ({ params: { path: s.id }, props: { view: "card" as const, id: s.id } })),
+  ];
+}
+
+const { view, id } = Astro.props as { view: "hub" | "method" | "card"; id?: string };
+const hub = (await getEntry("hubs", "mcp-servers"))!;
+---
+
+{view === "hub" && <Hub hub={hub.data} />}
+{view === "method" && <Method hub={hub.data} />}
+{view === "card" && <Card id={id!} hub={hub.data} />}

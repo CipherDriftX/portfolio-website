@@ -6,6 +6,16 @@ import { join } from "node:path";
 import { site } from "../data/site";
 import { cv } from "../data/cv";
 
+/** The newest check date in src/data/mcp-servers.json, read as text so astro.config.mjs can use it. */
+function mcpDate(): string | undefined {
+  try {
+    const text = readFileSync(join(process.cwd(), "src/data/mcp-servers.json"), "utf8");
+    return [...text.matchAll(/"date": "(\d{4}-\d{2}-\d{2})"/g)].map((m) => m[1]).sort().at(-1);
+  } catch {
+    return undefined;
+  }
+}
+
 // The front matter fields that hold each collection's dates; the newest one
 // counts. The About text has none: change `updated` in src/data/site.ts when
 // you edit it.
@@ -53,6 +63,8 @@ export function lastmodFor(path: string): string | undefined {
   // which move site.updated.
   if (p === "/about/" || p === "/contact/") return site.updated;
   if (p === "/cv/") return cv.updated;
+  // /mcp-servers/...: the date the servers were checked (the data file).
+  if (p.startsWith("/mcp-servers/")) return mcpDate();
   const page = p.match(/^\/(work|notes)\/([^/]+)\/$/);
   if (!page) return undefined;
   if (page[1] === "notes") return liveDates("notes")[page[2]];

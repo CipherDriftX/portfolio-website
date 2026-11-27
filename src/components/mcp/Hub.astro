@@ -1,0 +1,156 @@
+---
+// /mcp-servers/: the answer, the scorecard table, what it says, how I work,
+// the offer and the questions people ask. Words from
+// src/content/hubs/mcp-servers.md, numbers from src/lib/mcp.ts.
+import type { CollectionEntry } from "astro:content";
+import Page from "../../layouts/Page.astro";
+import Board from "./Board.astro";
+import Offer from "./Offer.astro";
+import { site } from "../../data/site";
+import { personId } from "../../lib/schema";
+import { REPO, WIKI_MCP, fill, hubFindings, stats, servers, hasPage, cardPath } from "../../lib/mcp";
+import "./mcp.css";
+
+interface Props {
+  hub: CollectionEntry<"hubs">["data"];
+}
+const { hub } = Astro.props;
+const path = "/mcp-servers/";
+const url = `${site.url}${path}`;
+const faq = hub.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
+const cards = servers.filter((s) => hasPage(s.id));
+
+const extraSchema = [
+  {
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name: "MCP server development and testing",
+    serviceType: "MCP server development",
+    description: fill(hub.offer.lead),
+    provider: { "@id": personId },
+    areaServed: "Worldwide",
+    url,
+  },
+  {
+    "@type": "Dataset",
+    "@id": `${url}#data`,
+    name: "MCP server scorecards",
+    description: `Tool definitions of ${stats.servers} popular Model Context Protocol (MCP) servers, checked on ${stats.date}: tool count, tokens per tool (${stats.tokenizer}), description and parameter checks, and protocol checks against MCP ${stats.spec}.`,
+    url,
+    sameAs: REPO,
+    creator: { "@id": personId },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    dateModified: stats.date,
+    keywords: ["MCP servers", "Model Context Protocol", "tool calling", "agent evals", "token cost"],
+    measurementTechnique: `${stats.tokenizer} token counts and rule checks by mcp-server-evals ${stats.checker}`,
+    variableMeasured: ["tools", "tool tax (tokens)", "median tokens per tool", "short descriptions", "parameters with no description"],
+    distribution: { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${REPO}/tree/main/results` },
+  },
+  {
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
+---
+
+<Page
+  title={hub.title}
+  description={fill(hub.description)}
+  path={path}
+  draft={hub.draft}
+  image={{ path: "/og/mcp-servers.png", alt: `MCP servers: scorecards for ${stats.servers} popular servers, by ${site.name}` }}
+  schema={{
+    "@type": "CollectionPage",
+    about: { "@type": "Thing", name: "Model Context Protocol", sameAs: WIKI_MCP },
+    mainEntity: { "@id": `${url}#data` },
+    dateModified: hub.updated.toISOString().slice(0, 10),
+  }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: hub.h1, path },
+  ]}
+  extraSchema={extraSchema}
+>
+  <article class="mcp" aria-labelledby="mcp-title">
+    <h1 id="mcp-title" class="page-title">{hub.h1}</h1>
+    <p class="mcp-answer">{fill(hub.answer)}</p>
+    <p class="meta">
+      <span>Checked {stats.date}</span>
+      <a href="/mcp-servers/method/">How I measure</a>
+      <a href={REPO}>Code and raw data</a>
+    </p>
+
+    <section class="mcp-part" aria-labelledby="board-title">
+      <h2 id="board-title">Scorecards</h2>
+      <div class="mcp-body wide">
+        <Board />
+        <p class="quiet">
+          Popular: picked by downloads in the last week on npm or PyPI, on {stats.date} (GitHub stars for one server
+          that ships as a binary). Tool tax: the tokens a server's tool list adds to every request, counted with {stats.tokenizer}. Short:
+          under 3 sentences.{" "}
+          <a href="/mcp-servers/method/">Every rule and its source</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="found-title">
+      <h2 id="found-title">What the table says</h2>
+      <div class="mcp-body">
+        <ul role="list" class="mcp-found">
+          {hubFindings().map((f) => <li>{f}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="how-title">
+      <h2 id="how-title">How I test an MCP server</h2>
+      <div class="mcp-body">
+        <ol role="list" class="mcp-steps">
+          {
+            hub.steps.map((s) => (
+              <li>
+                <h3>{s.title}</h3>
+                <p>{fill(s.text)}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <Offer offer={hub.offer} subject="MCP server" />
+
+    <section class="mcp-part" aria-labelledby="faq-title">
+      <h2 id="faq-title">Questions</h2>
+      <div class="mcp-body mcp-faq">
+        {
+          faq.map((f) => (
+            <div>
+              <h3>{f.q}</h3>
+              <p>{f.a}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      cards.length > 0 && (
+        <nav class="mcp-part" aria-labelledby="cards-title">
+          <h2 id="cards-title">Read a scorecard</h2>
+          <div class="mcp-body">
+            <ul role="list" class="mcp-links">
+              {cards.map((s) => (
+                <li>
+                  <a href={cardPath(s)}>{s.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      )
+    }
+  </article>
+</Page>

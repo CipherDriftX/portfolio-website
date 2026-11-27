@@ -6,7 +6,7 @@ import ContactLinks from "./ContactLinks.astro";
 import { site } from "../data/site";
 
 interface Props {
-  sections: { id: string; label: string; href: string }[];
+  sections: { id: string; label: string; href: string; bar?: false }[];
   links?: boolean;
 }
 const { sections, links = true } = Astro.props;

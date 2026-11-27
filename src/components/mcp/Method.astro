@@ -1,0 +1,239 @@
+---
+// /mcp-servers/method/: what is measured, how, every rule with its source,
+// which servers were left out and why, and the limits.
+import type { CollectionEntry } from "astro:content";
+import Page from "../../layouts/Page.astro";
+import { site } from "../../data/site";
+import { REPO, rules, selection, stats } from "../../lib/mcp";
+import "./mcp.css";
+
+interface Props {
+  hub: CollectionEntry<"hubs">["data"];
+}
+const { hub } = Astro.props;
+const path = "/mcp-servers/method/";
+const title = "How the MCP Server Scorecards Are Made · Aryan Haghighi";
+const heuristics = Object.values(rules).filter((r) => !r.source).length;
+const description = `The method behind the MCP server scorecards: sandbox, handshake, tool tax with ${stats.tokenizer}, ${Object.keys(rules).length} rules with their sources, and the limits.`;
+const levels = [
+  ["fail", "breaks a MUST in the MCP spec, or the basic protocol"],
+  ["warn", "breaks a SHOULD in the MCP spec, or advice in Anthropic's or OpenAI's tool guides"],
+  ["note", "my own heuristic, shown on the card but never in the fix-first list"],
+] as const;
+// Markdown-style `code` in the rule text, as <code>.
+const code = (text: string) =>
+  text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+const cite = `Aryan Haghighi. MCP server scorecards. ${stats.date}. ${site.url}/mcp-servers/`;
+---
+
+<Page
+  title={title}
+  description={description}
+  path={path}
+  back={{ href: "/mcp-servers/", label: "MCP servers" }}
+  draft={hub.draft}
+  image={{ path: "/og/mcp-servers/method.png", alt: `How the MCP server scorecards are made, by ${site.name}` }}
+  schema={{
+    "@type": "TechArticle",
+    headline: "How the MCP Server Scorecards Are Made",
+    description,
+    datePublished: stats.date,
+    dateModified: stats.date,
+    isPartOf: { "@id": `${site.url}/mcp-servers/#data` },
+  }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: hub.h1, path: "/mcp-servers/" },
+    { name: "Method", path },
+  ]}
+>
+  <article class="mcp" aria-labelledby="mcp-title">
+    <h1 id="mcp-title" class="page-title">Method</h1>
+    <p class="mcp-answer">
+      Each server runs in a sandbox with no network. A small MCP client starts it, reads its tool list and checks every
+      definition against {Object.keys(rules).length} rules. Each rule quotes the MCP spec or Anthropic's or OpenAI's
+      tool guides, except {heuristics} heuristics of my own, marked note. No score adds them up.
+    </p>
+    <p class="meta">
+      <span>mcp-server-evals {stats.checker}</span>
+      <span>MCP {stats.spec}</span>
+      <a href={REPO}>Code</a>
+    </p>
+
+    <section class="mcp-part" aria-labelledby="run-title">
+      <h2 id="run-title">The run</h2>
+      <div class="mcp-body">
+        <ol role="list" class="mcp-steps">
+          <li>
+            <h3>Install</h3>
+            <p>
+              The exact version from npm or PyPI, with install scripts off (<code>--ignore-scripts</code>, and
+              <code>--no-build</code> for Python), or the release binary.
+            </p>
+          </li>
+          <li>
+            <h3>Start in a sandbox</h3>
+            <p>
+              bubblewrap with every namespace unshared, so no network, an empty home folder, a clean environment with
+              dummy keys, and a 400 MB memory limit. Servers that need a live account to list their tools cannot run here;
+              they are listed below with the reason.
+            </p>
+          </li>
+          <li>
+            <h3>Handshake</h3>
+            <p>
+              The client sends <code>server/discover</code> ({stats.spec}) first. A server that does not know it gets
+              <code>initialize</code> with 2025-11-25.
+            </p>
+          </li>
+          <li>
+            <h3>Read the tools</h3>
+            <p>
+              <code>tools/list</code>, every page, twice, to see if the order holds. Then one call to a tool that does
+              not exist, to see how the server says no.
+            </p>
+          </li>
+          <li>
+            <h3>Count and check</h3>
+            <p>Tokens per tool, then the rules below on every tool and every parameter.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="tax-title">
+      <h2 id="tax-title">Tool tax</h2>
+      <div class="mcp-body">
+        <p>
+          The tokens a server's tool list adds to every model request, used or not. For each tool I count the compact
+          JSON of its name, description and input schema, the part MCP clients pass to the model, with the
+          <code>{stats.tokenizer}</code> tokenizer (tiktoken), and add them up.
+        </p>
+        <p>
+          Each provider wraps tools in its own format, so the count a given model sees differs a little. Claude's
+          tokenizer is not public, so the cards claim no Claude count. Server instructions are counted on their own,
+          outside the tool tax.
+        </p>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="rules-title">
+      <h2 id="rules-title">Rules</h2>
+      <div class="mcp-body wide">
+        <dl class="mcp-facts">
+          {
+            levels.map(([level, text]) => (
+              <div>
+                <dt>{level}</dt>
+                <dd>{text}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <div class="mcp-table-well" tabindex="0" role="region" aria-labelledby="rules-caption">
+          <table class="mcp-table rules">
+            <caption id="rules-caption">Every rule, its level and the words it rests on.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Rule</th>
+                <th scope="col">Level</th>
+                <th scope="col">Basis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                Object.entries(rules).map(([id, r]) => (
+                  <tr id={`rule-${id}`}>
+                    <th scope="row">
+                      {r.title}
+                      <span class="by">
+                        <code>{id}</code>
+                      </span>
+                    </th>
+                    <td>{r.level}</td>
+                    <td>
+                      <span set:html={code(r.basis)} />
+                      {r.source && (
+                        <>
+                          {" "}
+                          <a href={r.source}>Source</a>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="pick-title">
+      <h2 id="pick-title">Which servers</h2>
+      <div class="mcp-body">
+        <p>
+          Popular ones, picked on {selection.date} by downloads in the last week, with npm and PyPI ranked apart and
+          archived, deprecated and test servers left out. The GitHub MCP Server ships as a binary, so it is in by GitHub
+          stars. When a server could not run in the sandbox, a reserve took its place. Each card names the exact
+          version.
+        </p>
+        <p>These {selection.out.length} could not be measured in the sandbox, so they have no card:</p>
+        <table class="mcp-table">
+          <thead>
+            <tr>
+              <th scope="col">Server</th>
+              <th scope="col">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              selection.out.map((o) => (
+                <tr>
+                  <th scope="row">
+                    {o.name}
+                    <span class="by">
+                      <code>{o.package}</code> {o.version}
+                    </span>
+                  </th>
+                  <td>{o.reason.replace(/^.*?Out: /, "")}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="limits-title">
+      <h2 id="limits-title">Limits</h2>
+      <div class="mcp-body">
+        <ul role="list" class="mcp-found">
+          <li>These checks read tool definitions. They do not show that a model picks the right tool. Model runs on real tasks come next, and the cards will show them.</li>
+          <li>A server with a live account may list other tools than it does here with dummy keys.</li>
+          <li>Short means fewer than 3 sentences or lines of 2 or more words. A short description can still be clear; the rule follows Anthropic's guide, not a measured failure.</li>
+          <li>Each server is checked once per date. Newer versions may differ; the card names the version.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="cite-title">
+      <h2 id="cite-title">Use the data</h2>
+      <div class="mcp-body">
+        <p>
+          The data is free to use under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; the code is
+          MIT. Please cite it as:
+        </p>
+        <p class="cite">{cite}</p>
+        <p>
+          Found an error? Email <a href={`mailto:${site.email}?subject=${encodeURIComponent("MCP scorecard error")}`}>{site.email}</a>.
+          A maintainer who fixes a server gets a new card.
+        </p>
+      </div>
+    </section>
+  </article>
+</Page>

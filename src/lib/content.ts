@@ -1,5 +1,6 @@
 // Drafts show in `npm run dev` and never in the production build.
 import { getCollection } from "astro:content";
+import { launch } from "../data/site";
 
 export const showDrafts = import.meta.env.DEV;
 
@@ -95,13 +96,16 @@ export async function siteContent() {
   const ids = (Object.keys(labels) as SectionId[]).filter((id) => live[id]);
   // The top bar and the footer link to pages, so search engines see the
   // site as a set of pages (sitelinks) and not one long page.
-  const sections: { id: string; label: string; href: string }[] = [
+  // bar: false keeps a page out of the top bar (footer only).
+  const sections: { id: string; label: string; href: string; bar?: false }[] = [
     { id: "work", label: "Work", href: "/work/" },
     ...(live.reviews ? [{ id: "reviews", label: "Reviews", href: "/#reviews" }] : []),
     ...(!waiting("notes") ? [{ id: "notes", label: "Notes", href: "/notes/" }] : []),
     ...(live.about ? [{ id: "about", label: "About", href: "/about/" }] : []),
     { id: "cv", label: "CV", href: "/cv/" },
     { id: "contact", label: "Contact", href: "/contact/" },
+    // The topic hubs (src/data/site.ts launch): footer and home links.
+    ...(launch.mcpServers ? [{ id: "mcp-servers", label: "MCP servers", href: "/mcp-servers/", bar: false as const }] : []),
   ];
   return {
     live,

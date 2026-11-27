@@ -13,7 +13,7 @@ interface Props {
   description: string;
   /** Path of this page, for the canonical URL. */
   path: string;
-  sections?: { id: string; label: string; waiting?: boolean; href?: string }[];
+  sections?: { id: string; label: string; waiting?: boolean; href?: string; bar?: false }[];
   /** Add the ProfilePage + Person and WebSite schema (home page only). */
   person?: boolean;
   noindex?: boolean;
@@ -30,6 +30,8 @@ interface Props {
   breadcrumbs?: { name: string; path: string }[];
   /** Code projects on this page, as schema.org SoftwareSourceCode by the Person. */
   code?: { name: string; description: string; repo: string; path: string; language: string; dateModified: string }[];
+  /** More schema.org records that stand on their own, e.g. a Dataset (Google Dataset Search reads top-level ones). */
+  extraSchema?: Record<string, unknown>[];
 }
 
 const {
@@ -46,6 +48,7 @@ const {
   image,
   breadcrumbs,
   code = [],
+  extraSchema = [],
 } = Astro.props;
 
 const canonical = new URL(path, site.url + "/").href;
@@ -198,6 +201,11 @@ const pageSchema =
     {codeSchema && <script type="application/ld+json" set:html={JSON.stringify(codeSchema)} />}
     {pageSchema && <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />}
     {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema)} />}
+    {
+      extraSchema.map((x) => (
+        <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", ...x })} />
+      ))
+    }
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

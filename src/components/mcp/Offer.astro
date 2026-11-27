@@ -1,0 +1,41 @@
+---
+// The one offer, from src/content/hubs/mcp-servers.md, with a mail link.
+import { site } from "../../data/site";
+
+interface Props {
+  offer: { lead: string; includes: string[]; time: string; price: string };
+  /** The mail subject, e.g. the server the reader came from. */
+  subject: string;
+  id?: string;
+  heading?: string;
+}
+const { offer, subject, id = "offer", heading = "Build or fix your MCP server" } = Astro.props;
+const mail = `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
+---
+
+<section class="mcp-part" aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`}>{heading}</h2>
+  <div class="mcp-body">
+    <div class="mcp-offer plate">
+      <p>{offer.lead}</p>
+      <ul role="list">
+        {offer.includes.map((item) => <li>{item}</li>)}
+      </ul>
+      <p><span class="price">{offer.price}</span> <span class="quiet">· {offer.time}</span></p>
+      <p>
+        <a class="mail" href={mail}>Email me about it</a>
+        <span class="quiet">{site.email}</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mail {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-inline-end: 0.75rem;
+    font-weight: 600;
+  }
+</style>

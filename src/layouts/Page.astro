@@ -1,5 +1,6 @@
 ---
-// The site's own pages: /work/, /work/<project>/, /about/, /contact/.
+// The site's own pages: /work/, /work/<project>/, /about/, /contact/, /cv/
+// and the /mcp-servers/ section.
 // Same room as the reading pages: one tungsten light from above, a quiet
 // way back, then the page's own h1 and content.
 import Base from "./Base.astro";
@@ -19,6 +20,7 @@ interface Props {
   code?: { name: string; description: string; repo: string; path: string; language: string; dateModified: string }[];
   /** The Contact heading and links above the footer. */
   contactLinks?: boolean;
+  extraSchema?: Record<string, unknown>[];
 }
 const { back = { href: "/", label: site.name }, draft = false, ...rest } = Astro.props;
 const { sections } = await siteContent();

@@ -3,7 +3,8 @@ import { render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import ContactLinks from "../components/ContactLinks.astro";
 import Lanes from "../components/Lanes.astro";
-import { site } from "../data/site";
+import { site, launch } from "../data/site";
+import { stats as mcpStats } from "../lib/mcp";
 import { lanes as laneList, shown, siteContent } from "../lib/content";
 
 const { live, soon, sections, studies, projects, reviews, notes, about } = await siteContent();
@@ -80,7 +81,7 @@ const code = projects
           they run.
         </p>
         {
-          lanes.length > 0 && (
+          (lanes.length > 0 || launch.mcpServers) && (
             <ul role="list" class="jump">
               {lanes.map((lane) => (
                 <li>
@@ -90,6 +91,14 @@ const code = projects
                   </span>
                 </li>
               ))}
+              {launch.mcpServers && (
+                <li>
+                  <a href="/mcp-servers/">MCP servers</a>
+                  <span class="quiet">
+                    <span class="num">{mcpStats.servers}</span> scorecards
+                  </span>
+                </li>
+              )}
             </ul>
           )
         }

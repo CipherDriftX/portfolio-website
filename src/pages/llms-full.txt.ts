@@ -2,10 +2,12 @@
 // engines that read a site in one request. Built from the same content as
 // the pages; drafts never reach it.
 import type { APIRoute } from "astro";
-import { site } from "../data/site";
+import { site, launch } from "../data/site";
 import { about, caseStudies, notes, projects } from "../lib/content";
 import { cv, type CvItem } from "../data/cv";
 import { plain } from "../lib/cv-text";
+import { getEntry } from "astro:content";
+import { llmsLines } from "../lib/mcp";
 
 export const GET: APIRoute = async () => {
   // The current jobs on the CV.
@@ -81,6 +83,8 @@ export const GET: APIRoute = async () => {
       out.push("", p.body?.trim() ?? "", "");
     }
   }
+  const mcpHub = launch.mcpServers ? await getEntry("hubs", "mcp-servers") : undefined;
+  if (mcpHub) out.push(...llmsLines(mcpHub.data, site.url, true));
   for (const s of live(studies)) {
     out.push(`## Case study: ${s.data.title}`, "", `${site.url}/work/${s.id}/`, "", s.data.summary, "", s.body?.trim() ?? "", "");
   }

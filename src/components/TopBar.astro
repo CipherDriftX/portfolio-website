@@ -3,11 +3,12 @@ import Mark from "./Mark.astro";
 import { site } from "../data/site";
 
 interface Props {
-  sections: { id: string; label: string; href: string }[];
+  sections: { id: string; label: string; href: string; bar?: false }[];
   /** This page's path, to mark its own link. */
   path: string;
 }
-const { sections, path } = Astro.props;
+const { path } = Astro.props;
+const sections = Astro.props.sections.filter((s) => s.bar !== false);
 // The link for the page you are on, or the section it sits in (/work/wyatt/
 // is in Work).
 const here = (href: string) => !href.includes("#") && (path === href || path.startsWith(href));

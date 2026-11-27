@@ -1,0 +1,115 @@
+---
+// The scorecard table: every server, heaviest tool list first. Rates, not
+// raw counts, so a server with 118 tools and one with 3 compare fairly.
+import { servers, stats, fmt, pct, hasPage, cardPath } from "../../lib/mcp";
+
+interface Props {
+  /** Mark this server's row (on its own card). */
+  current?: string;
+}
+const { current } = Astro.props;
+---
+
+<div class="mcp-table-well" tabindex="0" role="region" aria-labelledby="board-caption">
+  <table class="mcp-table board">
+    <caption id="board-caption">
+      {stats.servers} popular MCP servers, checked {stats.date}. Heaviest tool list first.
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Server</th>
+        <th scope="col" class="n">Tools</th>
+        <th scope="col" class="n">Tool tax<br />(tokens)</th>
+        <th scope="col" class="n">Median<br />per tool</th>
+        <th scope="col" class="n">Short<br />descriptions</th>
+        <th scope="col" class="n">Parameters with<br />no description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        servers.map((s) => (
+          <tr aria-current={s.id === current ? "true" : undefined}>
+            <th scope="row">
+              {hasPage(s.id) && s.id !== current ? <a href={cardPath(s)}>{s.name}</a> : <span>{s.name}</span>}
+              <span class="by">{s.maker}</span>
+            </th>
+            <td class="n" data-label="Tools">{s.metrics.tools}</td>
+            <td class="n" data-label="Tool tax">{fmt(s.tool_tax.total)}</td>
+            <td class="n" data-label="Median tool">{fmt(s.tool_tax.per_tool_median)}</td>
+            <td class="n" data-label="Short descriptions">{pct(s.metrics.short_description_share)}</td>
+            <td class="n" data-label="Parameters, no description">{pct(s.metrics.params_undocumented_share)}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  tr[aria-current] > * {
+    background: rgb(247 188 124 / 0.06);
+  }
+
+  tr[aria-current] th span:first-child {
+    color: var(--amber);
+  }
+
+  .mcp-table-well:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 4px;
+  }
+
+  /* Phones: one block per server, the numbers in a small grid with their
+     names above them. Nothing scrolls sideways. */
+  @media (max-width: 39.99rem) {
+    .board,
+    .board tbody,
+    .board tr,
+    .board caption {
+      display: block;
+    }
+
+    .mcp-table.board {
+      min-width: 0;
+    }
+
+    .board thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .board tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.625rem 0.75rem;
+      padding-block: 0.875rem;
+      border-block-end: 1px solid var(--wood);
+    }
+
+    .board tbody th {
+      grid-column: 1 / -1;
+    }
+
+    .board th,
+    .board td {
+      padding: 0;
+      border: 0;
+    }
+
+    .board td.n {
+      text-align: start;
+    }
+
+    .board td::before {
+      content: attr(data-label);
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.3;
+      white-space: normal;
+    }
+  }
+</style>

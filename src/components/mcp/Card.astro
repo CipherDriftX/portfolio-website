@@ -1,0 +1,318 @@
+---
+// /mcp-servers/<id>/: one server's scorecard. The numbers lead, then what to
+// fix first with the server's own tool names and words, then every tool.
+import type { CollectionEntry } from "astro:content";
+import Page from "../../layouts/Page.astro";
+import Board from "./Board.astro";
+import Offer from "./Offer.astro";
+import { site } from "../../data/site";
+import {
+  REPO,
+  byId,
+  servers,
+  stats,
+  fmt,
+  pct,
+  plural,
+  hasPage,
+  cardPath,
+  cardTitle,
+  cardDescription,
+  cardLead,
+  shortName,
+  fixFirst,
+  heaviest,
+  tag,
+  rawUrl,
+  codeUrl,
+  packageUrl,
+  versionText,
+} from "../../lib/mcp";
+import "./mcp.css";
+
+interface Props {
+  id: string;
+  hub: CollectionEntry<"hubs">["data"];
+}
+const { id, hub } = Astro.props;
+const s = byId(id)!;
+const m = s.metrics;
+const path = cardPath(s);
+const fixes = fixFirst(s);
+const heavy = heaviest(s);
+const others = servers.filter((o) => o.id !== s.id && hasPage(o.id));
+const popularity =
+  s.popularity.weekly_downloads !== undefined
+    ? `${fmt(s.popularity.weekly_downloads)} ${s.popularity.registry} downloads a week`
+    : s.popularity.stars !== undefined
+      ? `${fmt(s.popularity.stars)} GitHub stars`
+      : "not measured";
+const unknownTool = s.protocol.unknown_tool.startsWith("JSON-RPC error")
+  ? `${s.protocol.unknown_tool}, as the spec asks`
+  : `${s.protocol.unknown_tool} (the spec lists unknown tools under protocol errors)`;
+const showAll = s.tools.length > 12;
+const code = codeUrl(s);
+---
+
+<Page
+  title={cardTitle(s)}
+  description={cardDescription(s)}
+  path={path}
+  back={{ href: "/mcp-servers/", label: "MCP servers" }}
+  image={{ path: `/og/mcp-servers/${s.id}.png`, alt: `${s.name} scorecard: ${plural(m.tools, "tool")}, ${fmt(s.tool_tax.total)} tokens` }}
+  schema={{
+    "@type": "TechArticle",
+    headline: cardTitle(s),
+    description: cardDescription(s),
+    datePublished: s.date,
+    dateModified: s.date,
+    isPartOf: { "@id": `${site.url}/mcp-servers/#data` },
+    about: {
+      "@type": "SoftwareSourceCode",
+      name: s.name,
+      version: s.version,
+      ...(code && { codeRepository: code }),
+      url: packageUrl(s),
+      creator: { "@type": "Organization", name: s.maker.replace(/\s*\(.*\)$/, "") },
+    },
+  }}
+  breadcrumbs={[
+    { name: site.name, path: "/" },
+    { name: hub.h1, path: "/mcp-servers/" },
+    { name: s.name, path },
+  ]}
+>
+  <article class="mcp" aria-labelledby="mcp-title">
+    <h1 id="mcp-title" class="page-title">{s.name}</h1>
+    <p class="mcp-answer">{cardLead(s)}</p>
+    <p class="meta">
+      <span>{s.maker}</span>
+      <a href={packageUrl(s)}><code>{s.package}</code>&nbsp;{s.version}</a>
+      {code && <a href={code}>Source</a>}
+      <span>Checked {s.date}</span>
+    </p>
+
+    <section class="mcp-part" aria-labelledby="fix-title">
+      <h2 id="fix-title">Fix first</h2>
+      <div class="mcp-body">
+        {
+          fixes.length === 0 ? (
+            <p>Nothing above a note. The tool list follows every rule I check.</p>
+          ) : (
+            <ol role="list" class="mcp-steps">
+              {fixes.map((f) => (
+                <li>
+                  <p>{f.text}</p>
+                  {f.example?.quote && (
+                    <p class="said">
+                      <code>{f.example.tool}</code> says: <q>{f.example.quote}</q>
+                    </p>
+                  )}
+                  {f.example && !f.example.quote && !f.example.params && (
+                    <p class="said">
+                      For example <code>{f.example.tool}</code>
+                      {f.rule === "description-short" ? " has no description." : "."}
+                    </p>
+                  )}
+                  {f.example?.params && (
+                    <p class="said">
+                      In <code>{f.example.tool}</code>: <code>{f.example.params}</code>
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+          )
+        }
+        <p class="quiet">Each fix cites its source on the <a href="/mcp-servers/method/">method page</a>.</p>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="facts-title">
+      <h2 id="facts-title">Numbers</h2>
+      <div class="mcp-body">
+        <dl class="mcp-facts">
+          <div>
+            <dt>Tools</dt>
+            <dd>{m.tools}</dd>
+          </div>
+          <div>
+            <dt>Tool tax</dt>
+            <dd>
+              {fmt(s.tool_tax.total)} tokens on every request{" "}
+              <span class="quiet">
+                ({fmt(s.tool_tax.description_tokens)} in descriptions, {fmt(s.tool_tax.schema_tokens)} in input schemas)
+              </span>
+            </dd>
+          </div>
+          <div>
+            <dt>Median tool</dt>
+            <dd>{fmt(s.tool_tax.per_tool_median)} tokens</dd>
+          </div>
+          {
+            s.instructions_tokens > 0 && (
+              <div>
+                <dt>Server instructions</dt>
+                <dd>
+                  {fmt(s.instructions_tokens)} tokens <span class="quiet">(not in the tool tax)</span>
+                </dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>Short descriptions</dt>
+            <dd>
+              {m.short_descriptions} of {m.tools} <span class="quiet">({pct(m.short_description_share)})</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Parameters with no description</dt>
+            <dd>
+              {m.params === 0 ? (
+                "no parameters"
+              ) : (
+                <>
+                  {m.params_undocumented} of {m.params} <span class="quiet">({pct(m.params_undocumented_share)})</span>
+                </>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt>Rank by tool tax</dt>
+            <dd>
+              {s.rank} of {stats.servers} <span class="quiet">(1 = heaviest)</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Protocol version</dt>
+            <dd>{versionText(s)}</dd>
+          </div>
+          <div>
+            <dt>Unknown tool call</dt>
+            <dd>{unknownTool}</dd>
+          </div>
+          <div>
+            <dt>Tool order</dt>
+            <dd>{s.protocol.order_stable ? "the same on two calls" : "changed between two calls"}</dd>
+          </div>
+          <div>
+            <dt>Popularity</dt>
+            <dd>
+              {popularity} <span class="quiet">(on {s.date})</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="heavy-title">
+      <h2 id="heavy-title">Heaviest tools</h2>
+      <div class="mcp-body">
+        <table class="mcp-table">
+          <caption>The {Math.min(5, m.tools) === 1 ? "tool" : `${Math.min(5, m.tools)} tools`} that cost the most tokens.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Tool</th>
+              <th scope="col" class="n">Tokens</th>
+              <th scope="col" class="n">Share</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              heavy.map((t) => (
+                <tr>
+                  <th scope="row"><code>{t.name}</code></th>
+                  <td class="n">{fmt(t.tokens)}</td>
+                  <td class="n">{pct(t.share)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="tools-title">
+      <h2 id="tools-title">All {m.tools} tools</h2>
+      <div class="mcp-body">
+        {
+          (() => {
+            const table = (
+              <table class="mcp-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Tool</th>
+                    <th scope="col" class="n">Tokens</th>
+                    <th scope="col">Checks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {s.tools.map((t) => (
+                    <tr>
+                      <th scope="row"><code>{t.name}</code></th>
+                      <td class="n">{fmt(t.tokens)}</td>
+                      <td class="mcp-tags">
+                        {t.findings.length === 0 ? "none" : [...new Set(t.findings.map((f) => tag(f.rule)))].join(", ")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+            return showAll ? (
+              <details class="mcp-all">
+                <summary>Show all {m.tools} tools</summary>
+                {table}
+              </details>
+            ) : (
+              table
+            );
+          })()
+        }
+        <p class="quiet">In the order the server lists them.</p>
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="board-title">
+      <h2 id="board-title">Next to the others</h2>
+      <div class="mcp-body wide">
+        <Board current={s.id} />
+      </div>
+    </section>
+
+    <section class="mcp-part" aria-labelledby="run-title">
+      <h2 id="run-title">Check it yourself</h2>
+      <div class="mcp-body">
+        <p>
+          I ran {s.name} {s.version} in a sandbox with no network and dummy keys, then read its tool list the way an MCP
+          client does. The command, the raw tool list and the full results are public.
+        </p>
+        <pre><code>git clone {REPO}
+cd mcp-server-evals
+uv run mcp-server-evals run {s.id}</code></pre>
+        <p>
+          <a href={rawUrl(s)}>Raw data for this server</a> · <a href="/mcp-servers/method/">How I measure</a>
+        </p>
+      </div>
+    </section>
+
+    <Offer offer={hub.offer} subject={`${shortName(s)} MCP server`} heading="Want this fixed?" />
+
+    {
+      others.length > 0 && (
+        <nav class="mcp-part" aria-labelledby="more-title">
+          <h2 id="more-title">More scorecards</h2>
+          <div class="mcp-body">
+            <ul role="list" class="mcp-links">
+              {others.map((o) => (
+                <li>
+                  <a href={cardPath(o)}>{o.name}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      )
+    }
+  </article>
+</Page>
