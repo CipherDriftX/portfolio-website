@@ -45,7 +45,6 @@ const extraSchema = [
     keywords: ["MCP servers", "Model Context Protocol", "tool calling", "agent evals", "token cost"],
     measurementTechnique: `${stats.tokenizer} token counts and rule checks by mcp-server-evals ${stats.checker}`,
     variableMeasured: ["tools", "tool tax (tokens)", "median tokens per tool", "short descriptions", "parameters with no description"],
-    distribution: { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${REPO}/tree/main/results` },
   },
   {
     "@type": "FAQPage",
