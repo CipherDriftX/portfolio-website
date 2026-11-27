@@ -3,6 +3,8 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import ownerCheck from "./integrations/owner-check.mjs";
 import cvCheck from "./integrations/cv-check.mjs";
+import launchCheck from "./integrations/launch-check.mjs";
+import { launch } from "./src/data/site.ts";
 import { lastmodFor, notesLastmod } from "./src/lib/lastmod.ts";
 
 export default defineConfig({
@@ -24,5 +26,6 @@ export default defineConfig({
     }),
     ownerCheck(),
     cvCheck(),
+    launchCheck(launch),
   ],
 });
