@@ -257,7 +257,7 @@ Three page kinds share one stylesheet, `src/components/mcp/mcp.css`, and the pro
 - **Scorecard table:** tabular figures, a `wood` rule under each row, muted column names, the server name in Hanken 600 with the maker below in muted. Rates, not raw counts. Under 40rem each row turns into a block: the name on top, the five numbers in a three-column grid with their labels above them in 0.75rem muted. Nothing scrolls sideways. On a card the table marks that server's row with a faint amber tint and an amber name.
 - **Steps and fixes:** an ordered list with tan Hanken 600 numbers in the margin. A fix quotes the server's own words in muted, with tool names in `code`.
 - **Facts:** a `dl` with muted labels in an 11rem column from 40rem, a `rule` hairline between rows.
-- **Offer:** one plate: the lead, a list with small square muted bullets, the price in Hanken 600 (1.375 to 1.75rem) with the time in muted, and a bold mail link.
+- **Work with me:** one plate: the lead, a list with small square muted bullets, and a bold mail link. No prices: this is a personal site, not a shop.
 - **Long tool lists:** over 12 tools, the full table sits in a `details` whose summary is a full-width 48px bar with a `rule` border that turns amber on hover.
 - **Code:** system monospace on a faint cream tint; commands in a `base` well with an inset top shadow, the well scrolls, never the page.
 

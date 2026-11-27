@@ -15,7 +15,7 @@ Notes for search engines and AI answers. Not deployed (see `.vercelignore`).
 | 2 | the RL environment is live on the Prime Intellect Hub or Hugging Face | Aryan Haghighi · RL environments, agent evals, MCP servers | MCP servers, agent evals, RL environments for LLM agents, AI agents, large language models |
 
 - Each change makes engines relearn who you are, so nothing moves between the steps.
-- New pages wait behind `STAGE` and `launch` in `src/data/site.ts`: a hub that is off builds in `npm run dev` only, never in production, the sitemap, `llms.txt`, the OG images or the menus. `integrations/launch-check.mjs` fails the build if one leaks. Stage 1 also needs `draft: false` in `src/content/hubs/mcp-servers.md` and a real price there (the build stops otherwise), and builds a card only for the servers in `mcpCards`.
+- New pages wait behind `STAGE` and `launch` in `src/data/site.ts`: a hub that is off builds in `npm run dev` only, never in production, the sitemap, `llms.txt`, the OG images or the menus. `integrations/launch-check.mjs` fails the build if one leaks. Stage 1 also needs `draft: false` in `src/content/hubs/mcp-servers.md` (the build stops otherwise), and builds a card only for the servers in `mcpCards`.
 
 ## Keyword map
 
@@ -23,7 +23,6 @@ Source: Google, DuckDuckGo and Bing autocomplete, US English, 2026-11-27. Autoco
 
 **MCP servers** (the only lane with clear buyer phrases)
 - Hire: mcp server development services / mcp server development company / custom mcp server development services → `/mcp-servers/`
-- Price: mcp server development cost / mcp server cost → the "What it costs" part of `/mcp-servers/`
 - Testing: mcp server testing tool / mcp server tester / mcp server testing framework / test mcp server locally → a note + the repo
 - Tool: mcp evals github / mcp evals python / mcp server evals → the repo (its name matches)
 - Practice: mcp tool description best practices / mcp server best practices anthropic → a data note on tool descriptions

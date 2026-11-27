@@ -122,11 +122,10 @@ const hubs = defineCollection({
     description: z.string().min(110).max(160), // the meta description
     answer: z.string(), // 40 to 60 words at the top: what it is, what I do
     steps: z.array(z.object({ title: z.string(), text: z.string() })).min(4).max(6),
-    offer: z.object({
+    // How to hire me for this: a short line, what I do, then the mail link.
+    hire: z.object({
       lead: z.string(),
       includes: z.array(z.string()).min(1),
-      time: z.string(),
-      price: z.string(),
     }),
     faq: z.array(z.object({ q: z.string(), a: z.string() })).min(4).max(6),
     updated: z.coerce.date(),

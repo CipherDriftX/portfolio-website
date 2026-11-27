@@ -1,29 +1,28 @@
 ---
-// The one offer, from src/content/hubs/mcp-servers.md, with a mail link.
+// How to hire me, from src/content/hubs/mcp-servers.md, with a mail link.
 import { site } from "../../data/site";
 
 interface Props {
-  offer: { lead: string; includes: string[]; time: string; price: string };
+  hire: { lead: string; includes: string[] };
   /** The mail subject, e.g. the server the reader came from. */
   subject: string;
   id?: string;
   heading?: string;
 }
-const { offer, subject, id = "offer", heading = "Build or fix your MCP server" } = Astro.props;
+const { hire, subject, id = "hire", heading = "Work with me" } = Astro.props;
 const mail = `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
 ---
 
 <section class="mcp-part" aria-labelledby={`${id}-title`}>
   <h2 id={`${id}-title`}>{heading}</h2>
   <div class="mcp-body">
-    <div class="mcp-offer plate">
-      <p>{offer.lead}</p>
+    <div class="mcp-hire plate">
+      <p>{hire.lead}</p>
       <ul role="list">
-        {offer.includes.map((item) => <li>{item}</li>)}
+        {hire.includes.map((item) => <li>{item}</li>)}
       </ul>
-      <p><span class="price">{offer.price}</span> <span class="quiet">· {offer.time}</span></p>
       <p>
-        <a class="mail" href={mail}>Email me about it</a>
+        <a class="mail" href={mail}>Email me</a>
         <span class="quiet">{site.email}</span>
       </p>
     </div>

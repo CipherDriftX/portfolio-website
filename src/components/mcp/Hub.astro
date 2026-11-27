@@ -1,11 +1,11 @@
 ---
 // /mcp-servers/: the answer, the scorecard table, what it says, how I work,
-// the offer and the questions people ask. Words from
+// how to hire me and the questions people ask. Words from
 // src/content/hubs/mcp-servers.md, numbers from src/lib/mcp.ts.
 import type { CollectionEntry } from "astro:content";
 import Page from "../../layouts/Page.astro";
 import Board from "./Board.astro";
-import Offer from "./Offer.astro";
+import Hire from "./Hire.astro";
 import { site } from "../../data/site";
 import { personId } from "../../lib/schema";
 import { REPO, WIKI_MCP, fill, hubFindings, stats, servers, hasPage, cardPath } from "../../lib/mcp";
@@ -21,16 +21,6 @@ const faq = hub.faq.map((f) => ({ q: fill(f.q), a: fill(f.a) }));
 const cards = servers.filter((s) => hasPage(s.id));
 
 const extraSchema = [
-  {
-    "@type": "Service",
-    "@id": `${url}#service`,
-    name: "MCP server development and testing",
-    serviceType: "MCP server development",
-    description: fill(hub.offer.lead),
-    provider: { "@id": personId },
-    areaServed: "Worldwide",
-    url,
-  },
   {
     "@type": "Dataset",
     "@id": `${url}#data`,
@@ -119,7 +109,7 @@ const extraSchema = [
       </div>
     </section>
 
-    <Offer offer={hub.offer} subject="MCP server" />
+    <Hire hire={hub.hire} subject="MCP servers" />
 
     <section class="mcp-part" aria-labelledby="faq-title">
       <h2 id="faq-title">Questions</h2>

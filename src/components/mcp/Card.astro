@@ -4,7 +4,7 @@
 import type { CollectionEntry } from "astro:content";
 import Page from "../../layouts/Page.astro";
 import Board from "./Board.astro";
-import Offer from "./Offer.astro";
+import Hire from "./Hire.astro";
 import { site } from "../../data/site";
 import {
   REPO,
@@ -296,7 +296,7 @@ uv run mcp-server-evals run {s.id}</code></pre>
       </div>
     </section>
 
-    <Offer offer={hub.offer} subject={`${shortName(s)} MCP server`} heading="Want this fixed?" />
+    <Hire hire={hub.hire} subject={`${shortName(s)} MCP server`} heading="Want this fixed?" />
 
     {
       others.length > 0 && (

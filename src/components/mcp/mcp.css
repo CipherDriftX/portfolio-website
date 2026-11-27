@@ -277,31 +277,26 @@
   max-width: 36rem;
 }
 
-/* ---------- The offer: one plate ---------- */
-.mcp-offer {
+/* ---------- Work with me: one plate ---------- */
+.mcp-hire {
   padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
 }
 
-.mcp-offer > * + * {
+.mcp-hire > * + * {
   margin-block-start: 1rem;
 }
 
-.mcp-offer .price {
-  font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
-  font-weight: 600;
-}
-
-.mcp-offer ul {
+.mcp-hire ul {
   display: grid;
   gap: 0.375rem;
 }
 
-.mcp-offer li {
+.mcp-hire li {
   position: relative;
   padding-inline-start: 1.125rem;
 }
 
-.mcp-offer li::before {
+.mcp-hire li::before {
   content: "";
   position: absolute;
   inset-inline-start: 0.125rem;

@@ -318,7 +318,7 @@ export function llmsLines(
     "",
     ...hubFindings().map((f) => `- ${f}`),
     "",
-    `- [MCP server scorecards](${siteUrl}/mcp-servers/): the table, how I test an MCP server, and the offer`,
+    `- [MCP server scorecards](${siteUrl}/mcp-servers/): the table, how I test an MCP server, and how to hire me`,
     `- [Method](${siteUrl}/mcp-servers/method/): sandbox, tool tax, every rule with its source, the limits`,
     ...cards.map((s) => `- [${s.name} scorecard](${siteUrl}${cardPath(s)}): ${cardLead(s)}`),
     `- Code and raw data: ${REPO}`,
