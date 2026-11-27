@@ -251,6 +251,16 @@ Amber block with base text, Hanken 600, hidden above the viewport until focused,
 ### Site mark
 A hypersonic jet seen from above, nose up: an original planform whose leading edge is one blended curve from needle nose to wingtip, with a forward-swept W trailing edge ending in two pointed engine tails. Two flat facets split on the centreline, lit from the right: tan `#cf9a63` on the left, `cream` on the right. No gradients, no outlines, no glow; it must hold as a solid silhouette at 16px. On the page it stands alone at 32px tall, its wingtip on the text edge. The favicon is transparent: `favicon.svg` uses the same facets on dark tabs and near-black `#140b09` / `#3b2822` on light tabs (prefers-color-scheme inside the SVG); the ICO frames, which cannot switch, are copper `#a65c2b` / `#c97a40`, about 3:1 on both. Phone and manifest icons put it on a flat `#120b09` square at 64% of the height. It carries the theme (dark, fast jets) without aerospace job-seeker cues: no HUD symbols, insignia, blueprint lines or technical labels. No letters. Decorative; the link around it carries the full name.
 
+### MCP server pages (/mcp-servers/)
+Three page kinds share one stylesheet, `src/components/mcp/mcp.css`, and the project page's parts: a hairline, the Gloock heading on the left (1fr) and the text on the right (2fr) from 64rem. Every number comes from `src/data/mcp-servers.json`; nothing is typed in by hand.
+- **Opening answer:** under the h1, a few plain sentences that carry the numbers (Hanken, 1.125 to 1.3125rem, 40rem wide), then a muted meta line of 44px links. No hero metric, no big figure block: the numbers sit in sentences people can quote.
+- **Scorecard table:** tabular figures, a `wood` rule under each row, muted column names, the server name in Hanken 600 with the maker below in muted. Rates, not raw counts. Under 40rem each row turns into a block: the name on top, the five numbers in a three-column grid with their labels above them in 0.75rem muted. Nothing scrolls sideways. On a card the table marks that server's row with a faint amber tint and an amber name.
+- **Steps and fixes:** an ordered list with tan Hanken 600 numbers in the margin. A fix quotes the server's own words in muted, with tool names in `code`.
+- **Facts:** a `dl` with muted labels in an 11rem column from 40rem, a `rule` hairline between rows.
+- **Offer:** one plate: the lead, a list with small square muted bullets, the price in Hanken 600 (1.375 to 1.75rem) with the time in muted, and a bold mail link.
+- **Long tool lists:** over 12 tools, the full table sits in a `details` whose summary is a full-width 48px bar with a `rule` border that turns amber on hover.
+- **Code:** system monospace on a faint cream tint; commands in a `base` well with an inset top shadow, the well scrolls, never the page.
+
 ### Draft tag (dev only)
 A small muted label with a dashed muted border, shown only in `npm run dev` next to draft entries. It never ships and is not a pattern for production UI.
 

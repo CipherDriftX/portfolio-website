@@ -4,74 +4,48 @@ Notes for search engines and AI answers. Not deployed (see `.vercelignore`).
 
 ## Fixed words
 
-- Head phrase: **AI Engineer · production AI agents + evals**. It is in the title tag, and it should be the LinkedIn and GitHub headline. The schema says the same thing in two fields: `jobTitle` is "AI Engineer" and `description` is the claim. Keep all of it fixed: each change makes engines relearn who you are.
 - Name: always **Aryan Haghighi** in full.
-- Topic lanes (schema `knowsAbout`): AI agents, LLM evaluation, large language models, autonomous drones. Every case study and note fits one lane.
+- The 3 keywords, from 2026-11-27: **MCP servers**, **agent evals**, **RL environments** (always "for LLM agents", never bare: "rl environment" alone is a services company in Bakersfield). Every new page, note, repo and post is about one of them. Agent safety is parked: no new pages for it.
+- The head phrase moves only after its proof is live, and LinkedIn, GitHub and the title tag move together:
 
-## What is built
+| Step | Trigger | Home title | `knowsAbout` |
+|---|---|---|---|
+| Now | | Aryan Haghighi, AI Engineer · production AI agents + evals | AI agents, agentic systems, LLM evaluation, AI agent safety, LLMs, autonomous drones |
+| 1 | mcp-server-evals public + 10 MCP scorecards live | Aryan Haghighi · Agent evals and MCP servers | unchanged |
+| 2 | the RL environment is live on the Prime Intellect Hub or Hugging Face | Aryan Haghighi · RL environments, agent evals, MCP servers | MCP servers, agent evals, RL environments for LLM agents, AI agents, large language models |
 
-| Piece | Where |
-|---|---|
-| ProfilePage + Person (one `@id`), WebSite, Article schema | `src/layouts/Base.astro` |
-| Sitemap with real `lastmod` dates only: `date` on notes, `updated` on case studies, projects and reviews, `updated` in `src/data/site.ts` for the copy and About | `astro.config.mjs`, `src/lib/lastmod.ts` |
-| IndexNow ping to Bing and others after each production deploy | `scripts/indexnow.mjs`, `.github/workflows/indexnow.yml`, key file in `public/` |
-| `/llms.txt` map for AI answer engines | `src/pages/llms.txt.ts` |
-| robots.txt open to all crawlers, AI ones included | `public/robots.txt` |
-| BreadcrumbList on inner pages; `mainEntityOfPage` and `publisher` on every page | `src/layouts/Base.astro` |
-| Notes as BlogPosting (`dateModified` from the optional `updated` field, `wordCount`, tags as `keywords`), all part of one Blog at `/notes/#blog` | `src/pages/notes/[slug].astro`, `src/pages/notes/index.astro` |
-| `/notes/` index. It stays `noindex` and out of the sitemap until the first note is live, and the nav only links it once notes exist | `src/pages/notes/index.astro`, `astro.config.mjs` |
-| `/rss.xml` with live notes, linked from every page head | `src/pages/rss.xml.ts` |
-| One link-preview image per note and case study, drawn at build in the site's fonts (1200 by 630) | `src/lib/og.ts`, `src/pages/og/[...slug].png.ts` |
-| `/llms-full.txt`: the whole site as one Markdown file, linked from `llms.txt` | `src/pages/llms-full.txt.ts` |
-| `rel="me"` links to GitHub and LinkedIn, `meta author` | `src/layouts/Base.astro` |
-| Live checker and monitor (see Monitoring) | `scripts/seo-check.mjs`, `.github/workflows/seo-monitor.yml` |
+- Each change makes engines relearn who you are, so nothing moves between the steps.
+- New pages wait behind `STAGE` and `launch` in `src/data/site.ts`: a hub that is off builds in `npm run dev` only, never in production, the sitemap, `llms.txt`, the OG images or the menus. `integrations/launch-check.mjs` fails the build if one leaks. Stage 1 also needs `draft: false` in `src/content/hubs/mcp-servers.md` and a real price there (the build stops otherwise), and builds a card only for the servers in `mcpCards`.
 
 ## Keyword map
 
-Source: autocomplete from Google, Bing and DuckDuckGo, US English, 2026-11-22. Autocomplete shows what people type, not how many. No search volume data was used. Get volumes later from Search Console once pages get impressions.
+Source: Google, DuckDuckGo and Bing autocomplete, US English, 2026-11-27. Autocomplete shows what people type, not how often. Search Console shows volumes once the pages are live. The 2026-11-22 and 2026-11-24 maps (agents in production, AI engineer, agent safety, drones) are retired.
 
-The owner picks which topics to write about. These are the phrases people actually type for each lane.
+**MCP servers** (the only lane with clear buyer phrases)
+- Hire: mcp server development services / mcp server development company / custom mcp server development services → `/mcp-servers/`
+- Price: mcp server development cost / mcp server cost → the "What it costs" part of `/mcp-servers/`
+- Testing: mcp server testing tool / mcp server tester / mcp server testing framework / test mcp server locally → a note + the repo
+- Tool: mcp evals github / mcp evals python / mcp server evals → the repo (its name matches)
+- Practice: mcp tool description best practices / mcp server best practices anthropic → a data note on tool descriptions
+- Product: "custom mcp server salesforce", "mcp server servicenow" and the like → one scorecard page per server
+- Skip: mcp server meaning / explained / vs api. The protocol site owns those. One FAQ line, no page.
 
-**Evals (the strongest fit: few portfolios own it)**
-- how to evaluate ai agents / how to evaluate an ai agent / how to evaluate agentic ai systems
-- ai agent evaluation metrics / common ai agent evaluation metrics
-- ai agent evaluation framework / open source ai agent evaluation framework
-- how to create evals for ai agents / preparing evals for tool calls in ai agents
-- llm evaluation in production / llm evaluation pipeline / llm offline evaluation / llm evaluation online
-- llm evaluation vs agent evaluation / llm evaluation vs rag evaluation
-- llm evaluation golden dataset / llm evaluation dataset generation
-- llm as a judge evaluation example / llm evaluation rubric / llm evaluation human in the loop
+**Agent evals**
+- Hire: ai evals consultant / ai evaluation consultant / agent evaluation consultant → `/agent-evals/`
+- How-to: how to write evals for ai agents / for llm / for claude → a note
+- Developer: tool calling evals / tool calling evaluation metrics / agent evaluation framework github / eval harness github → the method page + the repo
+- Data: agent eval leaderboard / agent eval benchmark → the scorecard leaderboard
+- Skip: "demystifying evals for ai agents" (Anthropic's post). Link to it, don't compete.
 
-**AI agents in production (what founders type)**
-- why ai agents fail in production
-- how to deploy ai agents in production / deploying ai agents in production
-- production ready ai agents / production grade ai agents
-- ai agent production architecture
-- ai agents for small business / ai agent consulting services
-
-**AI engineer (hiring side, crowded by job boards and courses)**
-- ai engineer for hire / hire ai engineers / ai engineer freelance jobs
-- ai engineer portfolio
-- ai engineer vs ml engineer / ai engineer vs forward deployed engineer / ai engineer vs applied ai engineer
-
-**Agent safety (added 2026-11-24, Google autocomplete, US English)**
-- ai agent policy enforcement / ai agent policy engine / ai agent policy as code
-- how to secure ai agents / how to build secure ai agents (crowded: Okta, Gartner)
-- ai agent security tools / ai agent security best practices / ai agent security risks
-- ai agent sandbox / ai agent sandbox open source / ai agent sandbox escape
-- mcp security best practices / mcp security gateway / mcp security risks
-- prevent prompt injection attacks / prompt injection prevention tools
-- ai agent audit log / ai agent audit trail
-- Pick the narrow phrases first (policy enforcement, policy engine, mcp security gateway): a new domain can win those, not "ai agent security".
-
-**Autonomous drones (research lane, long term)**
-- autonomous drone navigation in gps denied environments / without gps
-- autonomous drone navigation using reinforcement learning / computer vision
-- how do autonomous drones work
-- "drone detect and avoid" autocompletes to anti-drone questions, so search demand for see-and-avoid is small. Write it for research credibility, not traffic.
+**RL environments for LLM agents**
+- Developer: rl environments for llms github / rl environment for llm agents python / agentic rl environment github → the env repo, Prime Intellect Hub, Hugging Face
+- How-to: how to build an rl environment for llm training → a note
+- Buyers and jobs: rl environments companies / rl environment as a service / rl environment jobs → `/rl-environments/` + LinkedIn
+- Tools: verifiers rl library / openenv github / openenv vs harbor → env READMEs + a note
+- Rewards: reward function for llm agent / llm verifier → a note on graders and reward hacking
 
 **Name**
-- "aryan haghighi" has no autocomplete entry on any engine. Google offers "arian haghighat" instead. Nobody searches the name yet, so the job now is to own its first page when they do.
+- "aryan haghighi" has no autocomplete entry on any engine. Nobody searches the name yet, so the job is to own its first page when they do.
 
 ## Rules for every new page
 
@@ -106,6 +80,21 @@ What it cannot see: whether the pages are indexed and what people search to find
    - `GSC_SERVICE_ACCOUNT`: at console.cloud.google.com make a project, enable the "Google Search Console API", then IAM > Service accounts > create one (no roles) > Keys > Add key > JSON. Paste the whole JSON file as the secret. In Search Console > Settings > Users and permissions, add the service account's email as a **Restricted** user on the `aryanhaghighi.com` property (if the report says HTTP 403, make it Full). The script asks only for the read-only scope.
    - `BING_API_KEY`: Bing Webmaster Tools > Settings > API access > generate the key.
    The same Google key also works for a Search Console MCP server, so Claude can read the queries in a session (`AminForou/mcp-gsc`, MIT, 2.3k stars, read-only by default: env `GSC_CREDENTIALS_PATH` = the JSON file kept outside the repo, `GSC_SKIP_OAUTH=true`).
+
+## SEOptimer audit, 2026-11-27
+
+Owner ran SEOptimer on the live site (PDF on the Desktop). Overall A-: on-page, GEO, usability and performance all A+, links F.
+
+| Finding | What it means here |
+|---|---|
+| Links F: 0 backlinks | The real gap. The fix is the MCP plan: scorecards maintainers want to link, fix pull requests, launch posts. Not link buying |
+| Keyword consistency: top words agent, works, run, python; no "MCP" or "evals" in headings | Fixed at stage 1: the home title becomes "Aryan Haghighi · Agent evals and MCP servers" and the home links to `/mcp-servers/` |
+| Analytics "not found" | False: Vercel Web Analytics loads deferred, which the tool does not see |
+| Local business schema, phone, address, Facebook page and pixel, Instagram | Do not fit a person's site that sells remote work. Skip |
+| Word count | Not a ranking factor. Skip |
+| Inline styles | Astro inlines the CSS on purpose (`inlineStylesheets: "always"`): one request paints the first screen. PageSpeed 95 mobile, 100 desktop. Skip |
+| Email in clear text | On purpose: people must be able to copy it |
+| Redirect chain http to https to www, 1.08 s on mobile | Real, but it lives in DNS and Vercel settings, which this repo does not touch. Owner's call |
 
 ## Baseline, 2026-11-24
 
