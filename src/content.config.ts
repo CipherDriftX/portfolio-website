@@ -110,4 +110,28 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { work, projects, reviews, notes, about };
+// Hub pages (/mcp-servers/, later /agent-evals/ and /rl-environments/): the
+// words around the data. One file per hub, named after its URL. A hub goes
+// live only when its stage is on (src/data/site.ts) and its draft is false.
+// Text may name live numbers in braces, e.g. {servers} (src/lib/mcp.ts).
+const hubs = defineCollection({
+  loader: md("hubs"),
+  schema: z.object({
+    title: z.string().max(60), // the <title>, 60 characters at most
+    h1: z.string(),
+    description: z.string().min(110).max(160), // the meta description
+    answer: z.string(), // 40 to 60 words at the top: what it is, what I do
+    steps: z.array(z.object({ title: z.string(), text: z.string() })).min(4).max(6),
+    offer: z.object({
+      lead: z.string(),
+      includes: z.array(z.string()).min(1),
+      time: z.string(),
+      price: z.string(),
+    }),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).min(4).max(6),
+    updated: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, projects, reviews, notes, about, hubs };

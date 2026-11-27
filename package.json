@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "cv": "node scripts/cv.mjs"
+    "cv": "node scripts/cv.mjs",
+    "mcp-data": "uv run --project ../mcp-server-evals mcp-server-evals export --root ../mcp-server-evals --out src/data/mcp-servers.json"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",

@@ -1,5 +1,38 @@
 // Core copy for the whole site. Change a line here and every page follows.
 
+// How far the 3-keyword plan has gone. Each stage needs its proof live first:
+// 0: nothing new on the site.
+// 1: mcp-server-evals is public on GitHub and 10 MCP scorecards are ready.
+//    Turns on /mcp-servers/ (hub, method, the cards in `mcpCards`), the home
+//    title, the home and footer links. Read src/content/hubs/mcp-servers.md
+//    and set its draft to false first; the build stops if you forget.
+// 2: the RL environment is live on the Prime Intellect Hub or Hugging Face.
+export const STAGE: 0 | 1 | 2 = 0;
+
+// Which sections are live in production. `npm run dev` shows them all.
+export const launch = {
+  mcpServers: STAGE >= 1,
+  agentEvals: false, // the hub page is not written yet (plan: week 3)
+  rlEnvironments: false, // the hub page is not written yet (plan: stage 2)
+} as const;
+export type Launch = keyof typeof launch;
+
+// The MCP servers that get their own page in production. The leaderboard on
+// /mcp-servers/ lists all 30 either way. Stage 1 plan: 10 cards, each one
+// emailed to its maintainer the same week. In dev every server has a page.
+export const mcpCards = [
+  "sentry",
+  "notion",
+  "github",
+  "mongodb",
+  "launchdarkly",
+  "netlify",
+  "firecrawl",
+  "playwright",
+  "chrome-devtools",
+  "desktop-commander",
+] as const;
+
 export const site = {
   name: "Aryan Haghighi",
   title: "AI Engineer",
@@ -12,7 +45,11 @@ export const site = {
   offer:
     "I start with a two-week fixed-price build: one working agent in your stack, with the evals to prove it. If it works, we go month to month.",
   // What search engines and AI answers should link to the name (Person knowsAbout).
-  topics: ["AI agents", "Agentic systems", "LLM evaluation", "AI agent safety", "Large language models", "Autonomous drones"],
+  // Stage 2 swaps in the 3 keywords (plan 6.4); drones stay in the About text.
+  topics:
+    STAGE >= 2
+      ? ["MCP servers", "Agent evals", "RL environments for LLM agents", "AI agents", "Large language models"]
+      : ["AI agents", "Agentic systems", "LLM evaluation", "AI agent safety", "Large language models", "Autonomous drones"],
   // The day the facts in this file or the About text last changed. Bump it
   // when you change them. It feeds the sitemap and the home page schema.
   // Notes, case studies, projects and reviews move the date on their own.
@@ -41,7 +78,14 @@ export const site = {
     awards: ["FarzCup, inter-school robotics competition run by SAMPAD (team win)"],
     competed: ["RoboCup IranOpen"],
   },
-  pageTitle: "Aryan Haghighi, AI Engineer · production AI agents + evals",
+  // The home <title> moves only with the stage (see `stage` below and SEO.md).
+  pageTitle: (
+    {
+      0: "Aryan Haghighi, AI Engineer · production AI agents + evals",
+      1: "Aryan Haghighi · Agent evals and MCP servers",
+      2: "Aryan Haghighi · RL environments, agent evals, MCP servers",
+    } as const
+  )[STAGE],
   url: "https://www.aryanhaghighi.com",
   email: "aryan@aryanhaghighi.com",
   links: {
