@@ -12,8 +12,8 @@ steps:
     text: "Tokens per tool, so you see what each one adds to every request."
   - title: "Check every definition"
     text: "Names, descriptions, parameters and schemas, against the MCP spec and Anthropic's and OpenAI's tool guides."
-  - title: "Run real models"
-    text: "Real tasks: the right tool, the right arguments, and no call when no tool fits."
+  - title: "Run real models (next)"
+    text: "Coming next: real tasks, to see if a model picks the right tool with the right arguments, and calls nothing when no tool fits."
   - title: "Fix and measure again"
     text: "Every change gets a before and an after number."
   - title: "Keep the checks"
@@ -37,6 +37,6 @@ faq:
     a: "Yes. Most of the work is in the tool definitions: clearer descriptions, described parameters, and fewer tools that are easier to tell apart. I measure before and after, so you see what changed."
   - q: "Can I hire you?"
     a: "Yes, for AI engineer roles and contracts on MCP servers and agent evals. Email me with what you are building."
-updated: 2026-11-27
-draft: true
+updated: 2026-11-28
+draft: false
 ---

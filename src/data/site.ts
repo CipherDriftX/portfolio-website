@@ -7,7 +7,7 @@
 //    title, the home and footer links. Read src/content/hubs/mcp-servers.md
 //    and set its draft to false first; the build stops if you forget.
 // 2: the RL environment is live on the Prime Intellect Hub or Hugging Face.
-export const STAGE: 0 | 1 | 2 = 0;
+export const STAGE: 0 | 1 | 2 = 1;
 
 // Which sections are live in production. `npm run dev` shows them all.
 export const launch = {
@@ -53,7 +53,7 @@ export const site = {
   // The day the facts in this file or the About text last changed. Bump it
   // when you change them. It feeds the sitemap and the home page schema.
   // Notes, case studies, projects and reviews move the date on their own.
-  updated: "2026-11-26",
+  updated: "2026-11-28",
   // The day the site first went up. ProfilePage dateCreated.
   launched: "2026-11-21",
   // The public handle (GitHub, commits). Person alternateName, which Google's
